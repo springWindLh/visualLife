@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" ng-app="articleApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/summernote.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <script type="text/javascript" src="/static/js/jquery-1.11.1.min.js"></script>
+    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/js/angular.min.js"></script>
+</head>
+<body ng-controller="articleController">
+
+    <summernote height="500" ng-model="text"></summernote>
+</body>
+<script type="text/javascript" src="/static/js/angular-summernote.min.js"></script>
+<script type="text/javascript" src="/static/js/summernote.min.js"></script>
+<script type="text/javascript" src="/static/js/summernote-de-DE.js"></script>
+<script type="text/javascript" th:inline="javascript">
+    var app = angular.module('articleApp', ['summernote']);
+    app.controller('articleController', function ($scope,$http) {
+        $scope.text = 'hello,world';
+    });
+</script>
+</html>
