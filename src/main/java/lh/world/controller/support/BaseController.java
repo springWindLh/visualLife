@@ -52,4 +52,12 @@ public class BaseController {
     protected AjaxResponse getErrorInfo(BindingResult result) {
         return AjaxResponse.fail().msg(result.getAllErrors().get(0).getDefaultMessage());
     }
+
+    protected String getResourceNotFound() {
+        return "/404";
+    }
+
+    protected AjaxResponse getAjaxResourceNotFound() {
+        return AjaxResponse.fail().msg("没有找到相关资源");
+    }
 }

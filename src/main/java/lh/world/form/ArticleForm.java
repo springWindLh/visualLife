@@ -3,6 +3,8 @@ package lh.world.form;
 import lh.world.domain.Article;
 import lh.world.form.support.BaseForm;
 
+import java.time.LocalDateTime;
+
 /**
  * Created by lh on 2016/8/11.
  */
@@ -30,6 +32,7 @@ public class ArticleForm extends BaseForm {
         Article article = new Article();
         if (this.getId() != null) {
             article.setId(this.getId());
+            article.setUpdatedTime(LocalDateTime.now());
         }
         article.setTitle(this.getTitle());
         article.setContent(this.getContent());

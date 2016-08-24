@@ -26,7 +26,7 @@ import java.util.UUID;
  * Created by lh on 2016/5/5.
  */
 @Controller
-@RequestMapping("qiniu")
+@RequestMapping("/qiniu")
 public class UploadController extends BaseController {
     //设置七牛账号的ACCESS_KEY和SECRET_KEY
     @Value("${qiniu_access_key}")
@@ -64,7 +64,7 @@ public class UploadController extends BaseController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "upload/{type:(?:avatar|newsRoll|photo)}", method = RequestMethod.POST)
+    @RequestMapping(value = "/upload/{type:(?:avatar|article)}", method = RequestMethod.POST)
     public AjaxResponse upload(@RequestParam(value = "file", required = false) MultipartFile file, @PathVariable String type) throws IOException {
         try {
             String suffix = getFileSuffix(file.getOriginalFilename());
@@ -81,25 +81,25 @@ public class UploadController extends BaseController {
     }
 
 
-    @RequestMapping(value = "ueditor/upload", method = RequestMethod.GET)
-    public void ueditorUpload(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String action = request.getParameter("action");
-        if (action.equals("config")) {
-            OutputStream os = response.getOutputStream();
-            IOUtils.copy(UploadController.class.getClassLoader().getResourceAsStream("config.json"), os);
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "ueditor/upload", method = RequestMethod.POST)
-    public Map<String, String> ueditorUpload(HttpServletRequest request, MultipartFile upfile) throws IOException {
-        Map<String, String> result = new HashMap();
-        result.put("url", getImageUrl(upfile, "ueditor"));
-        result.put("size", String.valueOf(upfile.getSize()));
-        result.put("type", getFileSuffix(upfile.getOriginalFilename()));
-        result.put("state", "SUCCESS");
-        return result;
-    }
+//    @RequestMapping(value = "ueditor/upload", method = RequestMethod.GET)
+//    public void ueditorUpload(HttpServletRequest request, HttpServletResponse response) throws IOException {
+//        String action = request.getParameter("action");
+//        if (action.equals("config")) {
+//            OutputStream os = response.getOutputStream();
+//            IOUtils.copy(UploadController.class.getClassLoader().getResourceAsStream("config.json"), os);
+//        }
+//    }
+//
+//    @ResponseBody
+//    @RequestMapping(value = "ueditor/upload", method = RequestMethod.POST)
+//    public Map<String, String> ueditorUpload(HttpServletRequest request, MultipartFile upfile) throws IOException {
+//        Map<String, String> result = new HashMap();
+//        result.put("url", getImageUrl(upfile, "ueditor"));
+//        result.put("size", String.valueOf(upfile.getSize()));
+//        result.put("type", getFileSuffix(upfile.getOriginalFilename()));
+//        result.put("state", "SUCCESS");
+//        return result;
+//    }
 
     private String getImageUrl(MultipartFile file, String type) throws IOException {
         String fileName = type + "/" + translateFileName(file.getOriginalFilename());
