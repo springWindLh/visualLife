@@ -64,7 +64,7 @@ public class UploadController extends BaseController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/upload/{type:(?:avatar|article)}", method = RequestMethod.POST)
+    @RequestMapping(value = "/upload/{type:(?:avatar|article|cover)}", method = RequestMethod.POST)
     public AjaxResponse upload(@RequestParam(value = "file", required = false) MultipartFile file, @PathVariable String type) throws IOException {
         try {
             String suffix = getFileSuffix(file.getOriginalFilename());

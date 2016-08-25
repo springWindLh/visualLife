@@ -13,5 +13,103 @@
     <script type="text/javascript" src="/static/js/angular.min.js"></script>
     <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
 </div>
+<div th:fragment="tooltip">
+    <style type="text/css">
+        .common_tooltip {
+            visibility: hidden;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 200px;
+            height: 80px;
+            margin-left: -200px;
+            margin-top: -250px;
+            text-align: center;
+            z-index: 1000;
+            border-radius: 10px;
+        }
+
+        .common_tooltip table {
+            font-size: larger;
+            line-height: 60px;
+            vertical-align: middle;
+        }
+
+        .common_tooltip table tr td {
+            padding: 10px;
+        }
+
+        .common_tooltip.success {
+            background-color: #669999;
+            font-size: larger;
+            color: white;
+        }
+
+        .common_tooltip.failure {
+            background-color: #993333;
+            font-size: larger;
+            color: white;
+        }
+
+        .common_tooltip.normal {
+            background-color: #333366;
+            font-size: larger;
+            color: white;
+        }
+    </style>
+    <div class="common_tooltip">
+        <table align="center">
+            <tr>
+                <td><i class="icon"></i></td>
+                <td><span class="msg"></span></td>
+            </tr>
+        </table>
+    </div>
+    <script type="text/javascript">
+        var Tooltip = {
+            tip: $('.common_tooltip'),
+            icon: $('.common_tooltip').find('.icon'),
+            msg: $('.common_tooltip').find('.msg'),
+            show: function () {
+                $('.common_tooltip').css('visibility', 'visible');
+                setTimeout(function () {
+                    $('.common_tooltip').fadeOut('slow');
+                }, 1500);
+            },
+            dynamic: function (type, icon, msg) {
+                if (type == 'success') {
+                    this.tip.attr('class', 'common_tooltip success');
+                } else if (type == 'failure') {
+                    this.tip.attr('class', 'common_tooltip failure');
+                } else if (type == 'normal') {
+                    this.tip.attr('class', 'common_tooltip normal');
+                }
+                if (icon != null && icon != '') {
+                    this.icon.attr('class', icon);
+                }
+                if (msg != null && msg != '') {
+                    this.msg.html(msg);
+                }
+                this.show();
+            },
+            ok: function (msg) {
+                this.tip.attr('class', 'common_tooltip success');
+                this.icon.attr('class', 'fa fa-check-circle');
+                if (msg != null && msg != '') {
+                    this.msg.html(msg);
+                }
+                this.show();
+            },
+            fail: function (msg) {
+                this.tip.attr('class', 'common_tooltip failure');
+                this.icon.attr('class', 'fa fa-exclamation-circle');
+                if (msg != null && msg != '') {
+                    this.msg.html(msg);
+                }
+                this.show();
+            }
+        };
+    </script>
+</div>
 </body>
 </html>

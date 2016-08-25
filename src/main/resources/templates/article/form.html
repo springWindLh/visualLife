@@ -11,18 +11,93 @@
     <script type="text/javascript" src="/static/js/angular.min.js"></script>
 </head>
 <body ng-controller="articleController">
-    <fieldset class="form-group">
-        <input class="form-control" style="font-size: 22px; border: none;font-family: '微软雅黑';font-weight: bold;" placeholder="文章标题">
-    </fieldset>
-    <summernote height="500" on-image-upload="imageUpload(files)" editable="editable" editor="editor" placeholder="正文" ng-model="text"></summernote>
+<div class="container">
+    <div class="col-md-8">
+        <fieldset class="form-group" style="padding-top: 1em">
+            <input class="form-control" style="font-size: 22px; border: none;font-family: '微软雅黑';"
+                   ng-model="article.title" placeholder="文章标题">
+        </fieldset>
+        <div style="border-right: dashed 0.1em rgba(128, 128, 128, 0.29);padding-right: 1em;">
+            <summernote height="500" on-image-upload="imageUpload(files)" editable="editable" editor="editor"
+                        placeholder="正文" ng-model="article.content"></summernote>
+        </div>
+    </div>
+    <div class="col-md-4" style="padding-top: 2em;">
+        <small class="text-muted">封面预览</small>
+        <div class="card maxWidth200">
+            <img src="{{article.coverImg}}" class="widthFull">
+            <div class="card-block">
+                <div class="card-text">
+                    {{article.summarize}}
+                </div>
+            </div>
+        </div>
+        <button id="coverImgBtn" class="btn btn-sm btn-info-outline">选择封面图片</button>
+        <div class="form-group" style="padding-top: 1em;">
+            <textarea class="form-control" placeholder="封面文字" ng-model="article.summarize"></textarea>
+        </div>
+        <button class="btn btn-info-outline" ng-click="saveArticle()"><i class="fa fa-pencil"></i>发表文章</button>
+    </div>
+</div>
+<div th:include="fragment::tooltip"></div>
 </body>
 <script type="text/javascript" src="/static/js/angular-summernote.min.js"></script>
 <script type="text/javascript" src="/static/js/summernote.min.js"></script>
 <script type="text/javascript" src="/static/js/summernote-de-DE.js"></script>
 <script type="text/javascript" th:inline="javascript">
     var app = angular.module('articleApp', ['summernote']);
-    app.controller('articleController', function ($scope,$http) {
-        $scope.imageUpload = function(files) {
+    app.controller('articleController', function ($scope, $http) {
+
+        $scope.article = {
+            title: [[${form.title}]],
+            content: [[${form.content}]],
+            coverImg: [[${form.coverImg}]],
+            summarize: [[${form.summarize}]],
+            vote: [[${form.vote}]] || 0,
+            weight: [[${form.weight}]] || 0
+        };
+
+        $scope.saveArticle = function () {
+            $http.post('/article/add', $scope.article).success(function (data) {
+                if (data.code) {
+                    Tooltip.ok(data.msg);
+                    location.href = data.jumpUrl;
+                } else {
+                    Tooltip.fail(data.msg);
+                }
+            });
+        };
+
+        var uploader = WebUploader.create({
+            auto: true,
+            server: '/qiniu/upload/cover',
+            pick: '#coverImgBtn',
+            accept: {
+                title: 'Images',
+                extensions: 'gif,jpg,jpeg,bmp,png',
+                mimeTypes: 'image/gif,image/jpg,image/jpeg,image/bmp,image/png'
+            },
+            fileSingleSizeLimit: 2 * 1024 * 1024
+        });
+        uploader.on('uploadStart',function(){
+        });
+        uploader.on( 'uploadSuccess', function( file , response) {
+            if(response.code == 1){
+                $scope.news.rollImg = response.data;
+                $scope.$apply();
+            }else{
+                Tooltip.fail(response.msg);
+            }
+        });
+        uploader.on('error',function(type) {
+            if("F_EXCEED_SIZE" == type) {
+                Tooltip.fail('图片大小不能超过2M');
+            } else {
+                Tooltip.fail('图片格式不正确');
+            }
+        });
+
+        $scope.imageUpload = function (files) {
             sendFile(files[0]);
         }
 
@@ -36,9 +111,9 @@
                 cache: false,
                 contentType: false,
                 processData: false,
-                success: function(data) {
-                    $scope.editor.summernote('insertImage',data.data);
-                 }
+                success: function (data) {
+                    $scope.editor.summernote('insertImage', data.data);
+                }
             });
         }
     });

@@ -46,19 +46,19 @@
                 <fieldset class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon"><i class="fa fa-user"></i></div>
-                        <input type="text" class="form-control" placeholder="用户名" ng-model="user.name">
+                        <input type="text" class="form-control" placeholder="用户名" ng-model="nameOrMobile">
                     </div>
                 </fieldset>
                 <fieldset class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon"><i class="fa fa-lock"></i> </div>
-                        <input type="password" class="form-control" placeholder="密码" ng-model="user.password">
+                        <input type="password" class="form-control" placeholder="密码" ng-model="password">
                     </div>
                 </fieldset>
                 <button type="button" class="btn btn-info-outline btn-block">登&nbsp;&nbsp;录</button>
                 <fieldset class="form-group">
                    <div style="padding-top: 20px;">
-                       <label><input type="checkbox"  value="true" ng-model="user.rememberMe">&nbsp;记住我</label>
+                       <label><input type="checkbox"  value="true" ng-model="rememberMe">&nbsp;记住我</label>
                        <a href="/register" class="pull-right">去注册<i class="fa fa-arrow-circle-right"></i></a>
                    </div>
                 </fieldset>
@@ -66,25 +66,20 @@
         </div>
     </div>
 </div>
+<div th:include="fragment::tooltip"></div>
 </body>
 <script type="text/javascript" th:inline="javascript">
     var app = angular.module('loginApp', []);
     app.controller('loginController', function ($scope,$http) {
-        $scope.user = {
-            name:'',
-            password:'',
-            rememberMe:false
-        };
         $scope.login = function () {
             $http.post('/user/login',{params:{
-                name:$scope.user.name,
-                password:$scope.user.password,
-                rememberMe:$scope.user.rememberMe
+                nameOrMobile:$scope.nameOrMobile,
+                password:$scope.password
             }}).success(function (data) {
                 if(data.code){
                     location.href = data.jumpUrl;
                 }else{
-                    //alert(data.detail);
+                    Tooltip.fail(data.msg);
                 }
             });
         };

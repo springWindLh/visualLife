@@ -21,6 +21,8 @@ public class User extends CanLogicDelDomain {
     private String password;
     @Column(name = "mobile")
     private String mobile;
+    @Column(name = "email")
+    private String email;
     @Column(name = "avatar")
     private String avatar;
     @Column(name = "introduce")
@@ -66,6 +68,14 @@ public class User extends CanLogicDelDomain {
         this.mobile = mobile;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getAvatar() {
         return avatar;
     }
@@ -90,7 +100,7 @@ public class User extends CanLogicDelDomain {
         this.role = role;
     }
 
-    public static enum Role{
+    public static enum Role {
         USER("普通用户"),
         ADMIN("管理员");
 
