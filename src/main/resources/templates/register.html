@@ -113,7 +113,7 @@
 
         $scope.register = function () {
             $scope.registerSuccess = false;
-            $http.post('/user/register', $scope.user).success(function (data) {
+            $http.post('/register', $scope.user).success(function (data) {
                 if (data.code) {
                     angular.element("#alertInfo").addClass("alert-success");
                     setResponseMsg("注册成功！3秒后自动跳转……", true);
