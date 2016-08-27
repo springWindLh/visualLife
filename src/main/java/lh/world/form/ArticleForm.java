@@ -21,6 +21,7 @@ public class ArticleForm extends BaseForm {
 
     public ArticleForm(Article article) {
         this.setId(article.getId());
+        this.setTitle(article.getTitle());
         this.setContent(article.getContent());
         this.setCoverImg(article.getCoverImg());
         this.setSummarize(article.getSummarize());

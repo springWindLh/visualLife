@@ -1,5 +1,6 @@
 package lh.world.service.impl;
 
+import com.google.common.base.Strings;
 import lh.world.domain.Article;
 import lh.world.repository.ArticleRepository;
 import lh.world.service.ArticleService;
@@ -36,7 +37,11 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Page<Article> listByTitle(String title, int page, int size, String sortField, Sort.Direction direction) {
         PageRequest request = new PageRequest(page, size, new Sort(direction, sortField));
-        return articleRepository.queryByTitleAndDel(title, false, request);
+        if (Strings.isNullOrEmpty(title)) {
+            return this.listAll(page, size, sortField, direction);
+        } else {
+            return articleRepository.queryByDelAndTitleLike(false, title, request);
+        }
     }
 
     @Override
@@ -49,5 +54,11 @@ public class ArticleServiceImpl implements ArticleService {
                 this.save(article);
             }
         }
+    }
+
+    @Override
+    public Page<Article> listAll(int page, int size, String sortField, Sort.Direction direction) {
+        PageRequest request = new PageRequest(page, size, direction, sortField);
+        return articleRepository.findAll(request);
     }
 }

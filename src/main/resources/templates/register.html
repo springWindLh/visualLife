@@ -38,7 +38,7 @@
 
             <fieldset class="form-group"
                       ng-class="{'has-error':registerForm.name.$dirty && registerForm.name.$invalid,'has-success':registerForm.name.$dirty && registerForm.name.$valid}">
-                <label ng-cloak class="control-label" ng-show="registerForm.name.$dirty && registerForm.name.$invalid">请填写昵称，且长度为2~20位</label>
+                <label ng-cloak class="control-label size7" ng-show="registerForm.name.$dirty && registerForm.name.$invalid">请填写昵称，且长度为2~20位</label>
                 <div class="input-group">
                     <label class="input-group-addon"><i class="fa fa-user"></i> </label>
                     <input class="form-control" placeholder="用户名" type="text" name="name" required ng-minlength="2"
@@ -48,7 +48,7 @@
 
             <fieldset class="form-group"
                       ng-class="{'has-error':registerForm.password.$dirty && registerForm.password.$invalid,'has-success':registerForm.password.$dirty && registerForm.password.$valid}">
-                <label ng-cloak class="control-label"
+                <label ng-cloak class="control-label size7"
                        ng-show="registerForm.password.$dirty && registerForm.password.$invalid">请填写密码，且长度为6~12位</label>
                 <div class="input-group">
                     <label class="input-group-addon"><i class="fa fa-lock"></i> </label>
@@ -60,7 +60,7 @@
 
             <fieldset class="form-group"
                       ng-class="{'has-error':user.password != user.repeatPwd && registerForm.repeatPwd.$dirty,'has-success':user.password == user.repeatPwd && registerForm.repeatPwd.$dirty}">
-                <label ng-cloak class="control-label"
+                <label ng-cloak class="control-label size7"
                        ng-show="user.password != user.repeatPwd && registerForm.repeatPwd.$dirty">密码输入不一致</label>
                 <div class="input-group">
                     <label class="input-group-addon"><i class="fa fa-lock"></i> </label>
@@ -68,10 +68,18 @@
                            ng-model="user.repeatPwd">
                 </div>
             </fieldset>
-
+            <fieldset class="form-group"
+                      ng-class="{'has-error':registerForm.mobile.$dirty && registerForm.mobile.$invalid,'has-success':registerForm.mobile.$dirty && registerForm.mobile.$valid}">
+                <label ng-cloak class="control-label size7" ng-show="registerForm.mobile.$dirty && registerForm.mobile.$invalid">请填写正确的手机号</label>
+                <div class="input-group">
+                    <label class="input-group-addon"><i class="fa fa-mobile fa-lg"></i> </label>
+                    <input class="form-control" placeholder="手机号" type="text" name="mobile" required
+                           ng-model="user.mobile">
+                </div>
+            </fieldset>
             <fieldset class="form-group"
                       ng-class="{'has-error':registerForm.email.$dirty && registerForm.email.$invalid,'has-success':registerForm.email.$dirty && registerForm.email.$valid}">
-                <label ng-cloak class="control-label" ng-show="registerForm.email.$dirty && registerForm.mail.$invalid">请填写正确的邮箱地址</label>
+                <label ng-cloak class="control-label size7" ng-show="registerForm.email.$dirty && registerForm.mail.$invalid">请填写正确的邮箱地址</label>
                 <div class="input-group">
                     <label class="input-group-addon"><i class="fa fa-envelope"></i> </label>
                     <input class="form-control" placeholder="邮箱，用于找回密码" type="email" name="email" required

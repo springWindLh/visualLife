@@ -54,10 +54,11 @@
 .margin-top50{margin-top: 5em;}
 .margin-bottom20{margin-bottom:2em;}
 .listNoneStyle{list-style: none;}
-.size26{font-size: 2em;}
-.size12{font-size: 1em;}
-.size14{font-size: 1em;}
-.size16{font-size: 1em;}
+.size26{font-size: 2.6em;}
+.size7{font-size: 0.7em;}
+.size12{font-size: 1.2em;}
+.size14{font-size: 1.4em;}
+.size16{font-size: 1.6em;}
 .borderRadius50{border-radius:50%;}
 .paddingNone{padding:0;}
 .padding20{padding: 2em;}

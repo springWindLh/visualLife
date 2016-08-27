@@ -16,5 +16,7 @@ public interface ArticleService {
 
     Page<Article> listByTitle(String title, int page, int size, String sortField, Sort.Direction direction);
 
+    Page<Article> listAll(int page, int size, String sortField, Sort.Direction direction);
+
     void remove(Long id);
 }

@@ -8,11 +8,11 @@ public class Query {
     private int size;
 
     public Query() {
-        this(1, 10);
+        this(0, 10);
     }
 
     public Query(int page, int size) {
-        if (page < 1 || size < 1) throw new IllegalArgumentException("index or size must be natural number");
+        if (page < 0 || size < 0) throw new IllegalArgumentException("index or size must be natural number");
         this.page = page;
         this.size = size;
     }
