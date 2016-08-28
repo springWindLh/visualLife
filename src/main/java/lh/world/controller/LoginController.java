@@ -9,10 +9,7 @@ import lh.world.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -24,9 +21,9 @@ public class LoginController extends BaseController {
     @Autowired
     UserService userService;
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
     @ResponseBody
-    public AjaxResponse login(String nameOrMobile, String password) {
+    public AjaxResponse login(@RequestParam String nameOrMobile, @RequestParam String password) {
         final String errorMsg = "用户名或密码错误";
         if (Strings.isNullOrEmpty(nameOrMobile) || Strings.isNullOrEmpty(password)) {
             return AjaxResponse.fail().msg(errorMsg);

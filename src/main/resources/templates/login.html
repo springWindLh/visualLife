@@ -55,7 +55,7 @@
                         <input type="password" class="form-control" placeholder="密码" ng-model="password">
                     </div>
                 </fieldset>
-                <button type="button" class="btn btn-info-outline btn-block">登&nbsp;&nbsp;录</button>
+                <button type="button" class="btn btn-info-outline btn-block" ng-click="login()">登&nbsp;&nbsp;录</button>
                 <fieldset class="form-group">
                    <div style="padding-top: 20px;">
                        <label><input type="checkbox"  value="true" ng-model="rememberMe">&nbsp;记住我</label>
@@ -63,6 +63,13 @@
                    </div>
                 </fieldset>
             </form>
+            <div ng-cloak ng-show="loginFailure" id="alertInfo" class="alert alert-danger alert-dismissible fade in margin-top10" role="alert">
+                <button type="button" class="close" ng-click="hiddenMsg()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                {{responseMsg}}
+            </div>
         </div>
     </div>
 </div>
@@ -71,17 +78,26 @@
 <script type="text/javascript" th:inline="javascript">
     var app = angular.module('loginApp', []);
     app.controller('loginController', function ($scope,$http) {
+        $scope.nameOrMobile = '';
+        $scope.password = '';
         $scope.login = function () {
-            $http.post('/user/login',{params:{
+            $scope.loginFailure = false;
+            $scope.responseMsg = '';
+            $http.get('/login',{params:{
                 nameOrMobile:$scope.nameOrMobile,
                 password:$scope.password
             }}).success(function (data) {
                 if(data.code){
                     location.href = data.jumpUrl;
                 }else{
-                    Tooltip.fail(data.msg);
+                    $scope.loginFailure = true;
+                    $scope.responseMsg = data.msg;
                 }
             });
+        };
+
+        $scope.hiddenMsg = function(){
+            $scope.loginFailure = false;
         };
     });
 </script>
