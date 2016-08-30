@@ -25,6 +25,7 @@ public class HomeController extends BaseController {
     public String home(ArticleQuery query, Model model) {
         Page<Article> page = articleService.listByTitle(query.getTitle(), query.getPage(), query.getSize(), "id", Sort.Direction.DESC);
         model.addAttribute("page", page);
+        model.addAttribute("query", query);
         return "/home";
     }
 }

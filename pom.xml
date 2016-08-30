@@ -6,7 +6,7 @@
 	<groupId>lh.world</groupId>
 	<artifactId>visuallife</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>visuallife</name>
 	<description>Demo project for Spring Boot</description>
@@ -32,8 +32,18 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
-
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-java8</artifactId>
@@ -84,6 +94,7 @@
 			<artifactId>spring-security-core</artifactId>
 			<version>4.1.1.RELEASE</version>
 		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -94,6 +105,5 @@
 			</plugin>
 		</plugins>
 	</build>
-
 
 </project>
