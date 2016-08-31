@@ -1,18 +1,19 @@
 package lh.world.service.impl;
 
 import lh.world.domain.Story;
+import lh.world.query.support.Query;
 import lh.world.repository.StoryRepository;
 import lh.world.service.StoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 /**
  * Created by lh on 2016/8/12.
  */
+@Service
 public class StoryServiceImpl implements StoryService {
     @Autowired
     private StoryRepository storyRepository;
@@ -32,9 +33,8 @@ public class StoryServiceImpl implements StoryService {
     }
 
     @Override
-    public Page<Story> listAll(int page, int size, String sortField, Sort.Direction direction) {
-        PageRequest request = new PageRequest(page, size, direction, sortField);
-        return storyRepository.findAll(request);
+    public Page<Story> listAll(Query query) {
+        return storyRepository.findAll(query.getPageable());
     }
 
     @Override

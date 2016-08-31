@@ -1,20 +1,28 @@
 package lh.world.query.support;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
 /**
  * Created by lh on 2016/4/19.
  */
 public class Query {
     private int page;
     private int size;
+    private String sortField;
+    private Sort.Direction direction;
 
     public Query() {
-        this(0, 10);
+        this(0, 10, "id", Sort.Direction.DESC);
     }
 
-    public Query(int page, int size) {
+    public Query(int page, int size, String sortField, Sort.Direction direction) {
         if (page < 0 || size < 0) throw new IllegalArgumentException("index or size must be natural number");
         this.page = page;
         this.size = size;
+        this.sortField = sortField;
+        this.direction = direction;
     }
 
     public int getPage() {
@@ -33,4 +41,24 @@ public class Query {
         this.size = size;
     }
 
+    public String getSortField() {
+        return sortField;
+    }
+
+    public void setSortField(String sortField) {
+        this.sortField = sortField;
+    }
+
+    public Sort.Direction getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Sort.Direction direction) {
+        this.direction = direction;
+    }
+
+    public Pageable getPageable() {
+        PageRequest request = new PageRequest(page, size, direction, sortField);
+        return request;
+    }
 }

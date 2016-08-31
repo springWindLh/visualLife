@@ -1,5 +1,6 @@
 package lh.world.service.support;
 
+import com.google.common.base.Strings;
 import lh.world.domain.support.CanLogicDelDomain;
 
 /**
@@ -12,5 +13,13 @@ public class ServiceUtil {
 
     public static boolean isCanLogicDel(Class<?> clazz) {
         return CanLogicDelDomain.class.isAssignableFrom(clazz);
+    }
+
+    public static String addPercent(String content) {
+        if (!Strings.isNullOrEmpty(content)) {
+            return "%" + content + "%";
+        } else {
+            return "";
+        }
     }
 }

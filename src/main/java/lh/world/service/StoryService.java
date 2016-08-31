@@ -1,6 +1,7 @@
 package lh.world.service;
 
 import lh.world.domain.Story;
+import lh.world.query.support.Query;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 
@@ -14,7 +15,7 @@ public interface StoryService {
 
     Optional<Story> findById(Long id);
 
-    Page<Story> listAll(int page, int size, String sortField, Sort.Direction direction);
+    Page<Story> listAll(Query query);
 
     void remove(Long id);
 }

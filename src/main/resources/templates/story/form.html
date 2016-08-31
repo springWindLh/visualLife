@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" ng-app="storyApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/font-awesome.min.css">
+</head>
+<body>
+<div th:include="fragment::files"></div>
+<div class="container">
+    <form ng-controller="storyController">
+        <div>
+            <fieldset class="form-group">
+                <img src="{{story.picture}}">
+                <button id="picture" class="btn btn-sm btn-info-outline">选择故事图片</button>
+            </fieldset>
+            <fieldset class="form-group">
+                <textarea class="form-control" placeholder="故事简述"></textarea>
+            </fieldset>
+            <button class="btn btn-info-outline" ng-if="story.id == null" ng-click="saveStory()"><i
+                    class="fa fa-pencil"></i>&nbsp;发表
+            </button>
+            <button class="btn btn-info-outline" ng-if="story.id != null" ng-click="updateStory()"><i
+                    class="fa fa-pencil"></i>&nbsp;更新
+            </button>
+        </div>
+    </form>
+</div>
+</body>
+<script type="text/javascript" src="/static/js/webuploader.html5only.min.js"></script>
+<script type="text/javascript" th:inline="javascript">
+    var app = angular.module('storyApp', []);
+    app.controller('storyController', function ($scope, $http) {
+        $scope.story = {
+            id: [[${form.id}]],
+            picture: [[${form.picture}]],
+            description: [[${form.description}]]
+        };
+
+        $scope.saveStory = function () {
+            $http.post('/story/add', $scope.story).success(function (data) {
+                if (data.code) {
+                    Tooltip.handle(data);
+                }
+            });
+        };
+
+        $scope.updateStory = function () {
+            $http.post('/story/update', $scope.story).success(function (data) {
+                if (data.code) {
+                    Tooltip.handle(data);
+                }
+            });
+        };
+
+        var uploader = WebUploader.create({
+            auto: true,
+            server: '/qiniu/upload/cover',
+            pick: '#picture',
+            accept: {
+                title: 'Images',
+                extensions: 'gif,jpg,jpeg,bmp,png',
+                mimeTypes: 'image/gif,image/jpg,image/jpeg,image/bmp,image/png'
+            },
+            fileSingleSizeLimit: 2 * 1024 * 1024
+        });
+        uploader.on('uploadStart', function () {
+        });
+        uploader.on('uploadSuccess', function (file, response) {
+            if (response.code == 1) {
+                $scope.article.coverImg = response.data;
+                $scope.$apply();
+            } else {
+                Tooltip.fail(response.msg);
+            }
+        });
+        uploader.on('error', function (type) {
+            if ("F_EXCEED_SIZE" == type) {
+                Tooltip.fail('图片大小不能超过2M');
+            } else {
+                Tooltip.fail('图片格式不正确');
+            }
+        });
+    });
+</script>
+</html>

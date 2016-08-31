@@ -3,11 +3,11 @@ package lh.world.controller;
 import lh.world.controller.support.AjaxResponse;
 import lh.world.controller.support.BaseController;
 import lh.world.domain.Article;
+import lh.world.domain.Story;
 import lh.world.form.ArticleForm;
-import lh.world.query.support.Query;
-import lh.world.service.ArticleService;
+import lh.world.form.StoryForm;
+import lh.world.service.StoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,31 +17,31 @@ import javax.validation.Valid;
 import java.util.Optional;
 
 /**
- * Created by lh on 2016/8/11.
+ * Created by lh on 2016/8/31.
  */
 @Controller
-@RequestMapping("/article")
-public class ArticleController extends BaseController {
+@RequestMapping("/story")
+public class StoryController extends BaseController {
     @Autowired
-    ArticleService articleService;
+    StoryService storyService;
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String add(Model model) {
-        model.addAttribute("form", new ArticleForm());
-        return "/article/form";
+        model.addAttribute("form", new StoryForm());
+        return "/story/form";
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
-    public AjaxResponse add(@RequestBody @Valid ArticleForm form, BindingResult result) {
+    public AjaxResponse add(@RequestBody @Valid StoryForm form, BindingResult result) {
         if (result.hasErrors()) {
             return getErrorInfo(result);
         }
-        Article article = form.asArticle();
-        article.setUser(getCurrentUser());
+        Story story = form.asStory();
+        story.setUser(getCurrentUser());
         try {
-            articleService.save(article);
-            return AjaxResponse.ok().msg("发表成功").jumpUrl("/article/list");
+            storyService.save(story);
+            return AjaxResponse.ok().msg("发表成功").jumpUrl("/story/list");
         } catch (Exception e) {
             return AjaxResponse.fail().msg(e.getMessage());
         }
@@ -49,56 +49,49 @@ public class ArticleController extends BaseController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public String detail(@PathVariable Long id, Model model) {
-        Optional<Article> articleOptional = articleService.findById(id);
-        if (!articleOptional.isPresent()) {
+        Optional<Story> storyOptional = storyService.findById(id);
+        if (!storyOptional.isPresent()) {
             return getResourceNotFound();
         }
-        model.addAttribute("form", new ArticleForm(articleOptional.get()));
-        return "/article/detail";
+        model.addAttribute("form", new StoryForm(storyOptional.get()));
+        return "/story/detail";
     }
 
     @RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
     public String update(@PathVariable Long id, Model model) {
-        Optional<Article> articleOptional = articleService.findById(id);
-        if (!articleOptional.isPresent()) {
+        Optional<Story> storyOptional = storyService.findById(id);
+        if (!storyOptional.isPresent()) {
             return getResourceNotFound();
         }
-        model.addAttribute("form", new ArticleForm(articleOptional.get()));
-        return "/article/form";
+        model.addAttribute("form", new StoryForm(storyOptional.get()));
+        return "/story/form";
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.GET)
     @ResponseBody
-    public AjaxResponse update(@RequestBody @Valid ArticleForm form, BindingResult result) {
+    public AjaxResponse update(@RequestBody @Valid StoryForm form, BindingResult result) {
         if (result.hasErrors()) {
             return getErrorInfo(result);
         }
-        Optional<Article> articleOptional = articleService.findById(form.getId());
-        if (!articleOptional.isPresent()) {
+        Optional<Story> storyOptional = storyService.findById(form.getId());
+        if (!storyOptional.isPresent()) {
             return getAjaxResourceNotFound();
         }
-        Article article = form.asArticle();
-        article.setUser(articleOptional.get().getUser());
+        Story story = form.asStory();
+        story.setUser(storyOptional.get().getUser());
         try {
-            articleService.save(article);
+            storyService.save(story);
             return AjaxResponse.ok().msg("更新成功").jumpUrl("/article/list");
         } catch (Exception e) {
             return AjaxResponse.fail().msg(e.getMessage());
         }
     }
 
-    @RequestMapping(value = "/user/list", method = RequestMethod.GET)
-    public AjaxResponse userList(Query query, Model model) {
-        Page<Article> page = articleService.listByUser(getCurrentUser(), query, false);
-        model.addAttribute("page", page);
-        return AjaxResponse.ok().data(page.getContent());
-    }
-
     @RequestMapping(value = "/remove/{id}", method = RequestMethod.GET)
     @ResponseBody
     public AjaxResponse remove(@PathVariable Long id) {
         try {
-            articleService.remove(id);
+            storyService.remove(id);
             return AjaxResponse.ok().msg("删除成功");
         } catch (Exception e) {
             return AjaxResponse.fail().msg(e.getMessage());

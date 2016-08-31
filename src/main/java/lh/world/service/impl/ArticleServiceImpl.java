@@ -2,12 +2,13 @@ package lh.world.service.impl;
 
 import com.google.common.base.Strings;
 import lh.world.domain.Article;
+import lh.world.domain.User;
+import lh.world.query.support.Query;
 import lh.world.repository.ArticleRepository;
 import lh.world.service.ArticleService;
+import lh.world.service.support.ServiceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -35,12 +36,11 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Page<Article> listByTitle(String title, int page, int size, String sortField, Sort.Direction direction) {
-        PageRequest request = new PageRequest(page, size, new Sort(direction, sortField));
+    public Page<Article> listByTitle(String title, Query query) {
         if (Strings.isNullOrEmpty(title)) {
-            return this.listAll(page, size, sortField, direction);
+            return this.listAll(query);
         } else {
-            return articleRepository.queryByDelAndTitleLike(false, title, request);
+            return articleRepository.queryByDelAndTitleLike(false, ServiceUtil.addPercent(title), query.getPageable());
         }
     }
 
@@ -57,8 +57,12 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Page<Article> listAll(int page, int size, String sortField, Sort.Direction direction) {
-        PageRequest request = new PageRequest(page, size, direction, sortField);
-        return articleRepository.findAll(request);
+    public Page<Article> listAll(Query query) {
+        return articleRepository.findAll(query.getPageable());
+    }
+
+    @Override
+    public Page<Article> listByUser(User user, Query query, boolean isDeleted) {
+        return articleRepository.queryByDelAndUser(isDeleted, user, query.getPageable());
     }
 }

@@ -107,6 +107,16 @@
                     this.msg.html(msg);
                 }
                 this.show();
+            },
+            handle: function (data) {
+                if (data.code) {
+                    this.ok(data.msg);
+                    setTimeout(function () {
+                        location.href = data.jumpUrl;
+                    }, 1500);
+                } else {
+                    this.fail(data.msg);
+                }
             }
         };
     </script>

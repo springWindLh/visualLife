@@ -1,6 +1,7 @@
 package lh.world.form;
 
 import lh.world.domain.Article;
+import lh.world.domain.User;
 import lh.world.form.support.BaseForm;
 
 import java.time.LocalDateTime;

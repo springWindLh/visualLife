@@ -1,8 +1,9 @@
 package lh.world.service;
 
 import lh.world.domain.Article;
+import lh.world.domain.User;
+import lh.world.query.support.Query;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
 
 import java.util.Optional;
 
@@ -14,9 +15,11 @@ public interface ArticleService {
 
     Optional<Article> findById(Long id);
 
-    Page<Article> listByTitle(String title, int page, int size, String sortField, Sort.Direction direction);
+    Page<Article> listByTitle(String title, Query query);
 
-    Page<Article> listAll(int page, int size, String sortField, Sort.Direction direction);
+    Page<Article> listByUser(User user, Query query, boolean isDeleted);
+
+    Page<Article> listAll(Query query);
 
     void remove(Long id);
 }

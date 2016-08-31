@@ -1,6 +1,7 @@
 package lh.world.repository;
 
 import lh.world.domain.Article;
+import lh.world.domain.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -10,4 +11,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  */
 public interface ArticleRepository extends PagingAndSortingRepository<Article, Long> {
     Page<Article> queryByDelAndTitleLike(boolean isDeleted, String title, Pageable pageable);
+    Page<Article> queryByDelAndUser(boolean isDeleted, User user, Pageable pageable);
 }

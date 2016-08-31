@@ -23,7 +23,7 @@ public class HomeController extends BaseController {
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String home(ArticleQuery query, Model model) {
-        Page<Article> page = articleService.listByTitle(query.getTitle(), query.getPage(), query.getSize(), "id", Sort.Direction.DESC);
+        Page<Article> page = articleService.listByTitle(query.getTitle(), query);
         model.addAttribute("page", page);
         model.addAttribute("query", query);
         return "/home";

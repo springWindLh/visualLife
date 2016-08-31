@@ -44,8 +44,9 @@
         }
     </style>
 </head>
-<body ng-controller="articleController">
+<body>
 <div class="container">
+    <form ng-controller="articleController">
     <div class="col-md-8">
         <fieldset class="form-group" style="padding-top: 1em">
             <input class="form-control" style="font-size: 22px; border: none;font-family: '微软雅黑';"
@@ -70,8 +71,10 @@
         <div class="form-group" style="padding-top: 1em;">
             <textarea class="form-control" placeholder="封面文字" ng-model="article.summarize"></textarea>
         </div>
-        <button class="btn btn-info-outline" ng-click="saveArticle()"><i class="fa fa-pencil"></i>&nbsp;发表文章</button>
+        <button type="button" ng-if="article.id == null" class="btn btn-info-outline" ng-click="saveArticle()"><i class="fa fa-pencil"></i>&nbsp;发表</button>
+        <button type="button" ng-if="article.id != null" class="btn btn-info-outline" ng-click="updateArticle()"><i class="fa fa-pencil"></i>&nbsp;更新</button>
     </div>
+    </form>
 </div>
 <div th:include="fragment::tooltip"></div>
 </body>
@@ -94,14 +97,13 @@
 
         $scope.saveArticle = function () {
             $http.post('/article/add', $scope.article).success(function (data) {
-                if (data.code) {
-                    Tooltip.ok(data.msg);
-                    setTimeout(function () {
-                        location.href = data.jumpUrl;
-                    }, 1500);
-                } else {
-                    Tooltip.fail(data.msg);
-                }
+                Tooltip.handle(data);
+            });
+        };
+
+        $scope.updateArticle = function () {
+            $http.post('/article/update', $scope.article).success(function (data) {
+                Tooltip.handle(data);
             });
         };
 

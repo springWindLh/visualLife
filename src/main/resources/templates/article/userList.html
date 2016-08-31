@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" ng-app="articleApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/font-awesome.min.css">
+</head>
+<body>
+<div th:include="fragment::files"></div>
+<div class="container">
+    <div class="card" ng-repeat="article in articles track by $index">
+        <div class="pull-left"><img src="{{article.picture}}" class="width80 height80"></div>
+        <div class="pull-left">
+            <p ng-bind="article.description"></p>
+        </div>
+    </div>
+</div>
+<div th:include="fragment::tooltip"></div>
+</body>
+<script type="text/javascript" th:inline="javascript">
+    var app = angular.module('articleApp', []);
+    app.controller('articleController', function ($scope, $http) {
+        $scope.articles = [];
+        $http.get('/article/user/list',{
+            page:1,
+            size:500
+        }).success(function (data) {
+           if(data.code) {
+               $scope.articles = data.data;
+           }else{
+               Tooltip.fail(data.msg);
+           }
+        });
+    });
+</script>
+</html>

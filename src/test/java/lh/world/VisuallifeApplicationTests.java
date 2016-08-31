@@ -44,7 +44,7 @@ public class VisuallifeApplicationTests {
 //        article.setWeight(0);
 //        article.setVote(0);
 //        articleService.save(article);
-        Page<Article> articles = articleService.listByTitle("", 0, 10, "id", Sort.Direction.DESC);
-        System.out.println(articles.getTotalElements());
+//        Page<Article> articles = articleService.listByTitle("", 0, 10, "id", Sort.Direction.DESC);
+//        System.out.println(articles.getTotalElements());
     }
 }
