@@ -67,7 +67,7 @@ public class StoryController extends BaseController {
         return "/story/form";
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.GET)
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
     public AjaxResponse update(@RequestBody @Valid StoryForm form, BindingResult result) {
         if (result.hasErrors()) {
@@ -87,7 +87,7 @@ public class StoryController extends BaseController {
         }
     }
 
-    @RequestMapping(value = "/remove/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/remove/{id}", method = RequestMethod.POST)
     @ResponseBody
     public AjaxResponse remove(@PathVariable Long id) {
         try {

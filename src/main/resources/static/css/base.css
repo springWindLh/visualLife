@@ -29,6 +29,7 @@
 .minWidth300{min-width: 30em;}
 .minWidth400{min-width: 40em;}
 .heightFull{height: 100%;}
+.height10{height: 1em;}
 .height20{height: 2em;}
 .height30{height: 3em;}
 .height40{height: 4em;}
@@ -61,7 +62,11 @@
 .size14{font-size: 1.4em;}
 .size16{font-size: 1.6em;}
 .borderRadius50{border-radius:50%;}
+.padding-top10{padding-top: 1em;}
+.padding-left10{padding-left: 1em;}
+.padding-bottom10{padding-bottom: 1em;}
 .paddingNone{padding:0;}
+.padding10{padding: 1em;}
 .padding20{padding: 2em;}
 .toCenter{margin: 0 auto;}
 .center{text-align: center;}

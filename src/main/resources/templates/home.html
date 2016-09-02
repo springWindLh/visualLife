@@ -43,6 +43,7 @@
             <div class="card-block">
                 <h4 class="card-title" th:text="${article.title}"></h4>
                 <p class="card-text" th:text="${article.summarize}"></p>
+                <p class="card-text" th:text="${#dates.format(article.createdTime,'yyyy-MM-dd HH:mm')}"></p>
             </div>
         </div>
     </div>

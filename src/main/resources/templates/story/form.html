@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href="/static/css/base.css">
     <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/static/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/webuploader.css">
 </head>
 <body>
 <div th:include="fragment::files"></div>
@@ -13,8 +14,8 @@
     <form ng-controller="storyController">
         <div>
             <fieldset class="form-group">
-                <img src="{{story.picture}}">
-                <button id="picture" class="btn btn-sm btn-info-outline">选择故事图片</button>
+                <div class="padding-top10 padding-bottom10"><img ng-src="{{story.picture}}"></div>
+               <button id="picture" class="btn btn-sm">选择故事图片</button>
             </fieldset>
             <fieldset class="form-group">
                 <textarea class="form-control" placeholder="故事简述"></textarea>
@@ -28,6 +29,7 @@
         </div>
     </form>
 </div>
+<div th:include="fragment::tooltip"></div>
 </body>
 <script type="text/javascript" src="/static/js/webuploader.html5only.min.js"></script>
 <script type="text/javascript" th:inline="javascript">
@@ -57,7 +59,7 @@
 
         var uploader = WebUploader.create({
             auto: true,
-            server: '/qiniu/upload/cover',
+            server: '/qiniu/upload/story',
             pick: '#picture',
             accept: {
                 title: 'Images',
@@ -70,7 +72,7 @@
         });
         uploader.on('uploadSuccess', function (file, response) {
             if (response.code == 1) {
-                $scope.article.coverImg = response.data;
+                $scope.story.picture = response.data;
                 $scope.$apply();
             } else {
                 Tooltip.fail(response.msg);

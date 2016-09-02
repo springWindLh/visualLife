@@ -67,7 +67,7 @@ public class ArticleController extends BaseController {
         return "/article/form";
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.GET)
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
     public AjaxResponse update(@RequestBody @Valid ArticleForm form, BindingResult result) {
         if (result.hasErrors()) {
@@ -88,13 +88,13 @@ public class ArticleController extends BaseController {
     }
 
     @RequestMapping(value = "/user/list", method = RequestMethod.GET)
-    public AjaxResponse userList(Query query, Model model) {
+    public String userList(Query query, Model model) {
         Page<Article> page = articleService.listByUser(getCurrentUser(), query, false);
         model.addAttribute("page", page);
-        return AjaxResponse.ok().data(page.getContent());
+        return "/article/userList";
     }
 
-    @RequestMapping(value = "/remove/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/remove/{id}", method = RequestMethod.POST)
     @ResponseBody
     public AjaxResponse remove(@PathVariable Long id) {
         try {

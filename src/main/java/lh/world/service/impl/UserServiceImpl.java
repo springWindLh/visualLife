@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
         Assert.notNull(user.getMobile(), "user.mobile must not be null");
         userOptional = this.findByMobile(user.getMobile());
         if (userOptional.isPresent()) {
-            throw new RuntimeException(ErrorInfo.USER_NAME_IS_EXIST);
+            throw new RuntimeException(ErrorInfo.USER_MOBILE_IS_EXIST);
         }
         Assert.notNull(user.getPassword(), "user.password must not be null");
         user.setPassword(EncrptUtil.encodePassword(user.getPassword()));

@@ -10,5 +10,7 @@ public class ErrorInfo {
     //User
     public static final String USER_NAME_IS_EXIST = "此昵称已被注册，请更换其它昵称试试";
 
+    public static final String USER_MOBILE_IS_EXIST = "此手机号已被注册，请更换其它号码试试";
+
 
 }

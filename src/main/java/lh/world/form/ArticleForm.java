@@ -5,6 +5,7 @@ import lh.world.domain.User;
 import lh.world.form.support.BaseForm;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * Created by lh on 2016/8/11.
@@ -34,7 +35,7 @@ public class ArticleForm extends BaseForm {
         Article article = new Article();
         if (this.getId() != null) {
             article.setId(this.getId());
-            article.setUpdatedTime(LocalDateTime.now());
+            article.setUpdatedTime(new Date());
         }
         article.setTitle(this.getTitle());
         article.setContent(this.getContent());

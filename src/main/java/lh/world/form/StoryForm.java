@@ -4,6 +4,7 @@ import lh.world.domain.Story;
 import lh.world.form.support.BaseForm;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * Created by lh on 2016/8/31.
@@ -25,7 +26,7 @@ public class StoryForm extends BaseForm {
         Story story = new Story();
         if (this.getId() != null) {
             story.setId(this.getId());
-            story.setUpdatedTime(LocalDateTime.now());
+            story.setUpdatedTime(new Date());
         }
         story.setPicture(this.getPicture());
         story.setDescription(this.getDescription());

@@ -4,10 +4,12 @@ angular.module("filter",[])
     	if(text==null||text==''){
     		text="-";
     	}else{
-	    	var regular=/^(\d{4})-(\d{1,2})-(\d{1,2}) (\d{1,2}):(\d{1,2}):(\d{1,2})$/;
+	    	var regular=/^(\d{4})-(\d{1,2})-(\d{1,2})T(\d{1,2}):(\d{1,2}):(\d{1,2}).000\+08:00$/;
 	    	if(!regular.test(text)){
 	    		return text;
-	    	}
+	    	}else{
+				text = text.replace('T',' ').replace('.000+08:00','');
+			}
 	    	var date= new Date(Date.parse(text.replace(/-/g, "/")));
 	    	var nowDate=new Date();
 	    	var diffMs=nowDate-date;
