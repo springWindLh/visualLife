@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" ng-app="myHome">
+<head>
+    <meta charset="UTF-8">
+    <title>我的主页</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/jquery-accordion-menu.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/x0popup.min.css">
+</head>
+<body>
+<div th:include="fragment::navbar"></div>
+<div class="container margin-top40">
+    <div class="col-md-4">
+        <div id="jquery-accordion-menu" style="min-width: 220px;box-shadow: 0 5px 10px #333" class="jquery-accordion-menu red">
+            <ul id="demo-list">
+                <li><a href="#/article"><i class="fa fa-file-text"></i>我的文章 </a></li>
+                <li><a href="#/story"><i class="fa fa-glass"></i>我的故事 </a></li>
+                <li><a href="#/user"><i class="fa fa-user"></i>个人信息 </a></li>
+                <li><a href="#/password"><i class="fa fa-lock"></i>修改密码</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <ng-view></ng-view>
+    </div>
+</div>
+<div th:include="fragment::tooltip"></div>
+</body>
+<script type="text/javascript" src="/static/js/angular-route.min.js"></script>
+<script type="text/javascript" src="/static/js/jquery-accordion-menu.js"></script>
+<script type="text/javascript" src="/static/js/x0popup.min.js"></script>
+<script type="text/javascript" th:inline="javascript">
+    jQuery(document).ready(function () {
+        jQuery("#jquery-accordion-menu").jqueryAccordionMenu();
+    });
+
+    $(function(){
+        //顶部导航切换
+        $("#demo-list li").click(function(){
+            $("#demo-list li.active").removeClass("active");
+            $(this).addClass("active");
+        })
+    })
+
+    var myHome = angular.module('myHome',['ngRoute']);
+    myHome.controller('articleController',function($scope,$http){
+        $scope.articles = [];
+        $http.get('/myHome/article',{
+            page:1,
+            size:500
+        }).success(function(data){
+            if(data.code) {
+                $scope.articles = data.data;
+            }else{
+                Tooltip.fail(data.msg);
+            }
+        });
+        $scope.showRemoveBtn = function (e) {
+            angular.element(e.target).find('.remove').show();
+        };
+        $scope.hideRemoveBtn = function (e) {
+            angular.element(e.target).find('.remove').hide();
+        };
+        $scope.removeArticle = function (index,id) {
+            x0p('确认删除?',null,'warning',function (button) {
+                if(button == 'warning'){
+                    $http.post('/article/remove/'+id).success(function (data) {
+                        if(data.code) {
+                            $scope.articles.splice(index, 1);
+                        }else{
+                            Tooltip.fail(data.msg);
+                        }
+                    });
+                }
+            });
+        };
+    }).controller('storyController',function($scope,$http){
+
+    }).controller('userController',function($scope,$http){
+
+    }).controller('passwordController',function($scope,$http){
+
+    });
+    myHome.config(function($routeProvider,$locationProvider){
+        $routeProvider.when('/article',{
+            templateUrl:'../templates/article/userList.html',
+            controller:'articleController'
+        }).when('/story',{
+            templateUrl:'../templates/story/userList.html',
+            controller:'storyController'
+        }).when('/user',{
+            templateUrl:'../templates/user/userList.html',
+            controller:'userController'
+        }).when('/password',{
+            templateUrl:'../templates/password/userList.html',
+            controller:'passwordController'
+        }).otherwise({
+            redirectTo:''
+        });
+    });
+</script>
+</html>

@@ -7,6 +7,7 @@ import lh.world.domain.User;
 import lh.world.form.UserForm;
 import lh.world.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -52,4 +53,13 @@ public class LoginController extends BaseController {
             return AjaxResponse.fail().msg(e.getMessage());
         }
     }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logout() {
+        if (getCurrentUser() != null) {
+            getRequest().getSession().removeAttribute("user");
+        }
+        return "/home";
+    }
+
 }

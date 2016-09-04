@@ -60,7 +60,7 @@
     <div class="col-md-4" style="padding-top: 2em;">
         <small class="text-muted">封面预览</small>
         <div class="card maxWidth200">
-            <img src="{{article.coverImg}}" class="widthFull">
+            <img ng-src="{{article.coverImg}}" class="widthFull">
             <div class="card-block">
                 <div class="card-text">
                     {{article.summarize}}
@@ -69,10 +69,13 @@
         </div>
         <button id="coverImgBtn" class="btn btn-sm">选择封面图片</button>
         <div class="form-group" style="padding-top: 1em;">
-            <textarea class="form-control" placeholder="封面文字" ng-model="article.summarize"></textarea>
+            <textarea class="form-control maxWidth200" placeholder="封面文字" ng-model="article.summarize"></textarea>
         </div>
+        <div class="maxWidth200">
         <button type="button" ng-if="article.id == null" class="btn btn-info-outline" ng-click="saveArticle()"><i class="fa fa-pencil"></i>&nbsp;发表</button>
         <button type="button" ng-if="article.id != null" class="btn btn-info-outline" ng-click="updateArticle()"><i class="fa fa-pencil"></i>&nbsp;更新</button>
+        <a href="javascript;" class="pull-right margin-top10" onclick="javascript:window.history.go(-1);">返回<i class="fa fa-angle-right"></i> </a>
+        </div>
     </div>
     </form>
 </div>

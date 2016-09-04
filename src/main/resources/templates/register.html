@@ -90,7 +90,9 @@
                     ng-disabled="registerForm.$invalid || user.password != user.repeatPwd"
                     class="btn btn-block btn-info-outline">注&nbsp;&nbsp;册
             </button>
-
+            <div class="text-right margin-top10">
+                <a href="/loginPage">去登录<i class="fa fa-sign-in"></i> </a>
+            </div>
             <div ng-cloak ng-show="registerSuccess" id="alertInfo" class="alert alert-dismissible fade in margin-top10" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -134,6 +136,7 @@
                 }
             });
         };
+
     });
 </script>
 </body>

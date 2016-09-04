@@ -1,0 +1,18 @@
+.bg-red{
+    background-color: #bd8c7d;/*189 140 125*/
+}
+.bg-yellow{
+    background-color: #d1bfa7;/*209 191 167*/
+}
+.bg-gray{
+    background-color: #8e8e90;/*142 142 144*/
+}
+.bg-black{
+    background-color: #49494b;/*73 73 75*/
+}
+.bg-blue{
+    background-color: #3a4660;/*58 70 96*/
+}
+body{
+    background-color: rgb(245,245,245);
+}

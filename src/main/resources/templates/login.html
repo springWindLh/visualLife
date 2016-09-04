@@ -46,7 +46,7 @@
                 <fieldset class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon"><i class="fa fa-user width10"></i></div>
-                        <input type="text" class="form-control" placeholder="用户名" ng-model="nameOrMobile">
+                        <input type="text" class="form-control" placeholder="用户名/手机号" ng-model="nameOrMobile">
                     </div>
                 </fieldset>
                 <fieldset class="form-group">
@@ -83,6 +83,13 @@
         $scope.login = function () {
             $scope.loginFailure = false;
             $scope.responseMsg = '';
+            if($scope.nameOrMobile == ''){
+                $scope.loginFailure = true;
+                $scope.responseMsg = '请填写用户名或手机号';
+            }else if($scope.password == ''){
+                $scope.loginFailure = true;
+                $scope.responseMsg = '请填写密码';
+            }
             $http.get('/login',{params:{
                 nameOrMobile:$scope.nameOrMobile,
                 password:$scope.password
@@ -99,6 +106,15 @@
         $scope.hiddenMsg = function(){
             $scope.loginFailure = false;
         };
+
+        $(function () {
+            document.onkeydown = function(e){
+                e = e||event;
+                if(e.keyCode == 13) {
+                    $scope.login();
+                }
+            };
+        });
     });
 </script>
 </html>

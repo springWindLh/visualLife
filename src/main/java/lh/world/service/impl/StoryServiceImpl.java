@@ -1,6 +1,7 @@
 package lh.world.service.impl;
 
 import lh.world.domain.Story;
+import lh.world.domain.User;
 import lh.world.query.support.Query;
 import lh.world.repository.StoryRepository;
 import lh.world.service.StoryService;
@@ -35,6 +36,11 @@ public class StoryServiceImpl implements StoryService {
     @Override
     public Page<Story> listAll(Query query) {
         return storyRepository.findAll(query.getPageable());
+    }
+
+    @Override
+    public Page<Story> listByUser(User user, Query query, boolean isDeleted) {
+        return storyRepository.queryByDelAndUser(isDeleted, user, query.getPageable());
     }
 
     @Override
