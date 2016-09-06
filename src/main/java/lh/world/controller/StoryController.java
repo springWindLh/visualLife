@@ -53,7 +53,7 @@ public class StoryController extends BaseController {
         if (!storyOptional.isPresent()) {
             return getResourceNotFound();
         }
-        model.addAttribute("form", new StoryForm(storyOptional.get()));
+        model.addAttribute("form", storyOptional.get());
         return "/story/detail";
     }
 

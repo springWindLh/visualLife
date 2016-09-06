@@ -53,7 +53,7 @@ public class ArticleController extends BaseController {
         if (!articleOptional.isPresent()) {
             return getResourceNotFound();
         }
-        model.addAttribute("form", new ArticleForm(articleOptional.get()));
+        model.addAttribute("form", articleOptional.get());
         return "/article/detail";
     }
 

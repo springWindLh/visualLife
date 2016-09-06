@@ -16,7 +16,7 @@
 </div>
 <div th:fragment="navbar">
     <div th:include="fragment::files"></div>
-    <nav class="navbar navbar-fixed-top navbar-light bg-red">
+    <nav class="navbar navbar-fixed-top navbar-light bg-red shadow2">
         <div class="container">
             <div class="col-md-5">
                 <a class="navbar-brand" href="">VisualLife</a>
@@ -27,9 +27,11 @@
                 </ul>
             </div>
             <div class="dropdown col-md-3">
-                <a th:if="${session.user == null}" href="/loginPage">登录/注册</a>
-                <a th:if="${session.user != null}" id="userBlock" data-target="#" data-toggle="dropdown" href="" th:text="${session.user.name}">
-                </a>
+                <div th:if="${session.user == null}" style="padding-top: 0.5em;"><a href="/loginPage">登录/注册</a></div>
+                <div id="userBlock" data-target="#" data-toggle="dropdown" th:if="${session.user != null}" style="padding-top: 0.5em;">
+                    <a href=""><img th:src="${#strings.isEmpty(session.user.avatar)?'http://ocb2rlqpi.bkt.clouddn.com/avatar.jpg':session.user.avatar}" class="width20 height20 borderRadius50">
+                        &nbsp;<span th:text="${session.user.name}"></span></a>
+                </div>
                 <div class="dropdown-menu" aria-labelledby="userBlock">
                     <a class="dropdown-item" href="/myHome#/article"><i class="fa fa-home"></i>&nbsp;&nbsp;我的主页</a>
                     <div class="dropdown-divider"></div>

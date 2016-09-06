@@ -1,18 +1,30 @@
-.bg-red{
-    background-color: #bd8c7d;/*189 140 125*/
+body {
+    background-color: rgb(245, 245, 245);
 }
-.bg-yellow{
-    background-color: #d1bfa7;/*209 191 167*/
+
+a:hover, a:link,a:visited,a:active  {
+    color: grey;
+    text-decoration: none;
+    color: black;
 }
-.bg-gray{
-    background-color: #8e8e90;/*142 142 144*/
+
+.bg-red {
+    background-color: #bd8c7d; /*189 140 125*/
 }
-.bg-black{
-    background-color: #49494b;/*73 73 75*/
+
+.bg-yellow {
+    background-color: #d1bfa7; /*209 191 167*/
 }
-.bg-blue{
-    background-color: #3a4660;/*58 70 96*/
+
+.bg-gray {
+    background-color: #8e8e90; /*142 142 144*/
 }
-body{
-    background-color: rgb(245,245,245);
+
+.bg-black {
+    background-color: #49494b; /*73 73 75*/
 }
+
+.bg-blue {
+    background-color: #3a4660; /*58 70 96*/
+}
+
