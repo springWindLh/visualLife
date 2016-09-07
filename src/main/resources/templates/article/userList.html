@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -14,12 +14,14 @@
 <div class="container" ng-controller="articleController">
     <div class="card" ng-repeat="article in articles track by $index">
         <div class="card-block" ng-mouseenter="showRemoveBtn($event)" ng-mouseleave="hideRemoveBtn($event)">
-            <div class="pull-left"><img ng-if="article.coverImg!=null" ng-src="{{article.coverImg}}" class="width80 height80"></div>
+            <a th:href="@{'/article/update/'+${article.id}}"><div class="pull-left">
+                <img ng-if="article.coverImg!=null" ng-src="{{article.coverImg}}" class="width80 height80">
+            </div></a>
             <div class="pull-left padding10">
-                <div class="height50">
+                <a th:href="@{'/article/update/'+${article.id}}"><div class="height50">
                     <h3 ng-bind="article.title"></h3>
                     <p ng-bind="article.summarize"></p>
-                </div>
+                </div></a>
                 <div class="height10">
                     <small class="text-muted">{{article.createdTime | date:'yyyy-MM-dd HH:mm'}}</small>
                     <i class="fa fa-trash-o text-muted remove margin-left10" ng-click="removeArticle($index,article.id)"></i>
