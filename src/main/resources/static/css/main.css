@@ -2,7 +2,7 @@ body {
     background-color: rgb(245, 245, 245);
 }
 
-a:hover, a:link,a:visited,a:active  {
+ a:hover,a:link,a:visited,a:active  {
     color: grey;
     text-decoration: none;
     color: black;
