@@ -69,6 +69,7 @@
 .paddingNone{padding:0;}
 .padding10{padding: 1em;}
 .padding20{padding: 2em;}
+.padding-top50{padding-top: 5em;}
 .toCenter{margin: 0 auto;}
 .center{text-align: center;}
 .pointer{cursor: pointer;}
@@ -80,12 +81,14 @@
 .bold{font-weight: bold;}
 .bold500{font-weight: 500;}
 .imgBorder{box-shadow:0.2em 0.2em 0.5em black;width:20em;height:20em;margin: 1em;}
-.shadow1{box-shadow:0.1em 0.1em 0.1em black;}
-.shadow2{box-shadow:0.2em 0.2em 0.2em black;}
-.shadow3{box-shadow:0.3em 0.3em 0.3em black;}
+.shadow1{box-shadow:0.1em 0.1em 0.5em #838383;}
+.shadow2{box-shadow:0.2em 0.2em 0.5em #838383;}
+.shadow3{box-shadow:0.3em 0.3em 0.5em #838383;}
 .backArrow{font-size: 1.05em;font-weight: 300;}
 .inputLabel{border-left: solid red;padding-left: 0.5em;line-height: 1.6em;}
 .textGrey{color: grey;}
 .textBlack{color: black;}
 .borderNone{border: none;}
-body{font-size: 62.5%;}
+body{
+    font-size: 62.5%;
+}

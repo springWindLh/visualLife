@@ -1,9 +1,8 @@
 body {
-    background-color: rgb(245, 245, 245);
+    background-color: rgb(64, 49, 49);
 }
 
  a:hover,a:link,a:visited,a:active  {
-    color: grey;
     text-decoration: none;
     color: black;
 }
@@ -26,5 +25,8 @@ body {
 
 .bg-blue {
     background-color: #3a4660; /*58 70 96*/
+}
+.bg-white{
+    background-color: #f2eadd;/*242 234 221*/
 }
 

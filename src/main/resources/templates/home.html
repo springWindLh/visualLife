@@ -22,7 +22,7 @@
         <a class="btn btn-lg writeBtn" href="/article/add"><i class="fa fa-pencil"></i>&nbsp;&nbsp; 写文章</a>
     </div>
     <div class="card-columns">
-        <div class="article card" th:each="article:${page.getContent()}">
+        <div class="article card bg-white" th:each="article:${page.getContent()}">
             <a th:href="@{'/article/'+${article.id}}"><img class="card-img-top widthFull" th:if="${article.coverImg != null}" th:src="${article.coverImg}">
             <div class="card-block">
                 <h5 class="card-title" th:text="${article.title}"></h5>

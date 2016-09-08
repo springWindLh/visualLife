@@ -9,9 +9,9 @@
 </head>
 <body>
 <div th:include="fragment::navbar"></div>
-<div class="container margin-top40">
+<div class="container" style="margin-top: 3.5em">
     <div class="col-md-4">
-        <div id="jquery-accordion-menu" style="min-width: 220px;box-shadow: 0 5px 10px #333;" class="jquery-accordion-menu">
+        <div id="jquery-accordion-menu" style="min-width: 220px;box-shadow: 0 5px 10px #333;" class="jquery-accordion-menu mc">
             <ul id="demo-list">
                 <li><a href="#/article"><i class="fa fa-file-text"></i>我的文章 </a></li>
                 <li><a href="#/story"><i class="fa fa-glass"></i>我的故事 </a></li>
@@ -20,7 +20,7 @@
             </ul>
         </div>
     </div>
-    <div class="col-md-8">
+    <div class="col-md-8 padding10">
         <ng-view></ng-view>
     </div>
 </div>
@@ -44,6 +44,8 @@
 
     var myHome = angular.module('myHome',['ngRoute']);
     myHome.controller('articleController',function($scope,$http){
+
+
         $scope.articles = [];
         $http.get('/myHome/article',{
             page:1,

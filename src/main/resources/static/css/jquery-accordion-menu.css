@@ -271,6 +271,22 @@
 	color: #f0f0f0
 }
 
+.mc.jquery-accordion-menu .jquery-accordion-menu-footer,.mc.jquery-accordion-menu .jquery-accordion-menu-header,.mc.jquery-accordion-menu ul li a {
+	background: #B1938B
+}
+
+.mc.jquery-accordion-menu>ul>li.active>a,.mc.jquery-accordion-menu>ul>li:hover>a {
+	background: #bd8c7d
+}
+
+.mc.jquery-accordion-menu>ul>li>a {
+	border-bottom-color: #c6ae8a
+}
+
+.mc.jquery-accordion-menu ul ul.submenu li:hover>a {
+	border-left-color: #bd8c7d
+}
+
 .white.jquery-accordion-menu>ul>li>a>.ink {
 	background: rgba(0,0,0,.1)
 }

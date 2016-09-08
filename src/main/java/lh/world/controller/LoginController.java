@@ -59,7 +59,7 @@ public class LoginController extends BaseController {
         if (getCurrentUser() != null) {
             getRequest().getSession().removeAttribute("user");
         }
-        return "/home";
+        return "redirect:/home";
     }
 
 }
