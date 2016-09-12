@@ -7,6 +7,20 @@ body {
     color: black;
 }
 
+.writeBtn{
+    position: fixed;top:3.2em;right: 1em;
+}
+
+.writeBtn:hover,.writeBtn:link,.writeBtn:visited,.writeBtn:active  {
+    text-decoration: none;
+    color: #e0d6ae;
+}
+
+.webuploader-pick{
+    background-color: rgba(99, 53, 30, 0.88);
+    color: #d0d2ca;
+}
+
 .bg-red {
     background-color: #bd8c7d; /*189 140 125*/
 }
@@ -29,4 +43,3 @@ body {
 .bg-white{
     background-color: #f2eadd;/*242 234 221*/
 }
-

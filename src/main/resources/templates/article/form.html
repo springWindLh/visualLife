@@ -50,6 +50,15 @@
             font-size: 17.5px;
             border-left: 5px solid #94785e;
         }
+
+        .backBtn:link,.backBtn:visited,.backBtn:active  {
+            text-decoration: none;
+            color: #d0d2ca;
+        }
+        .backBtn:hover{
+            text-decoration: none;
+            color: #86b4ac;
+        }
     </style>
 </head>
 <body>
@@ -66,10 +75,10 @@
         </div>
     </div>
     <div class="col-md-4" style="padding-top: 2em;">
-        <small class="text-muted">封面预览</small>
-        <div class="card maxWidth200">
+        <small style="color:#d0d2ca;">封面预览</small>
+        <div class="card maxWidth200 margin-top5">
             <img ng-src="{{article.coverImg}}" class="widthFull">
-            <div class="card-block">
+            <div class="card-block bg-white">
                 <div class="card-text">
                     {{article.summarize}}
                 </div>
@@ -80,9 +89,9 @@
             <textarea class="form-control maxWidth200" placeholder="封面文字" ng-model="article.summarize"></textarea>
         </div>
         <div class="maxWidth200">
-        <button type="button" ng-if="article.id == null" class="btn btn-info-outline" ng-click="saveArticle()"><i class="fa fa-pencil"></i>&nbsp;发表</button>
-        <button type="button" ng-if="article.id != null" class="btn btn-info-outline" ng-click="updateArticle()"><i class="fa fa-pencil"></i>&nbsp;更新</button>
-        <a href="javascript;" class="pull-right margin-top10" onclick="javascript:window.history.go(-1);">返回<i class="fa fa-angle-right"></i> </a>
+        <button type="button" ng-if="article.id == null" class="btn btn-info-outline width80" ng-click="saveArticle()"><i class="fa fa-pencil"></i>&nbsp;发表</button>
+        <button type="button" ng-if="article.id != null" class="btn btn-info-outline width80" ng-click="updateArticle()"><i class="fa fa-pencil"></i>&nbsp;更新</button>
+        <a href="javascript;" class="backBtn pull-right margin-top10" onclick="javascript:window.history.go(-1);">返回<i class="fa fa-angle-right"></i> </a>
         </div>
     </div>
     </form>

@@ -1,10 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>故事</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/font-awesome.min.css">
+    <style type="text/css">
+        .card{
+            color: #E7E5DF;
+        }
+    </style>
 </head>
 <body>
-
+<div th:include="fragment::navbar"></div>
+<div class="container margin-top40">
+    <div>
+        <a class="btn btn-lg writeBtn" href="/story/add"><i class="fa fa-pencil"></i>&nbsp;&nbsp; 写故事</a>
+    </div>
+    <div class="card col-md-3 height150" style="border: none;" th:each="story:${page.content}">
+        <img th:src="${story.picture}" class="card-img-top height100 widthFull">
+        <div class="story card-block height50">
+            <p class="card-text" th:text="${story.description}"></p>
+        </div>
+    </div>
+</div>
 </body>
+<script type="text/javascript">
+    $(function(){
+        var colors = ['#bd8c7d','#d1bfa7','#3a4660','#c9af98','#c9af98','#ed8a63','#845007','#21A8A3'];
+        function changeColor() {
+            $('.story.card-block').each(function (i,element) {
+                var index = parseInt(Math.random()*8);
+                var shadow = '0em -0.1em 0em '+ colors[index] + ' inset';
+                $(element).css('box-shadow',shadow);
+            });
+        }
+        changeColor();
+    });
+</script>
 </html>

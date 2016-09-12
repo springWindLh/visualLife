@@ -9,21 +9,21 @@
     <link rel="stylesheet" type="text/css" href="/static/css/webuploader.css">
 </head>
 <body>
-<div th:include="fragment::files"></div>
-<div class="container">
-    <form ng-controller="storyController">
+<div th:include="fragment::navbar"></div>
+<div class="container margin-top40">
+    <form ng-controller="storyController" class="col-md-4">
         <div>
             <fieldset class="form-group">
-                <div class="padding-top10 padding-bottom10"><img ng-src="{{story.picture}}"></div>
+                <div class="padding-top10 padding-bottom10"><img ng-src="{{story.picture}}" class="maxWidth200 maxheight200"></div>
                <button id="picture" class="btn btn-sm">选择故事图片</button>
             </fieldset>
             <fieldset class="form-group">
-                <textarea class="form-control" placeholder="故事简述"></textarea>
+                <textarea rows="3" class="form-control" placeholder="故事简述" ng-model="story.description"></textarea>
             </fieldset>
-            <button class="btn btn-info-outline" ng-if="story.id == null" ng-click="saveStory()"><i
+            <button class="btn btn-info-outline" style="width: 8.7em" ng-if="story.id == null" ng-click="saveStory()"><i
                     class="fa fa-pencil"></i>&nbsp;发表
             </button>
-            <button class="btn btn-info-outline" ng-if="story.id != null" ng-click="updateStory()"><i
+            <button class="btn btn-info-outline" style="width: 8.7em" ng-if="story.id != null" ng-click="updateStory()"><i
                     class="fa fa-pencil"></i>&nbsp;更新
             </button>
         </div>
