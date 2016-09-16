@@ -20,10 +20,10 @@
             <fieldset class="form-group">
                 <textarea rows="3" class="form-control" placeholder="故事简述" ng-model="story.description"></textarea>
             </fieldset>
-            <button class="btn btn-info-outline" style="width: 8.7em" ng-if="story.id == null" ng-click="saveStory()"><i
+            <button ng-cloak class="btn btn-info-outline" style="width: 8.7em" ng-if="story.id == null" ng-click="saveStory()"><i
                     class="fa fa-pencil"></i>&nbsp;发表
             </button>
-            <button class="btn btn-info-outline" style="width: 8.7em" ng-if="story.id != null" ng-click="updateStory()"><i
+            <button ng-cloak class="btn btn-info-outline" style="width: 8.7em" ng-if="story.id != null" ng-click="updateStory()"><i
                     class="fa fa-pencil"></i>&nbsp;更新
             </button>
         </div>
@@ -43,17 +43,13 @@
 
         $scope.saveStory = function () {
             $http.post('/story/add', $scope.story).success(function (data) {
-                if (data.code) {
                     Tooltip.handle(data);
-                }
             });
         };
 
         $scope.updateStory = function () {
             $http.post('/story/update', $scope.story).success(function (data) {
-                if (data.code) {
                     Tooltip.handle(data);
-                }
             });
         };
 

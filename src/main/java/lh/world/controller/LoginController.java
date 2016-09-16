@@ -6,6 +6,7 @@ import lh.world.controller.support.BaseController;
 import lh.world.domain.User;
 import lh.world.form.UserForm;
 import lh.world.service.UserService;
+import lh.world.util.EncrptUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -45,6 +46,7 @@ public class LoginController extends BaseController {
             return getErrorInfo(result);
         }
         User user = form.asUser();
+        user.setPassword(EncrptUtil.encodePassword(user.getPassword()));
         try {
             User currentUser = userService.save(user);
             getRequest().getSession().setAttribute("user", currentUser);

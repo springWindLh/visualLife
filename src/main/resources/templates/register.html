@@ -38,11 +38,11 @@
 
             <fieldset class="form-group"
                       ng-class="{'has-error':registerForm.name.$dirty && registerForm.name.$invalid,'has-success':registerForm.name.$dirty && registerForm.name.$valid}">
-                <label ng-cloak class="control-label size7" ng-show="registerForm.name.$dirty && registerForm.name.$invalid">请填写昵称，且长度为2~20位</label>
+                <label ng-cloak class="control-label size7" ng-show="registerForm.name.$dirty && registerForm.name.$invalid">请填写昵称，且长度为1~20位</label>
                 <div class="input-group">
                     <label class="input-group-addon"><i class="fa fa-user width10"></i> </label>
-                    <input class="form-control" placeholder="用户名" type="text" name="name" required ng-minlength="2"
-                           ng-maxlength="20" ng-model="user.name">
+                    <input class="form-control" placeholder="昵称" type="text" name="name" required ng-minlength="1"
+                           ng-model-options="{ updateOn: 'blur' }" ng-maxlength="20" ng-model="user.name">
                 </div>
             </fieldset>
 
@@ -54,7 +54,7 @@
                     <label class="input-group-addon"><i class="fa fa-lock width10"></i> </label>
                     <input class="form-control" placeholder="密码" type="password" name="password" required
                            ng-minlength="6" ng-maxlength="12"
-                           ng-model="user.password">
+                           ng-model-options="{ updateOn: 'blur' }" ng-model="user.password">
                 </div>
             </fieldset>
 
@@ -65,7 +65,7 @@
                 <div class="input-group">
                     <label class="input-group-addon"><i class="fa fa-lock width10"></i> </label>
                     <input class="form-control" placeholder="重复密码" type="password" name="repeatPwd" required
-                           ng-model="user.repeatPwd">
+                           ng-model-options="{ updateOn: 'blur' }" ng-model="user.repeatPwd">
                 </div>
             </fieldset>
             <fieldset class="form-group"
@@ -74,7 +74,7 @@
                 <div class="input-group">
                     <label class="input-group-addon"><i class="fa fa-mobile width10"></i> </label>
                     <input class="form-control" placeholder="手机号" type="text" name="mobile" required
-                           ng-model="user.mobile">
+                           ng-model-options="{ updateOn: 'blur' }" ng-model="user.mobile">
                 </div>
             </fieldset>
             <fieldset class="form-group"
@@ -83,7 +83,7 @@
                 <div class="input-group">
                     <label class="input-group-addon"><i class="fa fa-envelope width10"></i> </label>
                     <input class="form-control" placeholder="邮箱，用于找回密码" type="email" name="email" required
-                           ng-model="user.email">
+                           ng-model-options="{ updateOn: 'blur' }" ng-model="user.email">
                 </div>
             </fieldset>
             <button type="button" ng-click="register()"

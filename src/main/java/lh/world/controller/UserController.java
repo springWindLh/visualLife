@@ -13,10 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -29,17 +27,27 @@ public class UserController extends BaseController {
     @Autowired
     UserService userService;
 
-    @RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
-    public String update(@PathVariable Long id, Model model) {
-        Optional<User> userOptional = userService.findById(id);
-        if (!userOptional.isPresent()) {
-            return getResourceNotFound();
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @ResponseBody
+    public AjaxResponse update(@RequestBody UserForm form, BindingResult result) {
+        if (result.hasErrors()) {
+            return getErrorInfo(result);
         }
-        model.addAttribute("form", new UserForm(userOptional.get()));
-        return "/user/form";
+        Optional<User> userOptional = userService.findById(form.getId());
+        if (!userOptional.isPresent()) {
+            return getAjaxResourceNotFound();
+        }
+        User user = form.asUser();
+        try {
+            getRequest().getSession().setAttribute("user", userService.save(user));
+            return AjaxResponse.ok().msg("保存成功");
+        } catch (Exception e) {
+            return AjaxResponse.fail().msg(e.getMessage());
+        }
     }
 
-    @RequestMapping(value = "/update/password/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/update/password/{id}", method = RequestMethod.GET)
+    @ResponseBody
     public AjaxResponse updatePassword(@PathVariable Long id, @RequestParam String oldPassword, @RequestParam String newPassword) {
         Optional<User> userOptional = userService.findById(id);
         if (!userOptional.isPresent()) {
@@ -50,6 +58,7 @@ public class UserController extends BaseController {
             return AjaxResponse.fail().msg("原密码错误");
         }
         user.setPassword(newPassword);
+        user.setPassword(EncrptUtil.encodePassword(user.getPassword()));
         try {
             userService.save(user);
             return AjaxResponse.ok().msg("密码修改成功");

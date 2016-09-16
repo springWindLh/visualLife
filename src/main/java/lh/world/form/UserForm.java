@@ -10,6 +10,7 @@ public class UserForm extends BaseForm {
     private String name;
     private String password;
     private String mobile;
+    private String email;
     private String avatar;
     private String introduce;
 
@@ -21,11 +22,12 @@ public class UserForm extends BaseForm {
         this.setName(user.getName());
         this.setPassword(user.getPassword());
         this.setMobile(user.getMobile());
+        this.setEmail(user.getEmail());
         this.setAvatar(user.getAvatar());
         this.setIntroduce(user.getIntroduce());
     }
 
-    public User asUser(){
+    public User asUser() {
         User user = new User();
         if (this.getId() != null) {
             user.setId(this.getId());
@@ -33,6 +35,7 @@ public class UserForm extends BaseForm {
         user.setName(this.getName());
         user.setPassword(this.getPassword());
         user.setMobile(this.getMobile());
+        user.setEmail(this.getEmail());
         // TODO: 2016/8/11 需要一个默认头像地址
         user.setAvatar(this.getAvatar());
         user.setIntroduce(this.getIntroduce());
@@ -61,6 +64,14 @@ public class UserForm extends BaseForm {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getAvatar() {

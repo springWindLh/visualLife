@@ -16,20 +16,36 @@
 </div>
 <div th:fragment="navbar">
     <div th:include="fragment::files"></div>
+    <style type="text/css">
+        .navbar-light .navbar-nav .nav-link{
+            color: #e0d6ae;
+            text-shadow: 0.05em 0.05em 0.2em black;
+        }
+        .navbar-light .navbar-nav .nav-link:hover{
+            color: rgb(206, 175, 175);
+        }
+        .navbar-light .navbar-nav .nav-link.active:hover{
+            color: rgb(206, 175, 175);
+        }
+        .navbar-light .navbar-nav .nav-link.active{
+            color: rgb(206, 175, 175);
+        }
+    </style>
     <nav class="navbar navbar-fixed-top navbar-light bg-red shadow2">
         <div class="container">
             <div class="col-md-5">
                 <a class="navbar-brand" href="">VisualLife</a>
                 <ul class="nav navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="/home">文章</a>
+                        <a id="navArticle" class="nav-link" href="/home">文章</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/story/list">故事</a>
+                        <a id="navStory" class="nav-link" href="/story/list">故事</a>
                     </li>
                 </ul>
             </div>
-            <div class="dropdown col-md-3">
+            <div class="pull-right col-md-3">
+            <div class="dropdown">
                 <div th:if="${session.user == null}" style="padding-top: 0.5em;"><a href="/loginPage">登录&nbsp;|&nbsp;注册</a></div>
                 <div id="userBlock" data-target="#" data-toggle="dropdown" th:if="${session.user != null}" style="padding-top: 0.5em;">
                     <a href=""><img th:src="${#strings.isEmpty(session.user.avatar)?'http://ocb2rlqpi.bkt.clouddn.com/avatar.jpg':session.user.avatar}" class="width20 height20 borderRadius50">
@@ -41,8 +57,19 @@
                     <a class="dropdown-item" href="/logout"><span style="color: indianred;"> <i class="fa fa-power-off"></i></span> &nbsp;&nbsp;退出</a>
                 </div>
             </div>
+            </div>
         </div>
     </nav>
+    <script type="text/javascript">
+        $(function(){
+            $('.navbar-light .navbar-nav .nav-link').removeClass('active');
+            if(location.href.indexOf('story') != -1) {
+                $('#navStory').addClass('active');
+            }else{
+                $('#navArticle').addClass('active');
+            }
+        });
+    </script>
 </div>
 <div th:fragment="tooltip">
     <style type="text/css">
@@ -51,8 +78,10 @@
             position: absolute;
             left: 50%;
             top: 50%;
-            width: 200px;
-            height: 80px;
+            min-width: 200px;
+            max-width: 300px;
+            min-height: 80px;
+            max-height: 100px;
             margin-left: -200px;
             margin-top: -250px;
             text-align: center;
@@ -104,47 +133,76 @@
             show: function () {
                 $('.common_tooltip').css('visibility', 'visible');
                 setTimeout(function () {
-                    $('.common_tooltip').fadeOut('slow');
+                    $('.common_tooltip').css('visibility', 'hidden');;
                 }, 1500);
             },
             dynamic: function (type, icon, msg) {
-                if (type == 'success') {
-                    this.tip.attr('class', 'common_tooltip success');
-                } else if (type == 'failure') {
-                    this.tip.attr('class', 'common_tooltip failure');
-                } else if (type == 'normal') {
-                    this.tip.attr('class', 'common_tooltip normal');
-                }
-                if (icon != null && icon != '') {
-                    this.icon.attr('class', icon);
-                }
-                if (msg != null && msg != '') {
-                    this.msg.html(msg);
-                }
-                this.show();
+//                if (type == 'success') {
+//                    this.tip.attr('class', 'common_tooltip success');
+//                } else if (type == 'failure') {
+//                    this.tip.attr('class', 'common_tooltip failure');
+//                } else if (type == 'normal') {
+//                    this.tip.attr('class', 'common_tooltip normal');
+//                }
+//                if (icon != null && icon != '') {
+//                    this.icon.attr('class', icon);
+//                }
+//                if (msg != null && msg != '') {
+//                    this.msg.html(msg);
+//                }
+//                this.show();
+                x0p({
+                    title: msg,
+//                    text: 'This popup will auto close in 3 seconds.',
+                    animationType: 'fadeIn',
+                    icon: 'info',
+                    buttons: [],
+                    overlay: false,
+                    autoClose: 1500
+                });
             },
             ok: function (msg) {
-                this.tip.attr('class', 'common_tooltip success');
-                this.icon.attr('class', 'fa fa-check-circle');
-                if (msg != null && msg != '') {
-                    this.msg.html(msg);
-                }
-                this.show();
+//                this.tip.attr('class', 'common_tooltip success');
+//                this.icon.attr('class', 'fa fa-check-circle');
+//                if (msg != null && msg != '') {
+//                    this.msg.html(msg);
+//                }
+//                this.show();
+                x0p({
+                    title: msg,
+//                    text: 'This popup will auto close in 3 seconds.',
+                    animationType: 'fadeIn',
+                    icon: 'ok',
+                    buttons: [],
+                    overlay: false,
+                    autoClose: 1500
+                });
             },
             fail: function (msg) {
-                this.tip.attr('class', 'common_tooltip failure');
-                this.icon.attr('class', 'fa fa-exclamation-circle');
-                if (msg != null && msg != '') {
-                    this.msg.html(msg);
-                }
-                this.show();
+//                this.tip.attr('class', 'common_tooltip failure');
+//                this.icon.attr('class', 'fa fa-exclamation-circle');
+//                if (msg != null && msg != '') {
+//                    this.msg.html(msg);
+//                }
+//                this.show();
+                x0p({
+                    title: msg,
+//                    text: 'This popup will auto close in 3 seconds.',
+                    animationType: 'fadeIn',
+                    icon: 'warning',
+                    buttons: [],
+                    overlay: false,
+                    autoClose: 1500
+                });
             },
             handle: function (data) {
                 if (data.code) {
                     this.ok(data.msg);
-                    setTimeout(function () {
-                        location.href = data.jumpUrl;
-                    }, 1500);
+                    if(data.jumpUrl != undefined && data.jumpUrl != null){
+                        setTimeout(function () {
+                            location.href = data.jumpUrl;
+                        }, 1500);
+                    }
                 } else {
                     this.fail(data.msg);
                 }

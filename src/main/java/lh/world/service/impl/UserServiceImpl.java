@@ -24,16 +24,15 @@ public class UserServiceImpl implements UserService {
     public User save(User user) {
         Assert.notNull(user.getName(), "user.name must not be null");
         Optional<User> userOptional = this.findByName(user.getName());
-        if (userOptional.isPresent()) {
+        if (userOptional.isPresent() && !user.getId().equals(userOptional.get().getId())) {
             throw new RuntimeException(ErrorInfo.USER_NAME_IS_EXIST);
         }
         Assert.notNull(user.getMobile(), "user.mobile must not be null");
         userOptional = this.findByMobile(user.getMobile());
-        if (userOptional.isPresent()) {
+        if (userOptional.isPresent() && !user.getId().equals(userOptional.get().getId())) {
             throw new RuntimeException(ErrorInfo.USER_MOBILE_IS_EXIST);
         }
         Assert.notNull(user.getPassword(), "user.password must not be null");
-        user.setPassword(EncrptUtil.encodePassword(user.getPassword()));
         return userRepository.save(user);
     }
 

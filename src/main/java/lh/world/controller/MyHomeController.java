@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * Created by lh on 2016/9/4.
  */
 @Controller
-@RequestMapping("myHome")
+@RequestMapping("/myHome")
 public class MyHomeController extends BaseController {
     @Autowired
     ArticleService articleService;
@@ -44,5 +44,11 @@ public class MyHomeController extends BaseController {
     public AjaxResponse story(Query query) {
         Page<Story> page = storyService.listByUser(getCurrentUser(), query, false);
         return AjaxResponse.ok().data(page.getContent());
+    }
+
+    @RequestMapping(value = "/userInfo", method = RequestMethod.GET)
+    @ResponseBody
+    public AjaxResponse userInfo(Query query) {
+        return AjaxResponse.ok().data(getCurrentUser());
     }
 }

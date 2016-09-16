@@ -46,7 +46,7 @@
                 <fieldset class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon"><i class="fa fa-user width10"></i></div>
-                        <input type="text" class="form-control" placeholder="用户名/手机号" ng-model="nameOrMobile">
+                        <input type="text" class="form-control" placeholder="昵称/手机号" ng-model="nameOrMobile">
                     </div>
                 </fieldset>
                 <fieldset class="form-group">
@@ -85,7 +85,7 @@
             $scope.responseMsg = '';
             if($scope.nameOrMobile == ''){
                 $scope.loginFailure = true;
-                $scope.responseMsg = '请填写用户名或手机号';
+                $scope.responseMsg = '请填写昵称或手机号';
             }else if($scope.password == ''){
                 $scope.loginFailure = true;
                 $scope.responseMsg = '请填写密码';
