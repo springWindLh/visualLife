@@ -1,13 +1,50 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style type="text/css">
+        .card-block .remove{
+            display: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-
+<div class="container" ng-controller="storyController">
+    <div class="card" ng-repeat="story in stories track by $index">
+        <div class="story card-block bg-white shadow2" ng-mouseenter="showRemoveBtn($event)" ng-mouseleave="hideRemoveBtn($event)">
+            <div class="pull-left">
+                <a ng-href="/story/update/{{story.id}}"><img ng-if="story.picture!=null" ng-src="{{story.picture}}" class="width80 height80">
+                </a>
+            </div>
+            <div class="pull-left padding10">
+               <div class="height50">
+                   <a ng-href="/story/update/{{story.id}}">
+                    <p class="text-muted" ng-bind="story.description"></p>
+                   </a>
+                </div>
+                <div class="height10">
+                    <small class="text-muted">{{story.createdTime | date:'yyyy/MM/dd HH:mm'}}</small>
+                    <i class="fa fa-trash-o text-muted remove margin-left10" ng-click="removeStory($index,story.id)"></i>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
 </body>
-<script type="text/javascript" th:inline="javascript">
-
+<script type="text/javascript">
+    $(function(){
+        var colors = ['#bd8c7d','#d1bfa7','#3a4660','#c9af98','#c9af98','#ed8a63','#845007','#21A8A3'];
+        function changeColor() {
+            $('.story.card-block').each(function (i,element) {
+                var index = parseInt(Math.random()*8);
+                var shadow = '-0.3em 0em'+ colors[index] + ' inset';
+                $(element).css('box-shadow',shadow);
+            });
+        }
+        changeColor();
+    });
 </script>
 </html>

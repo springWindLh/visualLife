@@ -1,6 +1,7 @@
 package lh.world.service;
 
 import lh.world.domain.Comment;
+import lh.world.query.support.Query;
 import org.springframework.data.domain.Page;
 
 import java.util.Optional;
@@ -13,5 +14,7 @@ public interface CommentService {
 
     Optional<Comment> findById(Long id);
 
-    Page<Comment> listByTargetTypeAndId(Comment.TargetType targetType, Long id);
+    Page<Comment> listByTargetTypeAndTargetId(Comment.TargetType targetType, Long targetId, Boolean isDeleted, Query query);
+
+    void remove(Long id);
 }

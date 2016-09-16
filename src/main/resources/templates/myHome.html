@@ -44,8 +44,6 @@
 
     var myHome = angular.module('myHome',['ngRoute']);
     myHome.controller('articleController',function($scope,$http){
-
-
         $scope.articles = [];
         $http.get('/myHome/article',{
             page:1,
@@ -77,7 +75,36 @@
             });
         };
     }).controller('storyController',function($scope,$http){
-
+        $scope.stories = [];
+        $http.get('/myHome/story',{
+            page:1,
+            size:500
+        }).success(function(data){
+            if(data.code) {
+                $scope.stories = data.data;
+            }else{
+                Tooltip.fail(data.msg);
+            }
+        });
+        $scope.showRemoveBtn = function (e) {
+            angular.element(e.target).find('.remove').show();
+        };
+        $scope.hideRemoveBtn = function (e) {
+            angular.element(e.target).find('.remove').hide();
+        };
+        $scope.removeStory = function (index,id) {
+            x0p('确认删除?',null,'warning',function (button) {
+                if(button == 'warning'){
+                    $http.post('/story/remove/'+id).success(function (data) {
+                        if(data.code) {
+                            $scope.stories.splice(index, 1);
+                        }else{
+                            Tooltip.fail(data.msg);
+                        }
+                    });
+                }
+            });
+        };
     }).controller('userController',function($scope,$http){
 
     }).controller('passwordController',function($scope,$http){

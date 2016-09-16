@@ -94,6 +94,13 @@ public class StoryController extends BaseController {
         }
     }
 
+    @RequestMapping(value = "/user/list", method = RequestMethod.GET)
+    public String userList(Query query, Model model) {
+        Page<Story> page = storyService.listByUser(getCurrentUser(), query, false);
+        model.addAttribute("page", page);
+        return "/story/userList";
+    }
+
     @RequestMapping(value = "/remove/{id}", method = RequestMethod.POST)
     @ResponseBody
     public AjaxResponse remove(@PathVariable Long id) {
