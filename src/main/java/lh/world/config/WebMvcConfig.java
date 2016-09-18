@@ -1,5 +1,6 @@
 package lh.world.config;
 
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +21,9 @@ import java.util.List;
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        converters.add(new FastJsonHttpMessageConverter());
+        FastJsonHttpMessageConverter converter = new FastJsonHttpMessageConverter();
+        converter.setFeatures(SerializerFeature.DisableCircularReferenceDetect);
+        converters.add(converter);
     }
 
     @Override
