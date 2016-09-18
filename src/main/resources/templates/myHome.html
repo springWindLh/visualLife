@@ -5,7 +5,7 @@
     <title>我的主页</title>
     <link rel="stylesheet" type="text/css" href="/static/css/jquery-accordion-menu.css">
     <link rel="stylesheet" type="text/css" href="/static/css/x0popup.min.css">
-
+    <link rel="stylesheet" type="text/css" href="/static/css/jqpagination.css">
 </head>
 <body>
 <div th:include="fragment::navbar"></div>
@@ -29,6 +29,7 @@
 <script type="text/javascript" src="/static/js/angular-route.min.js"></script>
 <script type="text/javascript" src="/static/js/jquery-accordion-menu.js"></script>
 <script type="text/javascript" src="/static/js/x0popup.min.js"></script>
+<script type="text/javascript" src="/static/js/jquery.jqpagination.min.js"></script>
 <script type="text/javascript" th:inline="javascript">
     jQuery(document).ready(function () {
         jQuery("#jquery-accordion-menu").jqueryAccordionMenu();
@@ -44,17 +45,30 @@
 
     var myHome = angular.module('myHome',['ngRoute']);
     myHome.controller('articleController',function($scope,$http){
-        $scope.articles = [];
-        $http.get('/myHome/article',{
-            page:1,
-            size:500
-        }).success(function(data){
-            if(data.code) {
-                $scope.articles = data.data;
-            }else{
-                Tooltip.fail(data.msg);
+        $('.pagination').jqPagination({
+            paged: function(page) {
+                // do something with the page variable
             }
         });
+
+        $scope.articles = [];
+        $scope.currentPage = 0;
+        $scope.pageSize = 10;
+        $scope.getArticles = function (page) {
+            $http.get('/myHome/article',{
+                page:page,
+                size:$scope.pageSize
+            }).success(function(data){
+                if(data.code) {
+                    $scope.articles = data.data;
+                }else{
+                    Tooltip.fail(data.msg);
+                }
+            });
+            $scope.currentPage = page;
+        };
+
+        $scope.getArticles(1);
         $scope.showRemoveBtn = function (e) {
             angular.element(e.target).find('.remove').show();
         };
@@ -66,7 +80,7 @@
                 if(button == 'warning'){
                     $http.post('/article/remove/'+id).success(function (data) {
                         if(data.code) {
-                            $scope.articles.splice(index, 1);
+                            $scope.getArticles($scope.currentPage);
                         }else{
                             Tooltip.fail(data.msg);
                         }

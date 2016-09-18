@@ -10,6 +10,8 @@ import java.util.Optional;
  * Created by lh on 2016/9/16.
  */
 public interface ReplyService {
+    Reply save(Reply reply, Long accepterId);
+
     Reply save(Reply reply);
 
     Optional<Reply> findById(Long id);

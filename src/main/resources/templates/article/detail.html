@@ -32,6 +32,68 @@
         <p th:utext="${form.content}"></p>
     </div>
 </div>
+<div class="container" ng-app="commentApp">
+    <div ng-controller="commentController">
+        <div ng-repeat="comment in comments track by $index">
+            <div class="col-md-3">
+                <img ng-src="comment.user.avatar" class="width40 height40 borderRadius50">
+            </div>
+            <div class="col-lg-9">
+                <div class="height20">
+                    <label class="width50">{{comment.user.name}}</label><small class="text-muted">{{comment.createdTime | date:'yyyy/MM/dd HH:mm'}}</small>
+                </div>
+                <div>
+                    <p>{{comment.content}}</p>
+                </div>
+            </div>
+        </div>
+        <div>
+            <form>
+            <div>
+                <textarea rows="3" class="form-control" ng-maxlength="500" ng-model="$scope.newComment.content"></textarea>
+            </div>
+            <div>
+                <button type="button" class="btn btn-info" ng-click="saveComment()">发表</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
 <div th:include="fragment::tooltip"></div>
 </body>
+<script type="text/javascript" th:inline="javascript">
+    var commentApp = angular.module('commentApp',[]);
+    commentApp.controller('commentController',function ($scope,$http) {
+        $scope.comments = [];
+        var targetId = [[${form.id}]];
+        var targetType = 'ARTICLE';
+        $http.get('/comment/list',{params:{
+            page:0,
+            size:500,
+            targetType:targetType,
+            targetId:targetId
+        }}).success(function (data) {
+            if(data.code) {
+                $scope.comments = data.contents;
+            }else{
+                Tooltip.fail(data.msg);
+            }
+        });
+
+        $scope.saveComment = function () {
+            $scope.newComment = {
+                targetType: targetType,
+                targetId: targetId,
+                content: ''
+            };
+              $http.post('/comment/add',$scope.newComment).success(function (data) {
+                  if(data.code) {
+
+                  }else {
+                      Tooltip.fail(data.msg);
+                  }
+              });
+        };
+    });
+</script>
 </html>

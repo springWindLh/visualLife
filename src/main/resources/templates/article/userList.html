@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -32,6 +32,7 @@
             <div class="clearfix"></div>
         </div>
     </div>
+    <div th:include="fragment::pagination"></div>
 </div>
 </body>
 <script type="text/javascript">
@@ -45,6 +46,7 @@
             });
         }
         changeColor();
+
     });
 </script>
 </html>
