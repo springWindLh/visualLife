@@ -23,7 +23,6 @@ public class ReplyForm extends BaseForm {
             reply.setUpdatedTime(new Date());
         }
         reply.setContent(this.getContent());
-        reply.setCommentId(this.getCommentId());
         return reply;
     }
 

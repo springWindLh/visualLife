@@ -1,9 +1,11 @@
 package lh.world.service.impl;
 
+import lh.world.domain.Comment;
 import lh.world.domain.Reply;
 import lh.world.domain.User;
 import lh.world.query.support.Query;
 import lh.world.repository.ReplyRepository;
+import lh.world.service.CommentService;
 import lh.world.service.ReplyService;
 import lh.world.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,8 @@ public class ReplyServiceImpl implements ReplyService {
     private ReplyRepository replyRepository;
     @Autowired
     private UserService userService;
+    @Autowired
+    private CommentService commentService;
 
     @Override
     public Reply save(Reply reply) {
@@ -28,7 +32,9 @@ public class ReplyServiceImpl implements ReplyService {
     }
 
     @Override
-    public Reply save(Reply reply, Long accepterId) {
+    public Reply save(Reply reply, Long commentId, Long accepterId) {
+        Optional<Comment> comment = commentService.findById(commentId);
+        comment.ifPresent(reply::setComment);
         Optional<User> accepter = userService.findById(accepterId);
         accepter.ifPresent(reply::setAccepter);
         return replyRepository.save(reply);

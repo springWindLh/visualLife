@@ -3,13 +3,15 @@ package lh.world.domain;
 import lh.world.domain.support.CanLogicDelDomain;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by lh on 2016/9/14.
  */
 @Entity
 @Table(name = "comment")
-public class Comment extends CanLogicDelDomain{
+public class Comment extends CanLogicDelDomain {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -22,12 +24,18 @@ public class Comment extends CanLogicDelDomain{
     @Enumerated(value = EnumType.STRING)
     private TargetType targetType;
 
-    @Column(name = "content",length = 500)
+    @Column(name = "content", length = 500)
     private String content;
+
+    @Column(name = "vote")
+    private Integer vote;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "comment")
+    private List<Reply> replies = new ArrayList<>(0);
 
     public Comment() {
     }
@@ -66,6 +74,14 @@ public class Comment extends CanLogicDelDomain{
         this.content = content;
     }
 
+    public Integer getVote() {
+        return vote;
+    }
+
+    public void setVote(Integer vote) {
+        this.vote = vote;
+    }
+
     public User getUser() {
         return user;
     }
@@ -74,7 +90,7 @@ public class Comment extends CanLogicDelDomain{
         this.user = user;
     }
 
-    public enum TargetType{
+    public enum TargetType {
         ARTICLE("文章"),
         STORY("故事"),
         SUGGESTION("意见");
@@ -88,5 +104,13 @@ public class Comment extends CanLogicDelDomain{
         public String getValue() {
             return value;
         }
+    }
+
+    public List<Reply> getReplies() {
+        return replies;
+    }
+
+    public void setReplies(List<Reply> replies) {
+        this.replies = replies;
     }
 }

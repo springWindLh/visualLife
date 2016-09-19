@@ -18,8 +18,9 @@ public class Reply extends CanLogicDelDomain {
     @Column(name = "content",length = 500)
     private String content;
 
-    @Column(name = "comment_id")
-    private Long commentId;
+    @ManyToOne
+    @JoinColumn(name = "comment_id")
+    private Comment comment;
 
     @ManyToOne
     @JoinColumn(name = "sender_id")
@@ -50,12 +51,12 @@ public class Reply extends CanLogicDelDomain {
         this.content = content;
     }
 
-    public Long getCommentId() {
-        return commentId;
+    public Comment getComment() {
+        return comment;
     }
 
-    public void setCommentId(Long commentId) {
-        this.commentId = commentId;
+    public void setComment(Comment comment) {
+        this.comment = comment;
     }
 
     public User getSender() {

@@ -43,10 +43,32 @@
                 </div>
                 <div class="col-lg-11">
                     <div class="height20">
-                        <label class="width20" style="color: #a1bad0;">{{comment.user.name}}</label><small class="text-muted" style="color: #866667">{{comment.createdTime | date:'yyyy/MM/dd HH:mm'}}</small>
+                        <label class="width80" style="color: #a1bad0;float: left;">{{comment.user.name}}</label>
+                        <div style="color:#866667;float: left;">
+                            <i class="fa fa-thumbs-o-up"></i>
+                            <span ng-if="comment.vote > 0">({{comment.vote}})</span>
+                        </div>
+                    </div>
+                    <div class="minHeight20">
+                        <p style="color: white;">{{comment.content}}</p>
                     </div>
                     <div>
-                        <p style="color: white;">{{comment.content}}</p>
+                        <div style="width: 8em;color: #866667;float: left;"><small>{{comment.createdTime | date:'yyyy/MM/dd HH:mm'}}</small></div>
+                        <div style="color: #866667;float: left;cursor: pointer;">
+                            <i class="fa fa-comment-o" ng-click="showReplyForm($event)"></i>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="margin-top10">
+
+                        </div>
+                        <div class="margin-top10 reply" style="display: none;">
+                            <form>
+                           <div><textarea rows="3" placeholder="回复内容" class="form-control" ng-model="newReply.content"></textarea></div>
+                            <div>
+                                <button class="btn btn-sm" ng-click="saveReply(comment.id,comment.user.id,newReply.content)">回复</button>
+                            </div>
+                        </form>
+                        </div>
                     </div>
                 </div>
                 <div class="clearfix"></div>
@@ -99,6 +121,25 @@
                       Tooltip.fail(data.msg);
                   }
               });
+        };
+
+        $scope.showReplyForm = function(e){
+            angular.element(e.target).parent('div').siblings('div.reply').toggle();
+        };
+
+        $scope.saveReply = function(commentId,accepterId,content){
+            $scope.newReply = {
+                commentId:commentId,
+                accepterId:accepterId,
+                content:content
+            };
+            $http.post('/reply/add',$scope.newReply).success(function(data){
+                if(data.code){
+
+                }else{
+                    Tooltip.fail(data.msg);
+                }
+            });
         };
     });
 </script>

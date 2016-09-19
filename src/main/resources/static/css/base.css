@@ -44,6 +44,10 @@
 .height280{height: 28em;}
 .height300{height: 30em;}
 .height500{height: 50em;}
+.minHeight20{min-height: 2em;}
+.minHeight30{min-height: 3em;}
+.minHeight50{min-height: 5em;}
+.minHeight100{min-height: 10em;}
 .minHeight500{min-height: 50em;}
 .maxHeight200{max-height: 20em;}
 .margin10{margin: 1em;}

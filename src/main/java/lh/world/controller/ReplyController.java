@@ -43,7 +43,7 @@ public class ReplyController extends BaseController {
         Reply reply = form.asReply();
         reply.setSender(getCurrentUser());
         try {
-            reply = replyService.save(reply, form.getAccepterId());
+            reply = replyService.save(reply, form.getCommentId(), form.getAccepterId());
             return AjaxResponse.ok().msg("发表成功").data(reply);
         } catch (Exception e) {
             return AjaxResponse.fail().msg(e.getMessage());
