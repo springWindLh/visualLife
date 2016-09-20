@@ -26,6 +26,9 @@ public class Reply extends CanLogicDelDomain {
     @JoinColumn(name = "sender_id")
     private User sender;
 
+    @Column(name = "vote")
+    private Integer vote;
+
     @ManyToOne
     @JoinColumn(name = "accepter_id")
     private User accepter;
@@ -73,5 +76,13 @@ public class Reply extends CanLogicDelDomain {
 
     public void setAccepter(User accepter) {
         this.accepter = accepter;
+    }
+
+    public Integer getVote() {
+        return vote;
+    }
+
+    public void setVote(Integer vote) {
+        this.vote = vote;
     }
 }

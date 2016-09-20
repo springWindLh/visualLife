@@ -33,6 +33,7 @@
     </div>
 </div>
 <div class="container maxWidth650" style="padding: 2em 0em;" ng-app="commentApp">
+    <!-- 评论 -->
     <div ng-controller="commentController">
         <p style="color: #fad6a6;">评论（{{comments.length}}）</p>
         <hr class="bg-faded">
@@ -58,16 +59,42 @@
                             <i class="fa fa-comment-o" ng-click="showReplyForm($event)"></i>
                         </div>
                         <div class="clearfix"></div>
-                        <div class="margin-top10">
 
+                        <!-- 回复 -->
+                        <div class="margin-top10">
+                            <div class="col-md-10 col-lg-offset-2">
+                                <div ng-repeat="reply in comment.replies track by $index">
+                                    <div class="row"
+                                         style="margin:1em 0em;padding-bottom:1em;border-bottom: dashed 0.1em #866667;">
+                                        <div class="col-md-1">
+                                            <img ng-src="reply.sender.avatar" class="width30 height30 borderRadius50">
+                                        </div>
+                                        <div class="col-lg-11">
+                                            <div class="height20">
+                                                <label class="width80" style="color: #a1bad0;float: left;">{{reply.sender.name}}</label>
+                                                <div style="color:#866667;float: left;">
+                                                    <i class="fa fa-thumbs-o-up"></i>
+                                                    <span ng-if="reply.vote > 0">({{reply.vote}})</span>
+                                                </div>
+                                            </div>
+                                            <div class="minHeight20">
+                                                <p style="color: white;">{{reply.content}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="margin-top10 reply" style="display: none;">
                             <form>
-                           <div><textarea rows="3" placeholder="回复内容" class="form-control" ng-model="newReply.content"></textarea></div>
-                            <div>
-                                <button class="btn btn-sm" ng-click="saveReply(comment.id,comment.user.id,newReply.content)">回复</button>
-                            </div>
-                        </form>
+                                <div><textarea rows="3" placeholder="回复内容" class="form-control"
+                                               ng-model="newReply.content"></textarea></div>
+                                <div>
+                                    <button class="btn btn-sm"
+                                            ng-click="saveReply(comment.id,comment.user.id,newReply.content)">回复
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
