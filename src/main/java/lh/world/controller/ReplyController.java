@@ -14,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 /**
  * Created by lh on 2016/9/18.
@@ -56,6 +57,23 @@ public class ReplyController extends BaseController {
         try {
             replyService.remove(id);
             return AjaxResponse.ok().msg("删除成功");
+        } catch (Exception e) {
+            return AjaxResponse.fail().msg(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/vote/{id}", method = RequestMethod.POST)
+    @ResponseBody
+    public AjaxResponse vote(@PathVariable Long id) {
+        Optional<Reply> replyOptional = replyService.findById(id);
+        if (!replyOptional.isPresent()) {
+            return getAjaxResourceNotFound();
+        }
+        Reply reply = replyOptional.get();
+        reply.setVote(reply.getVote() + 1);
+        try {
+            reply = replyService.save(reply);
+            return AjaxResponse.ok().msg("点赞成功").data(reply);
         } catch (Exception e) {
             return AjaxResponse.fail().msg(e.getMessage());
         }

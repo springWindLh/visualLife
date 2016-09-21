@@ -23,9 +23,9 @@ public class Article extends CanLogicDelDomain {
     @Column(name = "summarize")
     private String summarize;
     @Column(name = "vote")
-    private Integer vote;
+    private Integer vote = 0;
     @Column(name = "weight")
-    private Integer weight;
+    private Integer weight = 0;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

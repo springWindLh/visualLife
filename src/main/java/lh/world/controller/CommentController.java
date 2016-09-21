@@ -9,11 +9,13 @@ import lh.world.query.support.Query;
 import lh.world.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 /**
  * Created by lh on 2016/9/18.
@@ -31,6 +33,7 @@ public class CommentController extends BaseController {
         if (!Strings.isNullOrEmpty(targetType)) {
             type = Comment.TargetType.valueOf(targetType);
         }
+        query.setDirection(Sort.Direction.ASC);
         Page<Comment> page = commentService.listByTargetTypeAndTargetId(type, targetId, false, query);
         return AjaxResponse.ok().data(page);
     }
@@ -57,6 +60,23 @@ public class CommentController extends BaseController {
         try {
             commentService.remove(id);
             return AjaxResponse.ok().msg("删除成功");
+        } catch (Exception e) {
+            return AjaxResponse.fail().msg(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/vote/{id}", method = RequestMethod.POST)
+    @ResponseBody
+    public AjaxResponse vote(@PathVariable Long id) {
+        Optional<Comment> commentOptional = commentService.findById(id);
+        if (!commentOptional.isPresent()) {
+            return getAjaxResourceNotFound();
+        }
+        Comment comment = commentOptional.get();
+        comment.setVote(comment.getVote() + 1);
+        try {
+            comment = commentService.save(comment);
+            return AjaxResponse.ok().msg("点赞成功").data(comment);
         } catch (Exception e) {
             return AjaxResponse.fail().msg(e.getMessage());
         }

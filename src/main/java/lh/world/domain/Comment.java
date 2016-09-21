@@ -1,6 +1,7 @@
 package lh.world.domain;
 
 import lh.world.domain.support.CanLogicDelDomain;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -28,13 +29,14 @@ public class Comment extends CanLogicDelDomain {
     private String content;
 
     @Column(name = "vote")
-    private Integer vote;
+    private Integer vote = 0;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "comment")
+    @Where(clause = "del = false")
     private List<Reply> replies = new ArrayList<>(0);
 
     public Comment() {

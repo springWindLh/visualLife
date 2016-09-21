@@ -34,19 +34,21 @@
 </div>
 <div class="container maxWidth650" style="padding: 2em 0em;" ng-app="commentApp">
     <!-- 评论 -->
-    <div ng-controller="commentController">
+    <div ng-controller="commentController" ng-cloak>
         <p style="color: #fad6a6;">评论（{{comments.length}}）</p>
         <hr class="bg-faded">
         <div ng-repeat="comment in comments track by $index">
             <div class="row" style="margin:1em 0em;padding-bottom:1em;border-bottom: dashed 0.1em #866667;">
                 <div class="col-md-1">
-                    <img ng-src="comment.user.avatar" class="width40 height40 borderRadius50">
+                    <img ng-src="{{comment.user.avatar}}" class="width40 height40 borderRadius50">
                 </div>
                 <div class="col-lg-11">
                     <div class="height20">
                         <label class="width80" style="color: #a1bad0;float: left;">{{comment.user.name}}</label>
                         <div style="color:#866667;float: left;">
-                            <i class="fa fa-thumbs-o-up"></i>
+                            <i class="fa fa-thumbs-o-up pointer" ng-if="!verifyCommentVote(comment.id)"
+                               ng-click="voteComment(comment)"></i>
+                            <i class="fa fa-thumbs-up" ng-if="verifyCommentVote(comment.id)"></i>
                             <span ng-if="comment.vote > 0">({{comment.vote}})</span>
                         </div>
                     </div>
@@ -54,44 +56,72 @@
                         <p style="color: white;">{{comment.content}}</p>
                     </div>
                     <div>
-                        <div style="width: 8em;color: #866667;float: left;"><small>{{comment.createdTime | date:'yyyy/MM/dd HH:mm'}}</small></div>
+                        <div style="width: 8em;color: #866667;float: left;">
+                            <small>{{comment.createdTime | date:'yyyy/MM/dd HH:mm'}}</small>
+                        </div>
+                        <div style="width: 4em;color: #866667;float: left;cursor: pointer;">
+                            <i class="fa fa-comment-o" ng-click="showReplyForm($event)"></i><span ng-if="comment.replies.length > 0">&nbsp;({{comment.replies.length}})</span>
+                        </div>
                         <div style="color: #866667;float: left;cursor: pointer;">
-                            <i class="fa fa-comment-o" ng-click="showReplyForm($event)"></i>
+                            <i class="fa fa-trash-o" ng-if="currentUserId == comment.user.id"
+                               ng-click="removeComment(comment.id,$index)"></i>
                         </div>
                         <div class="clearfix"></div>
 
                         <!-- 回复 -->
-                        <div class="margin-top10">
-                            <div class="col-md-10 col-lg-offset-2">
+                        <div class="replyList margin-top10" ng-if="comment.replies.length > 0"
+                             style="background-color: rgba(95, 78, 78, 0.5);padding-top: 0.5em;">
+                            <div class="margin-left5">
                                 <div ng-repeat="reply in comment.replies track by $index">
                                     <div class="row"
-                                         style="margin:1em 0em;padding-bottom:1em;border-bottom: dashed 0.1em #866667;">
+                                         style="margin:1em 0em;padding-bottom:1em;">
                                         <div class="col-md-1">
-                                            <img ng-src="reply.sender.avatar" class="width30 height30 borderRadius50">
+                                            <img ng-src="{{reply.sender.avatar}}"
+                                                 class="width30 height30 borderRadius50">
                                         </div>
                                         <div class="col-lg-11">
                                             <div class="height20">
                                                 <label class="width80" style="color: #a1bad0;float: left;">{{reply.sender.name}}</label>
                                                 <div style="color:#866667;float: left;">
-                                                    <i class="fa fa-thumbs-o-up"></i>
+                                                    <i class="fa fa-thumbs-o-up pointer"
+                                                       ng-if="!verifyReplyVote(reply.id)"
+                                                       ng-click="voteReply(reply)"></i>
+                                                    <i class="fa fa-thumbs-up" ng-if="verifyReplyVote(reply.id)"></i>
                                                     <span ng-if="reply.vote > 0">({{reply.vote}})</span>
                                                 </div>
                                             </div>
                                             <div class="minHeight20">
-                                                <p style="color: white;">{{reply.content}}</p>
+                                                <p style="color: white;"><span style="color: #a1bad0;">@{{reply.sender.name}}</span>&nbsp;&nbsp;{{reply.content}}
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <div style="width: 8em;color: #866667;float: left;">
+                                                    <small>{{comment.createdTime | date:'yyyy/MM/dd HH:mm'}}</small>
+                                                </div>
+                                                <div style="width: 3em;color: #866667;float: left;cursor: pointer;">
+                                                    <i class="fa fa-comment-o"
+                                                       ng-click="showReplyChildForm($event)"></i>
+                                                </div>
+                                                <div style="color: #866667;float: left;cursor: pointer;">
+                                                    <i class="fa fa-trash-o" ng-if="currentUserId == comment.user.id"
+                                                       ng-click="removeReply(reply.id,comment.replies,$index)"></i>
+                                                </div>
+                                                <div class="clearfix"></div>
                                             </div>
                                         </div>
                                     </div>
+                                    <hr style="background-color: #766363;">
                                 </div>
                             </div>
                         </div>
-                        <div class="margin-top10 reply" style="display: none;">
+                        <div class="margin-top10 reply bg-red" style="display: none;">
                             <form>
-                                <div><textarea rows="3" placeholder="回复内容" class="form-control"
+                                <div><textarea rows="3" placeholder="回复内容……" class="form-control"
                                                ng-model="newReply.content"></textarea></div>
                                 <div>
-                                    <button class="btn btn-sm"
-                                            ng-click="saveReply(comment.id,comment.user.id,newReply.content)">回复
+                                    <button class="btn btn-sm bg-danger"
+                                            ng-click="saveReply(comment.id,comment.user.id,newReply.content,comment.replies,$event)">
+                                        回复
                                     </button>
                                 </div>
                             </form>
@@ -103,12 +133,15 @@
         </div>
         <div class="bg-white">
             <form name="commentForm">
-            <div>
-                <textarea rows="3" class="form-control" ng-maxlength="500" placeholder="你的评论……" required ng-model="newComment.content"></textarea>
-            </div>
-            <div>
-                <button type="button" class="btn bg-warning width50" ng-disabled="commentForm.$invalid" ng-click="saveComment()">发表</button>
-            </div>
+                <div>
+                    <textarea rows="3" class="form-control" ng-maxlength="500" placeholder="你的评论……" required
+                              ng-model="newComment.content"></textarea>
+                </div>
+                <div>
+                    <button type="button" class="btn bg-warning width50" ng-disabled="commentForm.$invalid"
+                            ng-click="saveComment()">发表
+                    </button>
+                </div>
             </form>
         </div>
     </div>
@@ -116,20 +149,23 @@
 <div th:include="fragment::tooltip"></div>
 </body>
 <script type="text/javascript" th:inline="javascript">
-    var commentApp = angular.module('commentApp',[]);
-    commentApp.controller('commentController',function ($scope,$http) {
+    var commentApp = angular.module('commentApp', []);
+    commentApp.controller('commentController', function ($scope, $http) {
         $scope.comments = [];
         var targetId = [[${form.id}]];
         var targetType = 'ARTICLE';
-        $http.get('/comment/list',{params:{
-            page:0,
-            size:500,
-            targetType:targetType,
-            targetId:targetId
-        }}).success(function (data) {console.log(data.data.content);
-            if(data.code) {
+        $http.get('/comment/list', {
+            params: {
+                page: 0,
+                size: 500,
+                targetType: targetType,
+                targetId: targetId
+            }
+        }).success(function (data) {
+            console.log(data);
+            if (data.code) {
                 $scope.comments = data.data.content;
-            }else{
+            } else {
                 Tooltip.fail(data.msg);
             }
         });
@@ -139,35 +175,108 @@
             targetId: targetId,
             content: ''
         };
+
+        <!--评论与回复 start-->
+        $scope.currentUserId = [[${session.user != null ? session.user.id : -1}]];
+        console.log($scope.currentUserId);
         $scope.saveComment = function () {
-              $http.post('/comment/add',$scope.newComment).success(function (data) {
-                  if(data.code) {
-                      $scope.comments.push(data.data);
-                      $scope.newComment.content = '';
-                  }else {
-                      Tooltip.fail(data.msg);
-                  }
-              });
-        };
-
-        $scope.showReplyForm = function(e){
-            angular.element(e.target).parent('div').siblings('div.reply').toggle();
-        };
-
-        $scope.saveReply = function(commentId,accepterId,content){
-            $scope.newReply = {
-                commentId:commentId,
-                accepterId:accepterId,
-                content:content
-            };
-            $http.post('/reply/add',$scope.newReply).success(function(data){
-                if(data.code){
-
-                }else{
+            $http.post('/comment/add', $scope.newComment).success(function (data) {
+                if (data.code) {
+                    $scope.comments.push(data.data);
+                    $scope.newComment.content = '';
+                } else {
                     Tooltip.fail(data.msg);
                 }
             });
         };
+
+        $scope.showReplyForm = function (e) {
+            angular.element(e.target).parent('div').siblings('div.reply').toggle();
+        };
+        $scope.showReplyChildForm = function (e) {
+            angular.element(e.target).parents('div.replyList').siblings('div.reply').toggle();
+        };
+
+        $scope.newReply = {
+            commentId: '',
+            accepterId: '',
+            content: ''
+        };
+        $scope.saveReply = function (commentId, accepterId, content, replies, e) {
+            $scope.newReply = {
+                commentId: commentId,
+                accepterId: accepterId,
+                content: content
+            };
+            $http.post('/reply/add', $scope.newReply).success(function (data) {
+                if (data.code) {
+                    replies.push(data.data);
+                    $scope.newReply.content = '';
+                    angular.element(e.target).parents('div.reply').hide();
+                } else {
+                    Tooltip.fail(data.msg);
+                }
+            });
+        };
+
+        $scope.verifyCommentVote = function (commentId) {
+            return window.localStorage.getItem('comment_' + commentId);
+        };
+
+        $scope.verifyReplyVote = function (replyId) {
+            return window.localStorage.getItem('reply_' + replyId);
+        };
+
+        $scope.voteComment = function (comment) {
+            $http.post('/comment/vote/' + comment.id).success(function (data) {
+                if (data.code) {
+                    comment.vote = data.data.vote;
+                    window.localStorage.setItem('comment_' + comment.id, true);
+                } else {
+                    Tooltip.fail(data.msg);
+                }
+            });
+        };
+
+        $scope.voteReply = function (reply) {
+            $http.post('/reply/vote/' + reply.id).success(function (data) {
+                if (data.code) {
+                    reply.vote = data.data.vote;
+                    window.localStorage.setItem('reply_' + reply.id, true);
+                } else {
+                    Tooltip.fail(data.msg);
+                }
+            });
+        };
+
+        $scope.removeComment = function (commentId, index) {
+            x0p('确认删除评论?', null, 'warning', function (button) {
+                if (button == 'warning') {
+                    $http.post('/comment/remove/' + commentId).success(function (data) {
+                        if (data.code) {
+                            $scope.comments.splice(index, 1);
+                        } else {
+                            Tooltip.fail(data.msg);
+                        }
+                    });
+                }
+            });
+        };
+
+        $scope.removeReply = function (replyId, replies,index) {
+            x0p('确认删除评论?', null, 'warning', function (button) {
+                if (button == 'warning') {
+                    $http.post('/reply/remove/' + replyId).success(function (data) {
+                        if (data.code) {
+                            replies.splice(index, 1);
+                        } else {
+                            Tooltip.fail(data.msg);
+                        }
+                    });
+                }
+            });
+        };
+        <!--评论与回复 end-->
     });
 </script>
 </html>

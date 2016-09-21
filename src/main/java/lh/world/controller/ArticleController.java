@@ -104,4 +104,21 @@ public class ArticleController extends BaseController {
             return AjaxResponse.fail().msg(e.getMessage());
         }
     }
+
+    @RequestMapping(value = "/vote/{id}", method = RequestMethod.POST)
+    @ResponseBody
+    public AjaxResponse vote(@PathVariable Long id) {
+        Optional<Article> articleOptional = articleService.findById(id);
+        if (!articleOptional.isPresent()) {
+            return getAjaxResourceNotFound();
+        }
+        Article article = articleOptional.get();
+        article.setVote(article.getVote() + 1);
+        try {
+            article = articleService.save(article);
+            return AjaxResponse.ok().msg("点赞成功").data(article);
+        } catch (Exception e) {
+            return AjaxResponse.fail().msg(e.getMessage());
+        }
+    }
 }

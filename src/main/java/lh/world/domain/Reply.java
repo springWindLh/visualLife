@@ -1,5 +1,6 @@
 package lh.world.domain;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lh.world.domain.support.CanLogicDelDomain;
 
 import javax.persistence.*;
@@ -15,11 +16,12 @@ public class Reply extends CanLogicDelDomain {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "content",length = 500)
+    @Column(name = "content", length = 500)
     private String content;
 
     @ManyToOne
     @JoinColumn(name = "comment_id")
+    @JSONField(serialize = false)
     private Comment comment;
 
     @ManyToOne
@@ -27,7 +29,7 @@ public class Reply extends CanLogicDelDomain {
     private User sender;
 
     @Column(name = "vote")
-    private Integer vote;
+    private Integer vote = 0;
 
     @ManyToOne
     @JoinColumn(name = "accepter_id")
