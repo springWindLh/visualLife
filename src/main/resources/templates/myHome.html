@@ -142,7 +142,7 @@
             $http.get('/myHome/story', {
                 page: page - 1,
                 size: $scope.pageSize
-            }).success(function (data) {console.log();
+            }).success(function (data) {
                 if (data.code) {
                     if ($scope.firstVisit) {
                         $scope.stories = data.data.content;
