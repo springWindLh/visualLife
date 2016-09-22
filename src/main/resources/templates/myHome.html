@@ -10,7 +10,9 @@
 <div th:include="fragment::navbar"></div>
 <div class="container" style="margin-top: 3.5em">
     <div class="col-md-4">
-        <div id="jquery-accordion-menu" style="position:fixed;min-width: 10em;max-width:23em;box-shadow: 0 5px 10px #333;" class="jquery-accordion-menu mc">
+        <div id="jquery-accordion-menu"
+             style="position:fixed;min-width: 10em;max-width:23em;box-shadow: 0 5px 10px #333;"
+             class="jquery-accordion-menu mc">
             <ul id="demo-list">
                 <li><a href="#/article"><i class="fa fa-file-text"></i>我的文章 </a></li>
                 <li><a href="#/story"><i class="fa fa-glass"></i>我的故事 </a></li>
@@ -33,99 +35,166 @@
         jQuery("#jquery-accordion-menu").jqueryAccordionMenu();
     });
 
-    $(function(){
+    $(function () {
         //顶部导航切换
-        $("#demo-list li").click(function(){
+        $("#demo-list li").click(function () {
             $("#demo-list li.active").removeClass("active");
             $(this).addClass("active");
         })
     })
 
-    var myHome = angular.module('myHome',['ngRoute']);
-    myHome.controller('articleController',function($scope,$http){
-        $('.pagination').jqPagination({
-            paged: function(page) {
-                // do something with the page variable
+    var myHome = angular.module('myHome', ['ngRoute']);
+    myHome.directive('onFinishRender', function ($timeout) {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attr) {
+                if (scope.$last === true) {
+                    $timeout(function () {
+                        scope.$emit('ngRepeatFinished');
+                    });
+                }
             }
+        }
+    });
+
+    myHome.controller('articleController', function ($q, $scope, $http, $timeout) {
+        var colors = ['#bd8c7d', '#d1bfa7', '#3a4660', '#c9af98', '#839973', '#ed8a63', '#845007', '#21A8A3'];
+        $scope.$on('ngRepeatFinished', function () {
+            $('.article.card-block').each(function (i, element) {
+                var index = parseInt(Math.random() * 8);
+                var shadow = '-0.3em 0em' + colors[index] + ' inset';
+                $(element).css('box-shadow', shadow);
+            });
         });
 
         $scope.articles = [];
-        $scope.currentPage = 0;
+        $scope.currentPage = 1;
         $scope.pageSize = 10;
+        $scope.totalPages = 0;
+        $scope.firstVisit = true;
         $scope.getArticles = function (page) {
-            $http.get('/myHome/article',{
-                page:page,
-                size:$scope.pageSize
-            }).success(function(data){
-                if(data.code) {
-                    $scope.articles = data.data;
-                }else{
+            $http.get('/myHome/article', {
+                params: {
+                    page: page - 1,
+                    size: $scope.pageSize
+                }
+            }).success(function (data) {
+                if (data.code) {
+                    if ($scope.firstVisit) {
+                        $scope.articles = data.data.content;
+                        $scope.currentPage = data.data.number + 1;
+                        $scope.totalPages = data.data.totalPages;
+                        $('.pagination').jqPagination({
+                            max_page: $scope.totalPages, //设置最大页 默认为1
+                            page_string: '{current_page} / {max_page}',
+                            paged: function (page) {
+                                $scope.getArticles(page);
+                            }
+                        });
+                        $scope.firstVisit = false;
+                    } else {
+                        $scope.articles = data.data.content;
+                        $scope.currentPage = data.data.number + 1;
+                        $scope.totalPages = data.data.totalPages;
+                    }
+                } else {
                     Tooltip.fail(data.msg);
                 }
             });
-            $scope.currentPage = page;
         };
 
-        $scope.getArticles(1);
+        $scope.getArticles($scope.currentPage);
         $scope.showRemoveBtn = function (e) {
             angular.element(e.target).find('.remove').show();
         };
         $scope.hideRemoveBtn = function (e) {
             angular.element(e.target).find('.remove').hide();
         };
-        $scope.removeArticle = function (index,id) {
-            x0p('确认删除?',null,'warning',function (button) {
-                if(button == 'warning'){
-                    $http.post('/article/remove/'+id).success(function (data) {
-                        if(data.code) {
+        $scope.removeArticle = function (index, id) {
+            x0p('确认删除?', null, 'warning', function (button) {
+                if (button == 'warning') {
+                    $http.post('/article/remove/' + id).success(function (data) {
+                        if (data.code) {
                             $scope.getArticles($scope.currentPage);
-                        }else{
+                        } else {
                             Tooltip.fail(data.msg);
                         }
                     });
                 }
             });
         };
-    }).controller('storyController',function($scope,$http){
-        $scope.stories = [];
-        $http.get('/myHome/story',{
-            page:1,
-            size:500
-        }).success(function(data){
-            if(data.code) {
-                $scope.stories = data.data;
-            }else{
-                Tooltip.fail(data.msg);
-            }
+    }).controller('storyController', function ($scope, $http) {
+        var colors = ['#bd8c7d', '#d1bfa7', '#3a4660', '#c9af98', '#839973', '#ed8a63', '#845007', '#21A8A3'];
+        $scope.$on('ngRepeatFinished', function () {
+            $('.story.card-block').each(function (i, element) {
+                var index = parseInt(Math.random() * 8);
+                var shadow = '-0.3em 0em' + colors[index] + ' inset';
+                $(element).css('box-shadow', shadow);
+            });
         });
+
+        $scope.stories = [];
+        $scope.currentPage = 1;
+        $scope.pageSize = 10;
+        $scope.totalPages = 0;
+        $scope.firstVisit = true;
+        $scope.getStories = function (page) {
+            $http.get('/myHome/story', {
+                page: page - 1,
+                size: $scope.pageSize
+            }).success(function (data) {console.log();
+                if (data.code) {
+                    if ($scope.firstVisit) {
+                        $scope.stories = data.data.content;
+                        $scope.currentPage = data.data.number + 1;
+                        $scope.totalPages = data.data.totalPages;
+                        $('.pagination').jqPagination({
+                            max_page: $scope.totalPages, //设置最大页 默认为1
+                            page_string: '{current_page} / {max_page}',
+                            paged: function (page) {
+                                $scope.getStories(page);
+                            }
+                        });
+                        $scope.firstVisit = false;
+                    } else {
+                        $scope.stories = data.data.content;
+                        $scope.currentPage = data.data.number + 1;
+                    }
+                } else {
+                    Tooltip.fail(data.msg);
+                }
+            });
+        };
+
+        $scope.getStories($scope.currentPage);
         $scope.showRemoveBtn = function (e) {
             angular.element(e.target).find('.remove').show();
         };
         $scope.hideRemoveBtn = function (e) {
             angular.element(e.target).find('.remove').hide();
         };
-        $scope.removeStory = function (index,id) {
-            x0p('确认删除?',null,'warning',function (button) {
-                if(button == 'warning'){
-                    $http.post('/story/remove/'+id).success(function (data) {
-                        if(data.code) {
-                            $scope.stories.splice(index, 1);
-                        }else{
+        $scope.removeStory = function (index, id) {
+            x0p('确认删除?', null, 'warning', function (button) {
+                if (button == 'warning') {
+                    $http.post('/story/remove/' + id).success(function (data) {
+                        if (data.code) {
+                            $scope.getStories($scope.currentPage);
+                        } else {
                             Tooltip.fail(data.msg);
                         }
                     });
                 }
             });
         };
-    }).controller('userController',function($scope,$http){
+    }).controller('userController', function ($scope, $http) {
         $scope.user = {};
-        $http.get('/myHome/userInfo').success(function(data) {
+        $http.get('/myHome/userInfo').success(function (data) {
             $scope.user = data.data;
         });
 
         $scope.updateUser = function () {
             $http.post('/user/update', $scope.user).success(function (data) {
-                    Tooltip.handle(data);
+                Tooltip.handle(data);
             });
         };
 
@@ -157,34 +226,36 @@
                 Tooltip.fail('图片格式不正确');
             }
         });
-    }).controller('passwordController',function($scope,$http){
+    }).controller('passwordController', function ($scope, $http) {
         $scope.oldPassword = '';
         $scope.newPassword = '';
         $scope.confirmPassword = '';
-        $scope.updatePassword = function(){
-            $http.get('/user/update/password/'+[[${session.user.id}]],{params:{
-                oldPassword:$scope.oldPassword,
-                newPassword:$scope.newPassword
-            }}).success(function(data) {
+        $scope.updatePassword = function () {
+            $http.get('/user/update/password/' + [[${session.user.id}]], {
+                params: {
+                    oldPassword: $scope.oldPassword,
+                    newPassword: $scope.newPassword
+                }
+            }).success(function (data) {
                 Tooltip.handle(data);
             });
         };
     });
-    myHome.config(function($routeProvider,$locationProvider){
-        $routeProvider.when('/article',{
-            templateUrl:'../templates/article/userList.html',
-            controller:'articleController'
-        }).when('/story',{
-            templateUrl:'../templates/story/userList.html',
-            controller:'storyController'
-        }).when('/user',{
-            templateUrl:'../templates/user/info.html',
-            controller:'userController'
-        }).when('/password',{
-            templateUrl:'../templates/user/password.html',
-            controller:'passwordController'
+    myHome.config(function ($routeProvider, $locationProvider) {
+        $routeProvider.when('/article', {
+            templateUrl: '../templates/article/userList.html',
+            controller: 'articleController'
+        }).when('/story', {
+            templateUrl: '../templates/story/userList.html',
+            controller: 'storyController'
+        }).when('/user', {
+            templateUrl: '../templates/user/info.html',
+            controller: 'userController'
+        }).when('/password', {
+            templateUrl: '../templates/user/password.html',
+            controller: 'passwordController'
         }).otherwise({
-            redirectTo:''
+            redirectTo: ''
         });
     });
 </script>

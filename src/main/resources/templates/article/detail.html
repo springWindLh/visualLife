@@ -264,7 +264,7 @@
         };
 
         $scope.removeReply = function (replyId, replies,index) {
-            x0p('确认删除评论?', null, 'warning', function (button) {
+            x0p('确认删除回复?', null, 'warning', function (button) {
                 if (button == 'warning') {
                     $http.post('/reply/remove/' + replyId).success(function (data) {
                         if (data.code) {

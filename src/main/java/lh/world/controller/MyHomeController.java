@@ -36,19 +36,19 @@ public class MyHomeController extends BaseController {
     @ResponseBody
     public AjaxResponse article(Query query) {
         Page<Article> page = articleService.listByUser(getCurrentUser(), query, false);
-        return AjaxResponse.ok().data(page.getContent());
+        return AjaxResponse.ok().data(page);
     }
 
     @RequestMapping(value = "/story", method = RequestMethod.GET)
     @ResponseBody
     public AjaxResponse story(Query query) {
         Page<Story> page = storyService.listByUser(getCurrentUser(), query, false);
-        return AjaxResponse.ok().data(page.getContent());
+        return AjaxResponse.ok().data(page);
     }
 
     @RequestMapping(value = "/userInfo", method = RequestMethod.GET)
     @ResponseBody
-    public AjaxResponse userInfo(Query query) {
+    public AjaxResponse userInfo() {
         return AjaxResponse.ok().data(getCurrentUser());
     }
 }

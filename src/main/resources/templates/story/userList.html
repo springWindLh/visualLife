@@ -11,8 +11,8 @@
     </style>
 </head>
 <body>
-<div class="container" ng-controller="storyController">
-    <div class="card" ng-repeat="story in stories track by $index">
+<div class="container">
+    <div class="card" ng-repeat="story in stories track by $index" on-finish-render>
         <div class="story card-block bg-white shadow2" ng-mouseenter="showRemoveBtn($event)" ng-mouseleave="hideRemoveBtn($event)">
             <div class="pull-left">
                 <a ng-href="/story/update/{{story.id}}"><img ng-if="story.picture!=null" ng-src="{{story.picture}}" class="width80 height80">
@@ -32,19 +32,13 @@
             <div class="clearfix"></div>
         </div>
     </div>
+    <div class="pagination">
+        <a href="#" class="first" data-action="first">&laquo;</a>
+        <a href="#" class="previous" data-action="previous">&lsaquo;</a>
+        <input type="text" readonly="readonly"/>
+        <a href="#" class="next" data-action="next">&rsaquo;</a>
+        <a href="#" class="last" data-action="last">&raquo;</a>
+    </div>
 </div>
 </body>
-<script type="text/javascript">
-    $(function(){
-        var colors = ['#bd8c7d','#d1bfa7','#3a4660','#c9af98','#c9af98','#ed8a63','#845007','#21A8A3'];
-        function changeColor() {
-            $('.story.card-block').each(function (i,element) {
-                var index = parseInt(Math.random()*8);
-                var shadow = '-0.3em 0em'+ colors[index] + ' inset';
-                $(element).css('box-shadow',shadow);
-            });
-        }
-        changeColor();
-    });
-</script>
 </html>

@@ -8,13 +8,12 @@ import org.springframework.data.domain.Sort;
  * Created by lh on 2016/4/19.
  */
 public class Query {
-    private int page;
-    private int size;
-    private String sortField;
-    private Sort.Direction direction;
+    private int page = 0;
+    private int size = 10;
+    private String sortField = "id";
+    private Sort.Direction direction = Sort.Direction.DESC;
 
     public Query() {
-        this(0, 10, "id", Sort.Direction.DESC);
     }
 
     public Query(int page, int size, String sortField, Sort.Direction direction) {
