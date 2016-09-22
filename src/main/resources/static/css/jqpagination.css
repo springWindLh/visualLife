@@ -7,7 +7,7 @@
   display: block;
   float: left;
   width: 20px;
-  height: 20px;
+  /*height: 20px;*/
   outline: none;
   border-right: 1px solid #CDCDCD;
   border-left: 1px solid #CDCDCD;
@@ -49,7 +49,7 @@
   margin: 0;
   padding: 0;
   width: 120px;
-  height: 20px;
+  /*height: 20px;*/
   outline: none;
   border: none;
   vertical-align: middle;

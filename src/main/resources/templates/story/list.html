@@ -16,7 +16,7 @@
 <div th:include="fragment::navbar"></div>
 <div class="container margin-top40">
     <div>
-        <a class="btn btn-lg writeBtn" href="/story/add"><i class="fa fa-pencil"></i>&nbsp;&nbsp; 写故事</a>
+        <a class="btn btn-lg writeBtn" href="/story/add"><i class="fa fa-pencil"></i> 写故事</a>
     </div>
     <div class="card col-md-3 height150" style="border: none;" th:each="story:${page.content}">
         <img th:src="${story.picture}" class="card-img-top height100 widthFull">

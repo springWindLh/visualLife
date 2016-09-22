@@ -89,6 +89,7 @@
                             page_string: '{current_page} / {max_page}',
                             paged: function (page) {
                                 $scope.getArticles(page);
+                                $('body').scrollTop(0);
                             }
                         });
                         $scope.firstVisit = false;
@@ -153,6 +154,7 @@
                             page_string: '{current_page} / {max_page}',
                             paged: function (page) {
                                 $scope.getStories(page);
+                                $('body').scrollTop(0);
                             }
                         });
                         $scope.firstVisit = false;

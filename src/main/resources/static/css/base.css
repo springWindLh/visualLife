@@ -91,7 +91,7 @@
 .bold500{font-weight: 500;}
 .imgBorder{box-shadow:0.2em 0.2em 0.5em black;width:20em;height:20em;margin: 1em;}
 .shadow1{box-shadow:0.1em 0.1em 0.5em #838383;}
-.shadow2{box-shadow:0.2em 0.2em 0.5em #838383;}
+.shadow2{box-shadow:0.2em 0.1em 1em #ffffff;}
 .shadow3{box-shadow:0.3em 0.3em 0.5em #838383;}
 .backArrow{font-size: 1.05em;font-weight: 300;}
 .inputLabel{border-left: solid #a1bad0;padding-left: 0.5em;line-height: 1.6em;color: #f3e8d6;}
