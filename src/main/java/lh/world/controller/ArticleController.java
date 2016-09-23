@@ -81,7 +81,7 @@ public class ArticleController extends BaseController {
         article.setUser(articleOptional.get().getUser());
         try {
             articleService.save(article);
-            return AjaxResponse.ok().msg("更新成功").jumpUrl("/article/list");
+            return AjaxResponse.ok().msg("更新成功");
         } catch (Exception e) {
             return AjaxResponse.fail().msg(e.getMessage());
         }

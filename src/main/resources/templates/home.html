@@ -14,12 +14,12 @@
 </head>
 <body>
 <div th:include="fragment::navbar"></div>
-<div class="container margin-top40">
+<div class="container margin-top50">
     <div>
         <a class="btn btn-lg writeBtn" href="/article/add"><i class="fa fa-pencil"></i> 写文章</a>
     </div>
     <div class="card-columns" ng-controller="homeController" ng-cloak infinite-scroll="getMoreArticles()" infinite-scroll-disabled="pageLast"
-         infinite-scroll-distance='1'>
+         infinite-scroll-distance='0'>
         <div class="article card bg-white" ng-repeat="article in articles track by $index" on-finish-render>
             <a ng-href="/article/{{article.id}}"><img class="card-img-top widthFull"
                                                            ng-if="article.coverImg != null"
@@ -64,7 +64,7 @@
 
         $scope.articles = [];
         $scope.currentPage = 1;
-        $scope.pageSize = 10;
+        $scope.pageSize = 20;
         $scope.pageLast = false;
         $scope.getArticles = function (page) {
             $http.get('/home/article/list', {
@@ -74,18 +74,18 @@
                 }
             }).success(function (data) {
                 if (data.code) {
-                    $scope.articles = data.data.content;
+                    $scope.articles = $scope.articles.concat(data.data.content);
                     $scope.currentPage = data.data.number + 1;
                     $scope.pageLast = data.data.last;
-                    return $scope.articles;
                 } else {
                     Tooltip.fail(data.msg);
                 }
             });
+            return $scope.articles;
         };
         $scope.getArticles($scope.currentPage);
         $scope.getMoreArticles = function () {
-            $scope.articles.push($scope.getArticles($scope.currentPage + 1));
+            $scope.getArticles($scope.currentPage + 1)
         };
     });
 </script>

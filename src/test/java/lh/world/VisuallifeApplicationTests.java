@@ -1,6 +1,7 @@
 package lh.world;
 
 import lh.world.domain.Article;
+import lh.world.domain.User;
 import lh.world.repository.UserRepository;
 import lh.world.service.ArticleService;
 import lh.world.service.UserService;
@@ -29,13 +30,15 @@ public class VisuallifeApplicationTests {
     @Test
     public void Test() {
         Optional<Article> articleOptional = articleService.findById(1L);
+        Optional<User> userOptional = userService.findById(1L);
         if (articleOptional.isPresent()) {
-           for(int i = 3; i < 30;i++) {
-               Article article = articleOptional.get();
-               article.setId(null);
-               article.setTitle("article" + i);
-               articleService.save(article);
-           }
+            for (int i = 30; i < 100; i++) {
+                Article article = articleOptional.get();
+                article.setId(null);
+                article.setTitle("article" + i);
+                userOptional.ifPresent(article::setUser);
+                articleService.save(article);
+            }
         }
     }
 }

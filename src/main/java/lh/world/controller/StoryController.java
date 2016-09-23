@@ -48,7 +48,7 @@ public class StoryController extends BaseController {
         story.setUser(getCurrentUser());
         try {
             storyService.save(story);
-            return AjaxResponse.ok().msg("发表成功").jumpUrl("/story/list");
+            return AjaxResponse.ok().msg("发表成功");
         } catch (Exception e) {
             return AjaxResponse.fail().msg(e.getMessage());
         }

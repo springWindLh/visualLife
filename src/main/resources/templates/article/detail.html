@@ -17,7 +17,7 @@
 </head>
 <body>
 <div th:include="fragment::navbar"></div>
-<div class="container padding-top50 bg-white maxWidth650">
+<div class="container padding-top50 bg-white maxWidth600">
     <div class="text-center">
         <h4 th:text="${form.title}"></h4>
     </div>
@@ -32,7 +32,7 @@
         <p th:utext="${form.content}"></p>
     </div>
 </div>
-<div class="container maxWidth650" style="padding: 2em 0em;" ng-app="commentApp">
+<div class="container maxWidth600" style="padding: 2em 0em;" ng-app="commentApp">
     <!-- 评论 -->
     <div ng-controller="commentController" ng-cloak>
         <p style="color: #fad6a6;">评论（{{comments.length}}）</p>
