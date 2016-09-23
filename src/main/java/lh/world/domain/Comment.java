@@ -95,7 +95,7 @@ public class Comment extends CanLogicDelDomain {
     public enum TargetType {
         ARTICLE("文章"),
         STORY("故事"),
-        SUGGESTION("意见");
+        SUGGESTION("建议");
 
         private String value;
 

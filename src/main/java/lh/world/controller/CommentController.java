@@ -81,4 +81,9 @@ public class CommentController extends BaseController {
             return AjaxResponse.fail().msg(e.getMessage());
         }
     }
+
+    @RequestMapping(value = "/suggestion/list", method = RequestMethod.GET)
+    public String suggestionListPage() {
+        return "/suggestion/list";
+    }
 }

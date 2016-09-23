@@ -13,6 +13,7 @@ public class UserForm extends BaseForm {
     private String email;
     private String avatar;
     private String introduce;
+    private User.Role role;
 
     public UserForm() {
     }
@@ -88,5 +89,13 @@ public class UserForm extends BaseForm {
 
     public void setIntroduce(String introduce) {
         this.introduce = introduce;
+    }
+
+    public User.Role getRole() {
+        return role;
+    }
+
+    public void setRole(User.Role role) {
+        this.role = role;
     }
 }

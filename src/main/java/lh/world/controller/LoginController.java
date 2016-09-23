@@ -8,7 +8,6 @@ import lh.world.form.UserForm;
 import lh.world.service.UserService;
 import lh.world.util.EncrptUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -47,6 +46,7 @@ public class LoginController extends BaseController {
         }
         User user = form.asUser();
         user.setPassword(EncrptUtil.encodePassword(user.getPassword()));
+        user.setRole(User.Role.USER);
         try {
             User currentUser = userService.save(user);
             getRequest().getSession().setAttribute("user", currentUser);

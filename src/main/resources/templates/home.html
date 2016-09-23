@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" ng-app="homeApp">
 <head>
     <meta charset="UTF-8">
     <title>VisualLife</title>
@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/static/css/font-awesome.min.css">
     <style type="text/css">
-        .search::-webkit-input-placeholder{
+        .search::-webkit-input-placeholder {
             color: rgba(73, 73, 75, 0.6) !important;
         }
     </style>
@@ -18,30 +18,75 @@
     <div>
         <a class="btn btn-lg writeBtn" href="/article/add"><i class="fa fa-pencil"></i> 写文章</a>
     </div>
-    <div class="card-columns">
-        <div class="article card bg-white" th:each="article:${page.getContent()}">
-            <a th:href="@{'/article/'+${article.id}}"><img class="card-img-top widthFull" th:if="${article.coverImg != null}" th:src="${article.coverImg}">
-            <div class="card-block">
-                <h5 class="card-title" th:text="${article.title}"></h5>
-                <p class="card-text text-muted" th:text="${article.summarize}"></p>
-                <p class="card-text"><small class="text-muted" th:text="${#dates.format(article.createdTime,'yyyy/MM/dd')}"></small></p>
-            </div>
+    <div class="card-columns" ng-controller="homeController" ng-cloak infinite-scroll="getMoreArticles()" infinite-scroll-disabled="pageLast"
+         infinite-scroll-distance='1'>
+        <div class="article card bg-white" ng-repeat="article in articles track by $index" on-finish-render>
+            <a ng-href="/article/{{article.id}}"><img class="card-img-top widthFull"
+                                                           ng-if="article.coverImg != null"
+                                                           ng-src="{{article.coverImg}}">
+                <div class="card-block">
+                    <h5 class="card-title" ng-bind="article.title"></h5>
+                    <p class="card-text text-muted" ng-bind="article.summarize"></p>
+                    <p class="card-text">
+                        <small class="text-muted" ng-bind="article.createdTime | date:'yyyy/MM/dd'"></small>
+                    </p>
+                </div>
             </a>
         </div>
     </div>
 </div>
+<div th:include="fragment::tooltip"></div>
 </body>
+<script type="text/javascript" src="/static/js/ng-infinite-scroll.min.js"></script>
 <script type="text/javascript">
-    $(function(){
-        var colors = ['#bd8c7d','#d1bfa7','#3a4660','#c9af98','#839973','#ed8a63','#845007','#21A8A3'];
-        function changeColor() {
-            $('.article.card').each(function (i,element) {
-                var index = parseInt(Math.random()*8);
-                var shadow = '0em -0.3em 0em '+ colors[index] + ' inset';
-                $(element).css('box-shadow',shadow);
-            });
+    var home = angular.module('homeApp', ['infinite-scroll']);
+    home.directive('onFinishRender', function ($timeout) {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attr) {
+                if (scope.$last === true) {
+                    $timeout(function () {
+                        scope.$emit('ngRepeatFinished');
+                    });
+                }
+            }
         }
-        changeColor();
+    });
+    home.controller('homeController', function ($scope, $http) {
+        var colors = ['#bd8c7d', '#d1bfa7', '#3a4660', '#c9af98', '#839973', '#ed8a63', '#845007', '#21A8A3'];
+        $scope.$on('ngRepeatFinished', function () {
+            $('.article.card').each(function (i, element) {
+                var index = parseInt(Math.random() * 8);
+                var shadow = '0em -0.3em 0em ' + colors[index] + ' inset';
+                $(element).css('box-shadow', shadow);
+            });
+        });
+
+        $scope.articles = [];
+        $scope.currentPage = 1;
+        $scope.pageSize = 10;
+        $scope.pageLast = false;
+        $scope.getArticles = function (page) {
+            $http.get('/home/article/list', {
+                params: {
+                    page: page - 1,
+                    size: $scope.pageSize
+                }
+            }).success(function (data) {
+                if (data.code) {
+                    $scope.articles = data.data.content;
+                    $scope.currentPage = data.data.number + 1;
+                    $scope.pageLast = data.data.last;
+                    return $scope.articles;
+                } else {
+                    Tooltip.fail(data.msg);
+                }
+            });
+        };
+        $scope.getArticles($scope.currentPage);
+        $scope.getMoreArticles = function () {
+            $scope.articles.push($scope.getArticles($scope.currentPage + 1));
+        };
     });
 </script>
 </html>
