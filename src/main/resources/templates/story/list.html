@@ -21,8 +21,8 @@
     <div class="card col-md-3 height150" style="border: none;" ng-cloak infinite-scroll="getMoreArticles()" infinite-scroll-disabled="pageLast"
          infinite-scroll-distance='0' ng-repeat="story in stories track by $index" on-finish-render>
         <a ng-href="/story/{{story.id}}" target="_blank"><img ng-src="{{story.picture}}" class="card-img-top height100 widthFull">
-            <div class="story card-block height50">
-                <p class="card-text" ng-bind="story.description"></p>
+            <div class="story card-block height60" style="background-color: rgba(235, 238, 235, 0.1);">
+                <p class="card-text familyS9 textWhite2" ng-bind="story.description | lengthFilter:45"></p>
             </div>
         </a>
     </div>
@@ -31,7 +31,7 @@
 </body>
 <script type="text/javascript" src="/static/js/ng-infinite-scroll.min.js"></script>
 <script type="text/javascript">
-    var story = angular.module('storyApp', ['infinite-scroll']);
+    var story = angular.module('storyApp', ['infinite-scroll','filter']);
     story.directive('onFinishRender', function ($timeout) {
         return {
             restrict: 'A',

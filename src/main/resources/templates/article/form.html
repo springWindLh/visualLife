@@ -80,13 +80,13 @@
             <img ng-src="{{article.coverImg}}" class="widthFull">
             <div class="card-block bg-white">
                 <div class="card-text">
-                    {{article.summarize}}
+                    {{article.summarize | lengthFilter:110}}
                 </div>
             </div>
         </div>
         <button id="coverImgBtn" class="btn btn-sm">选择封面图片</button>
         <div class="form-group" style="padding-top: 1em;">
-            <textarea class="form-control maxWidth200" placeholder="封面文字" ng-model="article.summarize"></textarea>
+            <textarea rows="5" class="form-control maxWidth200" placeholder="封面文字" ng-model="article.summarize"></textarea>
         </div>
         <div class="maxWidth200">
         <button type="button" ng-if="article.id == null" class="btn btn-info-outline width80" ng-click="saveArticle()"><i class="fa fa-pencil"></i>&nbsp;发表</button>
@@ -100,9 +100,10 @@
 </body>
 <script type="text/javascript" src="/static/js/angular-summernote.min.js"></script>
 <script type="text/javascript" src="/static/js/summernote.min.js"></script>
+<script type="text/javascript" src="/static/js/common-filters.js"></script>
 <script type="text/javascript" src="/static/js/summernote-de-DE.js"></script>
 <script type="text/javascript" th:inline="javascript">
-    var app = angular.module('articleApp', ['summernote']);
+    var app = angular.module('articleApp', ['summernote','filter']);
     app.controller('articleController', function ($scope, $http) {
 
         $scope.article = {

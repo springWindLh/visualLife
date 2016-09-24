@@ -26,7 +26,7 @@
                                                            ng-src="{{article.coverImg}}">
                 <div class="card-block">
                     <h5 class="card-title" ng-bind="article.title"></h5>
-                    <p class="card-text text-muted" ng-bind="article.summarize"></p>
+                    <p class="card-text text-muted familyS9" ng-bind="article.summarize | lengthFilter:110"></p>
                     <p class="card-text">
                         <small class="text-muted" ng-bind="article.createdTime | date:'yyyy/MM/dd'"></small>
                     </p>
@@ -39,7 +39,7 @@
 </body>
 <script type="text/javascript" src="/static/js/ng-infinite-scroll.min.js"></script>
 <script type="text/javascript">
-    var home = angular.module('homeApp', ['infinite-scroll']);
+    var home = angular.module('homeApp', ['infinite-scroll','filter']);
     home.directive('onFinishRender', function ($timeout) {
         return {
             restrict: 'A',
