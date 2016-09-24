@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" ng-app="storyApp">
 <head>
     <meta charset="UTF-8">
     <title>故事</title>
@@ -14,29 +14,71 @@
 </head>
 <body>
 <div th:include="fragment::navbar"></div>
-<div class="container margin-top50">
+<div class="container margin-top50" ng-controller="storyController">
     <div>
         <a class="btn btn-lg writeBtn" href="/story/add"><i class="fa fa-pencil"></i> 写故事</a>
     </div>
-    <div class="card col-md-3 height150" style="border: none;" th:each="story:${page.content}">
-        <img th:src="${story.picture}" class="card-img-top height100 widthFull">
-        <div class="story card-block height50">
-            <p class="card-text" th:text="${story.description}"></p>
-        </div>
+    <div class="card col-md-3 height150" style="border: none;" ng-cloak infinite-scroll="getMoreArticles()" infinite-scroll-disabled="pageLast"
+         infinite-scroll-distance='0' ng-repeat="story in stories track by $index" on-finish-render>
+        <a ng-href="/story/{{story.id}}" target="_blank"><img ng-src="{{story.picture}}" class="card-img-top height100 widthFull">
+            <div class="story card-block height50">
+                <p class="card-text" ng-bind="story.description"></p>
+            </div>
+        </a>
     </div>
 </div>
+<div th:include="fragment::tooltip"></div>
 </body>
+<script type="text/javascript" src="/static/js/ng-infinite-scroll.min.js"></script>
 <script type="text/javascript">
-    $(function(){
-        var colors = ['#bd8c7d','#d1bfa7','#3a4660','#c9af98','#c9af98','#ed8a63','#845007','#21A8A3'];
-        function changeColor() {
+    var story = angular.module('storyApp', ['infinite-scroll']);
+    story.directive('onFinishRender', function ($timeout) {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attr) {
+                if (scope.$last === true) {
+                    $timeout(function () {
+                        scope.$emit('ngRepeatFinished');
+                    });
+                }
+            }
+        }
+    });
+    story.controller('storyController', function ($scope, $http) {
+        var colors = ['#bd8c7d', '#d1bfa7', '#3a4660', '#c9af98', '#839973', '#ed8a63', '#845007', '#21A8A3'];
+        $scope.$on('ngRepeatFinished', function () {
             $('.story.card-block').each(function (i,element) {
                 var index = parseInt(Math.random()*8);
                 var shadow = '0em -0.1em 0em '+ colors[index] + ' inset';
                 $(element).css('box-shadow',shadow);
             });
-        }
-        changeColor();
+        });
+
+        $scope.stories = [];
+        $scope.currentPage = 1;
+        $scope.pageSize = 20;
+        $scope.pageLast = false;
+        $scope.getStories = function (page) {
+            $http.get('/story/list', {
+                params: {
+                    page: page - 1,
+                    size: $scope.pageSize
+                }
+            }).success(function (data) {console.log(data);
+                if (data.code) {
+                    $scope.stories = $scope.stories.concat(data.data.content);
+                    $scope.currentPage = data.data.number + 1;
+                    $scope.pageLast = data.data.last;
+                } else {
+                    Tooltip.fail(data.msg);
+                }
+            });
+            return $scope.stories;
+        };
+        $scope.getStories($scope.currentPage);
+        $scope.getMoreStories = function () {
+            $scope.getStories($scope.currentPage + 1)
+        };
     });
 </script>
 </html>

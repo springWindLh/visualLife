@@ -9,15 +9,31 @@
 </head>
 <body>
 <div th:include="fragment::navbar"></div>
-<div class="container maxWidth650" style="padding: 5em 0em;" ng-app="commentApp">
+<div class="container padding-top50 bg-white maxWidth600">
+    <div class="text-center">
+        <img th:src="${form.picture}">
+    </div>
+    <hr>
+    <div class="maxWidth600">
+        <div><p th:text="${form.description}"></p></div>
+        <div class="margin10">
+            <small class="text-muted pull-right">by:&nbsp;<span th:text="${form.user.name}"></span>
+                &nbsp;&nbsp;&nbsp;
+                <span th:text="${#dates.format(form.createdTime,'yyyy/MM/dd')}"></span>
+            </small>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+<div class="container maxWidth600" style="padding: 2em 0em;" ng-app="commentApp">
     <!-- 评论 -->
     <div ng-controller="commentController" ng-cloak>
-        <p style="color: #fad6a6;">留言（{{comments.length}}）</p>
-        <div style="border-bottom: dashed 0.1em #866667;"></div>
+        <p style="color: #fad6a6;">评论（{{comments.length}}）</p>
+        <hr class="bg-faded">
         <div class="bg-white margin-bottom10">
             <form name="commentForm">
                 <div>
-                    <textarea rows="3" class="form-control" ng-maxlength="500" placeholder="你的建议or留言……" required
+                    <textarea rows="3" class="form-control" ng-maxlength="500" placeholder="你的评论……" required
                               ng-model="newComment.content"></textarea>
                 </div>
                 <div>
@@ -27,7 +43,7 @@
                 </div>
             </form>
         </div>
-        <div ng-repeat="comment in comments | orderBy:'-createdTime' track by $index ">
+        <div ng-repeat="comment in comments track by $index">
             <div class="row" style="margin:1em 0em;padding-bottom:1em;border-bottom: dashed 0.1em #866667;">
                 <div class="col-md-1">
                     <img ng-src="{{comment.user.avatar}}" class="width40 height40 borderRadius50">
@@ -49,8 +65,8 @@
                         <div style="width: 8em;color: #866667;float: left;">
                             <small>{{comment.createdTime | date:'yyyy/MM/dd HH:mm'}}</small>
                         </div>
-                        <div style="width: 4em;color: #866667;float: left;cursor: pointer;" ng-if="currentUserRole == 'ADMIN'">
-                            <i class="fa fa-comment-o" ng-click="showReplyForm($event)"></i>
+                        <div style="width: 4em;color: #866667;float: left;cursor: pointer;">
+                            <i class="fa fa-comment-o" ng-click="showReplyForm($event)"></i><span ng-if="comment.replies.length > 0">&nbsp;({{comment.replies.length}})</span>
                         </div>
                         <div style="color: #866667;float: left;cursor: pointer;">
                             <i class="fa fa-trash-o" ng-if="currentUserId == comment.user.id"
@@ -71,7 +87,14 @@
                                         </div>
                                         <div class="col-lg-11">
                                             <div class="height20">
-                                                <label class="width80" style="color: #a1bad0;float: left;">visualLife</label>
+                                                <label class="width80" style="color: #a1bad0;float: left;">{{reply.sender.name}}</label>
+                                                <div style="color:#866667;float: left;">
+                                                    <i class="fa fa-thumbs-o-up pointer"
+                                                       ng-if="!verifyReplyVote(reply.id)"
+                                                       ng-click="voteReply(reply)"></i>
+                                                    <i class="fa fa-thumbs-up" ng-if="verifyReplyVote(reply.id)"></i>
+                                                    <span ng-if="reply.vote > 0">({{reply.vote}})</span>
+                                                </div>
                                             </div>
                                             <div class="minHeight20">
                                                 <p style="color: white;"><span style="color: #a1bad0;">@{{reply.accepter.name}}</span>&nbsp;&nbsp;{{reply.content}}
@@ -81,12 +104,12 @@
                                                 <div style="width: 8em;color: #866667;float: left;">
                                                     <small>{{comment.createdTime | date:'yyyy/MM/dd HH:mm'}}</small>
                                                 </div>
-                                                <div style="width: 3em;color: #866667;float: left;cursor: pointer;" ng-if="currentUserId == comment.user.id || currentUserRole == 'ADMIN'">
+                                                <div style="width: 3em;color: #866667;float: left;cursor: pointer;">
                                                     <i class="fa fa-comment-o"
                                                        ng-click="showReplyChildForm($event)"></i>
                                                 </div>
-                                                <div style="color: #866667;float: left;cursor: pointer;" ng-if="currentUserId == reply.user.id">
-                                                    <i class="fa fa-trash-o"
+                                                <div style="color: #866667;float: left;cursor: pointer;">
+                                                    <i class="fa fa-trash-o" ng-if="currentUserId == comment.user.id"
                                                        ng-click="removeReply(reply.id,comment.replies,$index)"></i>
                                                 </div>
                                                 <div class="clearfix"></div>
@@ -122,8 +145,8 @@
     var commentApp = angular.module('commentApp', []);
     commentApp.controller('commentController', function ($scope, $http) {
         $scope.comments = [];
-        var targetId = null;
-        var targetType = 'SUGGESTION';
+        var targetId = [[${form.id}]];
+        var targetType = 'STORY';
         $http.get('/comment/list', {
             params: {
                 page: 0,
@@ -147,8 +170,7 @@
         };
 
         $scope.currentUserId = [[${session.user != null ? session.user.id : -1}]];
-        $scope.currentUserRole = [[${session.user != null ? session.user.role : ''}]];
-        console.log($scope.currentUserRole);
+
         $scope.saveComment = function () {
             $http.post('/comment/add', $scope.newComment).success(function (data) {
                 if (data.code) {

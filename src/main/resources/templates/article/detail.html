@@ -37,6 +37,19 @@
     <div ng-controller="commentController" ng-cloak>
         <p style="color: #fad6a6;">评论（{{comments.length}}）</p>
         <hr class="bg-faded">
+        <div class="bg-white margin-bottom10">
+            <form name="commentForm">
+                <div>
+                    <textarea rows="3" class="form-control" ng-maxlength="500" placeholder="你的评论……" required
+                              ng-model="newComment.content"></textarea>
+                </div>
+                <div>
+                    <button type="button" class="btn bg-warning width50" ng-disabled="commentForm.$invalid"
+                            ng-click="saveComment()">发表
+                    </button>
+                </div>
+            </form>
+        </div>
         <div ng-repeat="comment in comments track by $index">
             <div class="row" style="margin:1em 0em;padding-bottom:1em;border-bottom: dashed 0.1em #866667;">
                 <div class="col-md-1">
@@ -130,19 +143,6 @@
                 </div>
                 <div class="clearfix"></div>
             </div>
-        </div>
-        <div class="bg-white">
-            <form name="commentForm">
-                <div>
-                    <textarea rows="3" class="form-control" ng-maxlength="500" placeholder="你的评论……" required
-                              ng-model="newComment.content"></textarea>
-                </div>
-                <div>
-                    <button type="button" class="btn bg-warning width50" ng-disabled="commentForm.$invalid"
-                            ng-click="saveComment()">发表
-                    </button>
-                </div>
-            </form>
         </div>
     </div>
 </div>

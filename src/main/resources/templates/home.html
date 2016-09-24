@@ -21,7 +21,7 @@
     <div class="card-columns" ng-controller="homeController" ng-cloak infinite-scroll="getMoreArticles()" infinite-scroll-disabled="pageLast"
          infinite-scroll-distance='0'>
         <div class="article card bg-white" ng-repeat="article in articles track by $index" on-finish-render>
-            <a ng-href="/article/{{article.id}}"><img class="card-img-top widthFull"
+            <a ng-href="/article/{{article.id}}" target="_blank"><img class="card-img-top widthFull"
                                                            ng-if="article.coverImg != null"
                                                            ng-src="{{article.coverImg}}">
                 <div class="card-block">

@@ -25,11 +25,16 @@ public class StoryController extends BaseController {
     @Autowired
     StoryService storyService;
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public String list(Query query, Model model) {
-        Page<Story> page = storyService.listAll(query);
-        model.addAttribute("page", page);
+    @RequestMapping(value = "/list/page", method = RequestMethod.GET)
+    public String listPage() {
         return "/story/list";
+    }
+
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @ResponseBody
+    public AjaxResponse list(Query query) {
+        Page<Story> page = storyService.listAll(query);
+        return AjaxResponse.ok().data(page);
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
