@@ -1,9 +1,11 @@
 package lh.world;
 
 import lh.world.domain.Article;
+import lh.world.domain.Story;
 import lh.world.domain.User;
 import lh.world.repository.UserRepository;
 import lh.world.service.ArticleService;
+import lh.world.service.StoryService;
 import lh.world.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,6 +24,8 @@ public class VisuallifeApplicationTests {
     private UserRepository userRepository;
     @Autowired
     private ArticleService articleService;
+    @Autowired
+    private StoryService storyService;
 
     @Test
     public void contextLoads() {
@@ -29,15 +33,15 @@ public class VisuallifeApplicationTests {
 
     @Test
     public void Test() {
-        Optional<Article> articleOptional = articleService.findById(1L);
+        Optional<Story> storyOptional = storyService.findById(1L);
         Optional<User> userOptional = userService.findById(1L);
-        if (articleOptional.isPresent()) {
-            for (int i = 30; i < 100; i++) {
-                Article article = articleOptional.get();
-                article.setId(null);
-                article.setTitle("article" + i);
-                userOptional.ifPresent(article::setUser);
-                articleService.save(article);
+        if (storyOptional.isPresent()) {
+            for (int i = 4; i < 100; i++) {
+                Story story = storyOptional.get();
+                story.setId(null);
+                story.setDescription("story" + i);
+                userOptional.ifPresent(story::setUser);
+                storyService.save(story);
             }
         }
     }

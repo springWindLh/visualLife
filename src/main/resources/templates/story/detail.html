@@ -31,7 +31,7 @@
         <p style="color: #fad6a6;">评论（{{comments.length}}）</p>
         <hr class="bg-faded">
         <div class="bg-white margin-bottom10">
-            <form name="commentForm">
+            <form name="commentForm" ng-if="currentUserId != -1">
                 <div>
                     <textarea rows="3" class="form-control" ng-maxlength="500" placeholder="你的评论……" required
                               ng-model="newComment.content"></textarea>
@@ -42,6 +42,9 @@
                     </button>
                 </div>
             </form>
+            <div class="height50 padding10" ng-if="currentUserId == -1">
+                <p><a href="" ng-click="toLoginPage()"><span class="text-info">登录</span></a> 后可评论</p>
+            </div>
         </div>
         <div ng-repeat="comment in comments track by $index">
             <div class="row" style="margin:1em 0em;padding-bottom:1em;border-bottom: dashed 0.1em #866667;">
@@ -121,7 +124,7 @@
                             </div>
                         </div>
                         <div class="margin-top10 reply bg-red" style="display: none;">
-                            <form>
+                            <form ng-if="currentUserId != -1">
                                 <div><textarea rows="3" placeholder="回复内容……" class="form-control"
                                                ng-model="newReply.content"></textarea></div>
                                 <div>
@@ -131,6 +134,9 @@
                                     </button>
                                 </div>
                             </form>
+                            <div class="height50 padding10" ng-if="currentUserId == -1">
+                                <p><a href="" ng-click="toLoginPage()"><span class="text-info">登录</span></a> 后可回复</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -143,7 +149,7 @@
 </body>
 <script type="text/javascript" th:inline="javascript">
     var commentApp = angular.module('commentApp', []);
-    commentApp.controller('commentController', function ($scope, $http) {
+    commentApp.controller('commentController', function ($scope, $http,$location) {
         $scope.comments = [];
         var targetId = [[${form.id}]];
         var targetType = 'STORY';
@@ -267,6 +273,10 @@
                     });
                 }
             });
+        };
+
+        $scope.toLoginPage = function () {
+          location.href = '/loginPage?needBack=true&backUrl='+$location.absUrl();
         };
         <!--评论与回复 end-->
     });

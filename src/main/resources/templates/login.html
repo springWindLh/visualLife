@@ -51,19 +51,20 @@
                 </fieldset>
                 <fieldset class="form-group">
                     <div class="input-group">
-                        <div class="input-group-addon"><i class="fa fa-lock width10"></i> </div>
+                        <div class="input-group-addon"><i class="fa fa-lock width10"></i></div>
                         <input type="password" class="form-control" placeholder="密码" ng-model="password">
                     </div>
                 </fieldset>
                 <button type="button" class="btn btn-info-outline btn-block" ng-click="login()">登&nbsp;&nbsp;录</button>
                 <fieldset class="form-group">
-                   <div style="padding-top: 20px;">
-                       <label><input type="checkbox"  value="true" ng-model="rememberMe">&nbsp;记住我</label>
-                       <a href="/registerPage" class="pull-right">去注册<i class="fa fa-arrow-circle-right"></i></a>
-                   </div>
+                    <div style="padding-top: 20px;">
+                        <label><input type="checkbox" value="true" ng-model="rememberMe">&nbsp;记住我</label>
+                        <a ng-href="{{registerHref}}" class="pull-right">去注册<i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
                 </fieldset>
             </form>
-            <div ng-cloak ng-show="loginFailure" id="alertInfo" class="alert alert-danger alert-dismissible fade in margin-top10" role="alert">
+            <div ng-cloak ng-show="loginFailure" id="alertInfo"
+                 class="alert alert-danger alert-dismissible fade in margin-top10" role="alert">
                 <button type="button" class="close" ng-click="hiddenMsg()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     <span class="sr-only">Close</span>
@@ -77,40 +78,52 @@
 </body>
 <script type="text/javascript" th:inline="javascript">
     var app = angular.module('loginApp', []);
-    app.controller('loginController', function ($scope,$http) {
+    app.controller('loginController', function ($scope, $http) {
         $scope.nameOrMobile = '';
         $scope.password = '';
+        $scope.needBack = [[${needBack}]] || false;
+        $scope.backUrl = [[${backUrl}]] || '/home';
+        $scope.registerHref = '/registerPage';
+        if ($scope.needBack) {
+            $scope.registerHref += '?needBack=true&backUrl=' + $scope.backUrl;
+        }
         $scope.login = function () {
             $scope.loginFailure = false;
             $scope.responseMsg = '';
-            if($scope.nameOrMobile == ''){
+            if ($scope.nameOrMobile == '') {
                 $scope.loginFailure = true;
                 $scope.responseMsg = '请填写昵称或手机号';
-            }else if($scope.password == ''){
+            } else if ($scope.password == '') {
                 $scope.loginFailure = true;
                 $scope.responseMsg = '请填写密码';
             }
-            $http.get('/login',{params:{
-                nameOrMobile:$scope.nameOrMobile,
-                password:$scope.password
-            }}).success(function (data) {
-                if(data.code){
-                    location.href = data.jumpUrl;
-                }else{
+            $http.get('/login', {
+                params: {
+                    nameOrMobile: $scope.nameOrMobile,
+                    password: $scope.password
+                }
+            }).success(function (data) {
+                if (data.code) {
+                    if ($scope.needBack) {
+                        location.href = $scope.backUrl;
+                    } else {
+                        location.href = data.jumpUrl;
+                    }
+                } else {
                     $scope.loginFailure = true;
                     $scope.responseMsg = data.msg;
                 }
             });
         };
 
-        $scope.hiddenMsg = function(){
+        $scope.hiddenMsg = function () {
             $scope.loginFailure = false;
         };
 
         $(function () {
-            document.onkeydown = function(e){
-                e = e||event;
-                if(e.keyCode == 13) {
+            document.onkeydown = function (e) {
+                e = e || event;
+                if (e.keyCode == 13) {
                     $scope.login();
                 }
             };

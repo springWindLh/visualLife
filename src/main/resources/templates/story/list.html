@@ -18,7 +18,7 @@
     <div>
         <a class="btn btn-lg writeBtn" href="/story/add"><i class="fa fa-pencil"></i> 写故事</a>
     </div>
-    <div class="card col-md-3 height150" style="border: none;" ng-cloak infinite-scroll="getMoreArticles()" infinite-scroll-disabled="pageLast"
+    <div class="card col-md-3 height160 margin-bottom20" style="border: none;" ng-cloak infinite-scroll="getMoreStories()" infinite-scroll-disabled="pageLast"
          infinite-scroll-distance='0' ng-repeat="story in stories track by $index" on-finish-render>
         <a ng-href="/story/{{story.id}}" target="_blank"><img ng-src="{{story.picture}}" class="card-img-top height100 widthFull">
             <div class="story card-block height60" style="background-color: rgba(235, 238, 235, 0.1);">
@@ -64,7 +64,7 @@
                     page: page - 1,
                     size: $scope.pageSize
                 }
-            }).success(function (data) {console.log(data);
+            }).success(function (data) {
                 if (data.code) {
                     $scope.stories = $scope.stories.concat(data.data.content);
                     $scope.currentPage = data.data.number + 1;

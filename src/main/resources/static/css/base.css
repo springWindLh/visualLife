@@ -68,8 +68,8 @@
 .margin-top20{margin-top: 2em;}
 .margin-top40{margin-top: 4em;}
 .margin-top50{margin-top: 5em;}
-.margin-bottom10{margin-bottom:1em;}
-.margin-bottom20{margin-bottom:2em;}
+.margin-bottom10{margin-bottom:1em !important;}
+.margin-bottom20{margin-bottom:2em !important;}
 .listNoneStyle{list-style: none;}
 .size26{font-size: 2.6em;}
 .size7{font-size: 0.7em;}

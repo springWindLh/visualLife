@@ -28,8 +28,6 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/loginPage").setViewName("/login");
-        registry.addViewController("/registerPage").setViewName("/register");
     }
 
     @Override

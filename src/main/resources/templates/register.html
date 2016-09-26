@@ -38,7 +38,8 @@
 
             <fieldset class="form-group"
                       ng-class="{'has-error':registerForm.name.$dirty && registerForm.name.$invalid,'has-success':registerForm.name.$dirty && registerForm.name.$valid}">
-                <label ng-cloak class="control-label size7" ng-show="registerForm.name.$dirty && registerForm.name.$invalid">请填写昵称，且长度为1~20位</label>
+                <label ng-cloak class="control-label size7"
+                       ng-show="registerForm.name.$dirty && registerForm.name.$invalid">请填写昵称，且长度为1~20位</label>
                 <div class="input-group">
                     <label class="input-group-addon"><i class="fa fa-user width10"></i> </label>
                     <input class="form-control" placeholder="昵称" type="text" name="name" required ng-minlength="1"
@@ -70,7 +71,8 @@
             </fieldset>
             <fieldset class="form-group"
                       ng-class="{'has-error':registerForm.mobile.$dirty && registerForm.mobile.$invalid,'has-success':registerForm.mobile.$dirty && registerForm.mobile.$valid}">
-                <label ng-cloak class="control-label size7" ng-show="registerForm.mobile.$dirty && registerForm.mobile.$invalid">请填写正确的手机号</label>
+                <label ng-cloak class="control-label size7"
+                       ng-show="registerForm.mobile.$dirty && registerForm.mobile.$invalid">请填写正确的手机号</label>
                 <div class="input-group">
                     <label class="input-group-addon"><i class="fa fa-mobile width10"></i> </label>
                     <input class="form-control" placeholder="手机号" type="text" name="mobile" required
@@ -79,11 +81,12 @@
             </fieldset>
             <fieldset class="form-group"
                       ng-class="{'has-error':registerForm.email.$dirty && registerForm.email.$invalid,'has-success':registerForm.email.$dirty && registerForm.email.$valid}">
-                <label ng-cloak class="control-label size7" ng-show="registerForm.email.$dirty && registerForm.mail.$invalid">请填写正确的邮箱地址</label>
+                <label ng-cloak class="control-label size7"
+                       ng-show="registerForm.email.$dirty && registerForm.mail.$invalid">请填写正确的邮箱地址</label>
                 <div class="input-group">
                     <label class="input-group-addon"><i class="fa fa-envelope width10"></i> </label>
                     <input class="form-control" placeholder="邮箱，用于找回密码" type="email" name="email" required
-                           ng-model-options="{ updateOn: 'blur' }" ng-model="user.email">
+                           ng-model="user.email">
                 </div>
             </fieldset>
             <button type="button" ng-click="register()"
@@ -93,7 +96,8 @@
             <div class="text-right margin-top10">
                 <a href="/loginPage">去登录<i class="fa fa-sign-in"></i> </a>
             </div>
-            <div ng-cloak ng-show="registerSuccess" id="alertInfo" class="alert alert-dismissible fade in margin-top10" role="alert">
+            <div ng-cloak ng-show="registerSuccess" id="alertInfo" class="alert alert-dismissible fade in margin-top10"
+                 role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     <span class="sr-only">Close</span>
@@ -107,6 +111,8 @@
 <script type="text/javascript" th:inline="javascript">
     var app = angular.module('registerApp', []);
     app.controller('registerController', function ($scope, $http) {
+        $scope.needBack = [[${needBack}]] || false;
+        $scope.backUrl = [[${backUrl}]] || '/home';
         $scope.user = {
             name: '',
             password: '',
@@ -128,7 +134,11 @@
                     angular.element("#alertInfo").addClass("alert-success");
                     setResponseMsg("注册成功！3秒后自动跳转……", true);
                     setTimeout(function () {
-                        location.href = data.jumpUrl;
+                        if ($scope.needBack) {
+                            location.href = $scope.backUrl;
+                        } else {
+                            location.href = data.jumpUrl;
+                        }
                     }, 3000);
                 } else {
                     angular.element("#alertInfo").addClass("alert-danger");

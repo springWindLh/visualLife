@@ -9,6 +9,7 @@ import lh.world.service.UserService;
 import lh.world.util.EncrptUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,17 @@ import java.util.Optional;
 public class LoginController extends BaseController {
     @Autowired
     UserService userService;
+
+    @RequestMapping(value = "/loginPage", method = RequestMethod.GET)
+    public String loginPage(@RequestParam(required = false) Boolean needBack, @RequestParam(required = false) String backUrl, Model model) {
+        if (needBack != null) {
+            model.addAttribute("needBack", needBack);
+        }
+        if (!Strings.isNullOrEmpty(backUrl)) {
+            model.addAttribute("backUrl", backUrl);
+        }
+        return "/login";
+    }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     @ResponseBody
@@ -36,6 +48,17 @@ public class LoginController extends BaseController {
         } else {
             return AjaxResponse.fail().msg(errorMsg);
         }
+    }
+
+    @RequestMapping(value = "/registerPage", method = RequestMethod.GET)
+    public String registerPage(@RequestParam(required = false) Boolean needBack, @RequestParam(required = false) String backUrl, Model model) {
+        if (needBack != null) {
+            model.addAttribute("needBack", needBack);
+        }
+        if (!Strings.isNullOrEmpty(backUrl)) {
+            model.addAttribute("backUrl", backUrl);
+        }
+        return "/register";
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
