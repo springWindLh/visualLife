@@ -37,7 +37,9 @@
     <nav class="navbar navbar-fixed-top navbar-light bg-red shadow2">
         <div class="container">
             <div class="col-md-5">
-                <a class="navbar-brand" href="">VisualLife</a>
+                <a class="navbar-brand" href="">
+                    <img src="/static/image/logo_md.png">
+                </a>
                 <ul class="nav navbar-nav">
                     <li class="nav-item">
                         <a id="navArticle" class="nav-link" href="/home">文章</a>
@@ -49,7 +51,7 @@
             </div>
             <div class="pull-right col-md-3">
             <div class="dropdown">
-                <div th:if="${session.user == null}" style="padding-top: 0.5em;"><a href="/loginPage">登录&nbsp;|&nbsp;注册</a></div>
+                <div th:if="${session.user == null}" style="padding-top: 0.5em;"><a href="/loginPage" style="color:  rgb(206, 175, 175);text-shadow: 0.05em 0.05em 0.2em black;">登录</a>&nbsp;|&nbsp;<a href="/registerPage" style="color:  #e0d6ae;text-shadow: 0.05em 0.05em 0.2em black;" >注册</a></div>
                 <div id="userBlock" data-target="#" data-toggle="dropdown" th:if="${session.user != null}" style="padding-top: 0.5em;">
                     <a href=""><img th:src="${#strings.isEmpty(session.user.avatar)?'http://ocb2rlqpi.bkt.clouddn.com/avatar.jpg':session.user.avatar}" class="width20 height20 borderRadius50">
                         &nbsp;<span th:text="${session.user.name}"></span></a>

@@ -5,11 +5,9 @@
     <title>login</title>
     <style>
         .loginOuter {
-            width: 0;
-            height: 0;
             position: fixed;
             left: 50%;
-            top: 50%;
+            top: 60%;
         }
 
         .loginInter {
@@ -31,6 +29,12 @@
             padding-left: 3em;
             border-left: dotted 1px lightgrey;
         }
+
+        .loginForm .logo{
+            margin-left: -6.6em;
+            margin-top: -6em;
+            margin-bottom: 1em;
+        }
     </style>
 
 </head>
@@ -39,27 +43,30 @@
 <div class="loginOuter">
     <div class="loginInter">
         <div class="pull-left loginImg">
-            <img src="">
+            <img src="/static/image/login_img.jpg">
         </div>
         <div class="pull-right loginForm" ng-controller="loginController">
+            <div class="logo">
+                <img src="/static/image/logo_lg.png">
+            </div>
             <form name="loginForm">
                 <fieldset class="form-group">
                     <div class="input-group">
-                        <div class="input-group-addon"><i class="fa fa-user width10"></i></div>
+                        <div class="input-group-addon bg-red borderNone"><i class="fa fa-user width10"></i></div>
                         <input type="text" class="form-control" placeholder="昵称/手机号" ng-model="nameOrMobile">
                     </div>
                 </fieldset>
                 <fieldset class="form-group">
                     <div class="input-group">
-                        <div class="input-group-addon"><i class="fa fa-lock width10"></i></div>
+                        <div class="input-group-addon bg-red borderNone"><i class="fa fa-lock width10"></i></div>
                         <input type="password" class="form-control" placeholder="密码" ng-model="password">
                     </div>
                 </fieldset>
-                <button type="button" class="btn btn-info-outline btn-block" ng-click="login()">登&nbsp;&nbsp;录</button>
+                <button type="button" class="btn btn-warning-outline btn-block" ng-click="login()">登&nbsp;&nbsp;录</button>
                 <fieldset class="form-group">
                     <div style="padding-top: 20px;">
-                        <label><input type="checkbox" value="true" ng-model="rememberMe">&nbsp;记住我</label>
-                        <a ng-href="{{registerHref}}" class="pull-right">去注册<i class="fa fa-arrow-circle-right"></i></a>
+                        <label class="pointer textWhite2"><input type="checkbox" value="true" ng-model="rememberMe">&nbsp;记住我</label>
+                        <a ng-href="{{registerHref}}" class="pull-right jumpLink">去注册&nbsp;<i class="fa fa-arrow-circle-right"></i></a>
                     </div>
                 </fieldset>
             </form>

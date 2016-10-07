@@ -19,20 +19,30 @@
             margin-top: -20em;
             padding: 1em;
         }
+
+        .registerForm .logo{
+            margin-left: 5em;
+            margin-bottom: 2em;
+        }
     </style>
 </head>
 <body>
 <div th:include="fragment::files"></div>
 <div class="registerOuter">
     <div class="registerForm" ng-controller="registerController">
+        <div class="logo">
+            <img src="/static/image/logo_lg.png">
+        </div>
         <form name="registerForm">
-            <fieldset class="form-group">
+            <fieldset class="form-group bg-red shadow2 borderRadius5">
                 <i class="fa fa-male margin10"></i>
                 <label class="radio-inline">
-                    <input type="radio" name="sex" value="MAN" minlength="2" maxlength="20" ng-model="user.sex">男
+                    <input type="radio" name="sex" value="MAN" minlength="2" maxlength="20" ng-model="user.sex">
+                    <i class="fa fa-mars"></i>
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" name="sex" value="WOMAN" ng-model="user.sex">女
+                    <input type="radio" name="sex" value="WOMAN" ng-model="user.sex">
+                    <i class="fa fa-venus"></i>
                 </label>
             </fieldset>
 
@@ -41,7 +51,7 @@
                 <label ng-cloak class="control-label size7"
                        ng-show="registerForm.name.$dirty && registerForm.name.$invalid">请填写昵称，且长度为1~20位</label>
                 <div class="input-group">
-                    <label class="input-group-addon"><i class="fa fa-user width10"></i> </label>
+                    <label class="input-group-addon bg-red borderNone"><i class="fa fa-user width10"></i> </label>
                     <input class="form-control" placeholder="昵称" type="text" name="name" required ng-minlength="1"
                            ng-model-options="{ updateOn: 'blur' }" ng-maxlength="20" ng-model="user.name">
                 </div>
@@ -52,7 +62,7 @@
                 <label ng-cloak class="control-label size7"
                        ng-show="registerForm.password.$dirty && registerForm.password.$invalid">请填写密码，且长度为6~12位</label>
                 <div class="input-group">
-                    <label class="input-group-addon"><i class="fa fa-lock width10"></i> </label>
+                    <label class="input-group-addon bg-red borderNone"><i class="fa fa-lock width10"></i> </label>
                     <input class="form-control" placeholder="密码" type="password" name="password" required
                            ng-minlength="6" ng-maxlength="12"
                            ng-model-options="{ updateOn: 'blur' }" ng-model="user.password">
@@ -64,7 +74,7 @@
                 <label ng-cloak class="control-label size7"
                        ng-show="user.password != user.repeatPwd && registerForm.repeatPwd.$dirty">密码输入不一致</label>
                 <div class="input-group">
-                    <label class="input-group-addon"><i class="fa fa-lock width10"></i> </label>
+                    <label class="input-group-addon bg-red borderNone"><i class="fa fa-lock width10"></i> </label>
                     <input class="form-control" placeholder="重复密码" type="password" name="repeatPwd" required
                            ng-model-options="{ updateOn: 'blur' }" ng-model="user.repeatPwd">
                 </div>
@@ -74,7 +84,7 @@
                 <label ng-cloak class="control-label size7"
                        ng-show="registerForm.mobile.$dirty && registerForm.mobile.$invalid">请填写正确的手机号</label>
                 <div class="input-group">
-                    <label class="input-group-addon"><i class="fa fa-mobile width10"></i> </label>
+                    <label class="input-group-addon bg-red borderNone"><i class="fa fa-mobile width10"></i> </label>
                     <input class="form-control" placeholder="手机号" type="text" name="mobile" required
                            ng-model-options="{ updateOn: 'blur' }" ng-model="user.mobile">
                 </div>
@@ -84,17 +94,17 @@
                 <label ng-cloak class="control-label size7"
                        ng-show="registerForm.email.$dirty && registerForm.mail.$invalid">请填写正确的邮箱地址</label>
                 <div class="input-group">
-                    <label class="input-group-addon"><i class="fa fa-envelope width10"></i> </label>
+                    <label class="input-group-addon bg-red borderNone"><i class="fa fa-envelope width10"></i> </label>
                     <input class="form-control" placeholder="邮箱，用于找回密码" type="email" name="email" required
                            ng-model="user.email">
                 </div>
             </fieldset>
             <button type="button" ng-click="register()"
                     ng-disabled="registerForm.$invalid || user.password != user.repeatPwd"
-                    class="btn btn-block btn-info-outline">注&nbsp;&nbsp;册
+                    class="btn btn-block btn-warning-outline">注&nbsp;&nbsp;册
             </button>
             <div class="text-right margin-top10">
-                <a href="/loginPage">去登录<i class="fa fa-sign-in"></i> </a>
+                <a href="/loginPage" class="jumpLink">去登录&nbsp;<i class="fa fa-sign-in"></i> </a>
             </div>
             <div ng-cloak ng-show="registerSuccess" id="alertInfo" class="alert alert-dismissible fade in margin-top10"
                  role="alert">

@@ -17,6 +17,11 @@ body {
     color: #e0d6ae;
 }
 
+.jumpLink:hover,.jumpLink:link,.jumpLink:visited,.jumpLink:active  {
+    text-decoration: none;
+    color: #d59577;
+}
+
 .webuploader-pick{
     background-color: rgba(99, 53, 30, 0.88);
     color: #d0d2ca;
