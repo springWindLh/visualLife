@@ -77,8 +77,8 @@
     <div class="col-md-4" style="padding-top: 2em;">
         <small style="color:#d0d2ca;">封面预览</small>
         <div class="card maxWidth200 margin-top5">
-            <img ng-src="{{article.coverImg}}" class="widthFull">
-            <div class="card-block bg-white">
+            <img ng-if="article.coverImg != null" ng-src="{{article.coverImg}}" class="widthFull">
+            <div ng-if="article.summarize != ''" class="card-block bg-white">
                 <div class="card-text">
                     {{article.summarize | lengthFilter:110}}
                 </div>
@@ -88,7 +88,7 @@
         <div class="form-group" style="padding-top: 1em;">
             <textarea rows="5" class="form-control maxWidth200" placeholder="封面文字" ng-model="article.summarize"></textarea>
         </div>
-        <div class="maxWidth200">
+        <div class="maxWidth200" ng-cloak>
         <button type="button" ng-if="article.id == null" class="btn btn-info-outline width80" ng-click="saveArticle()"><i class="fa fa-pencil"></i>&nbsp;发表</button>
         <button type="button" ng-if="article.id != null" class="btn btn-info-outline width80" ng-click="updateArticle()"><i class="fa fa-pencil"></i>&nbsp;更新</button>
         <a href="javascript;" class="backBtn pull-right margin-top10" onclick="javascript:window.history.go(-1);">返回<i class="fa fa-angle-right"></i> </a>

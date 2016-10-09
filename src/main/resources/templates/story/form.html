@@ -11,6 +11,8 @@
 <body>
 <div th:include="fragment::navbar"></div>
 <div class="container margin-top40">
+    <div class="col-md-6" style="background: url('/static/image/story_img.jpg') no-repeat center;height: 320px;">
+    </div>
     <form ng-controller="storyController" class="col-md-4">
         <div>
             <fieldset class="form-group">
@@ -20,10 +22,10 @@
             <fieldset class="form-group">
                 <textarea rows="5" class="form-control" placeholder="故事简述" ng-model="story.description"></textarea>
             </fieldset>
-            <button ng-cloak class="btn btn-info-outline" style="width: 8.7em" ng-if="story.id == null" ng-click="saveStory()"><i
+            <button ng-cloak class="btn btn-warning-outline" style="width: 8.7em" ng-if="story.id == null" ng-click="saveStory()"><i
                     class="fa fa-pencil"></i>&nbsp;发表
             </button>
-            <button ng-cloak class="btn btn-info-outline" style="width: 8.7em" ng-if="story.id != null" ng-click="updateStory()"><i
+            <button ng-cloak class="btn btn-warning-outline" style="width: 8.7em" ng-if="story.id != null" ng-click="updateStory()"><i
                     class="fa fa-pencil"></i>&nbsp;更新
             </button>
         </div>
