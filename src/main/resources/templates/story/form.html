@@ -39,14 +39,31 @@
     app.controller('storyController', function ($scope, $http) {
         $scope.story = {
             id: [[${form.id}]],
-            picture: [[${form.picture}]],
-            description: [[${form.description}]]
+            picture: [[${form.picture}]] || '',
+            description: [[${form.description}]] || ''
         };
 
+        function verifyForm() {
+            if($scope.story.picture == ''){
+                Tooltip.fail('请上传故事图片');
+                return false;
+            }else if($scope.story.description == ''){
+                Tooltip.fail('请填写故事简述');
+                return false;
+            }else if($scope.story.description > 240){
+                Tooltip.fail('故事简述不能超过240字符');
+                return false;
+            }else{
+                return true;
+            }
+        }
+
         $scope.saveStory = function () {
-            $http.post('/story/add', $scope.story).success(function (data) {
+            if(verifyForm()) {
+                $http.post('/story/add', $scope.story).success(function (data) {
                     Tooltip.handle(data);
-            });
+                });
+            }
         };
 
         $scope.updateStory = function () {

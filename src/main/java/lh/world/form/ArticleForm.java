@@ -1,19 +1,27 @@
 package lh.world.form;
 
 import lh.world.domain.Article;
-import lh.world.domain.User;
 import lh.world.form.support.BaseForm;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
  * Created by lh on 2016/8/11.
  */
 public class ArticleForm extends BaseForm {
+    @NotBlank(message = "{article.title.notBlank}")
+    @Length(message = "{article.title.length}", max = 20)
     private String title;
+
+    @NotBlank(message = "{article.content.notBlank}")
     private String content;
+
+    @NotBlank(message = "{article.coverImg.notBlank}")
     private String coverImg;
+
+    @Length(message = "{article.summarize.length}", max = 200)
     private String summarize;
     private Integer vote;
     private Integer weight;

@@ -38,12 +38,12 @@
         <fieldset class="form-group" ng-class="{'has-error':infoForm.email.$dirty && infoForm.email.$invalid}">
             <label class="inputLabel">邮箱</label>
             <label ng-cloak class="control-label size7" ng-show="infoForm.email.$dirty && infoForm.email.$invalid">请填写正确的邮箱地址</label>
-            <input type="email" name="email" class="form-control" required ng-model-options="{ updateOn: 'blur' }" ng-model="user.email">
+            <input type="email" name="email" class="form-control" required ng-model="user.email">
         </fieldset>
         <fieldset class="form-group" ng-class="{'has-error':infoForm.introduce.$dirty && infoForm.introduce.$invalid}">
             <label class="inputLabel">自我简介</label>
             <label ng-cloak class="control-label size7" ng-show="infoForm.introduce.$dirty && infoForm.introduce.$invalid">内容长度不能超过50位</label>
-            <textarea class="form-control" name="introduce" rows="3" ng-maxlength="50" ng-model-options="{ updateOn: 'blur' }" ng-model="user.introduce">
+            <textarea class="form-control" name="introduce" rows="3" ng-maxlength="50" ng-model="user.introduce">
              </textarea>
         </fieldset>
         <fieldset class="form-group margin-top20">

@@ -2,6 +2,8 @@ package lh.world.form;
 
 import lh.world.domain.Reply;
 import lh.world.form.support.BaseForm;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 
 import java.util.Date;
 
@@ -9,6 +11,8 @@ import java.util.Date;
  * Created by lh on 2016/9/18.
  */
 public class ReplyForm extends BaseForm {
+    @NotBlank(message = "{reply.content.notBlank}")
+    @Length(message = "{reply.content.length}", max = 500)
     private String content;
     private Long commentId;
     private Long accepterId;

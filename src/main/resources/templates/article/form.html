@@ -108,18 +108,41 @@
 
         $scope.article = {
             id:[[${form.id}]],
-            title: [[${form.title}]],
-            content: [[${form.content}]],
-            coverImg: [[${form.coverImg}]],
+            title: [[${form.title}]] || '',
+            content: [[${form.content}]] || '',
+            coverImg: [[${form.coverImg}]] || '',
             summarize: [[${form.summarize}]] || '',
             vote: [[${form.vote}]] || 0,
             weight: [[${form.weight}]] || 0
         };
 
+        function verifyForm() {
+            if($scope.article.title == '') {
+                Tooltip.fail('请填写文章标题');
+                return false;
+            }else if($scope.article.title.length > 20) {
+                Tooltip.fail('文章标题不能超过20字符');
+                return false;
+            }else if($scope.article.summarize.length > 200){
+                Tooltip.fail('封面文字不能超过200字符');
+                return false;
+            }else if($scope.article.content == ''){
+                Tooltip.fail('请填写文章内容');
+                return false;
+            }else if($scope.article.coverImg == ''){
+                Tooltip.fail('请上传封面图片');
+                return false;
+            }else {
+                return true;
+            }
+        }
+        
         $scope.saveArticle = function () {
-            $http.post('/article/add', $scope.article).success(function (data) {
-                Tooltip.handle(data);
-            });
+            if(verifyForm()) {
+                $http.post('/article/add', $scope.article).success(function (data) {
+                    Tooltip.handle(data);
+                });
+            }
         };
 
         $scope.updateArticle = function () {

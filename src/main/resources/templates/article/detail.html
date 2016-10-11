@@ -209,20 +209,26 @@
             content: ''
         };
         $scope.saveReply = function (commentId, accepterId, content, replies, e) {
-            $scope.newReply = {
-                commentId: commentId,
-                accepterId: accepterId,
-                content: content
-            };
-            $http.post('/reply/add', $scope.newReply).success(function (data) {
-                if (data.code) {
-                    replies.push(data.data);
-                    $scope.newReply.content = '';
-                    angular.element(e.target).parents('div.reply').hide();
-                } else {
-                    Tooltip.fail(data.msg);
-                }
-            });
+            if(content == ''){
+                Tooltip.fail('回复内容不能为空');
+            }else if(content.length >500) {
+                Tooltip.fail('回复内容不能超过500字符');
+            }else{
+                $scope.newReply = {
+                    commentId: commentId,
+                    accepterId: accepterId,
+                    content: content
+                };
+                $http.post('/reply/add', $scope.newReply).success(function (data) {
+                    if (data.code) {
+                        replies.push(data.data);
+                        $scope.newReply.content = '';
+                        angular.element(e.target).parents('div.reply').hide();
+                    } else {
+                        Tooltip.fail(data.msg);
+                    }
+                });
+            }
         };
 
         $scope.verifyCommentVote = function (commentId) {

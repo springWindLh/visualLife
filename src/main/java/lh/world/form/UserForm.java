@@ -2,16 +2,23 @@ package lh.world.form;
 
 import lh.world.domain.User;
 import lh.world.form.support.BaseForm;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * Created by lh on 2016/8/11.
  */
 public class UserForm extends BaseForm {
+    @NotBlank(message = "{user.name.notBlank}")
+    @Length(message = "{user.name.length}",max = 20)
     private String name;
     private String password;
+    @NotBlank(message = "{user.mobile.notBlank}")
     private String mobile;
+    @NotBlank(message = "{user.email.notBlank}")
     private String email;
     private String avatar;
+    @Length(message = "{user.introduce.length}",max = 50)
     private String introduce;
     private User.Role role;
 

@@ -2,6 +2,8 @@ package lh.world.form;
 
 import lh.world.domain.Story;
 import lh.world.form.support.BaseForm;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -10,7 +12,11 @@ import java.util.Date;
  * Created by lh on 2016/8/31.
  */
 public class StoryForm extends BaseForm {
+    @NotBlank(message = "{story.picture.notBlank}")
     private String picture;
+
+    @NotBlank(message = "{story.description.notBlank}")
+    @Length(message = "{story.description.length}",max = 240)
     private String description;
 
     public StoryForm() {

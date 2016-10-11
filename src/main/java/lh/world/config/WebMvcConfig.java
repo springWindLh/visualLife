@@ -3,8 +3,11 @@ package lh.world.config;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import lh.world.interceptor.LoginInterceptor;
+import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.format.support.FormattingConversionServiceFactoryBean;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -49,5 +52,13 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     @Bean
     public FormattingConversionServiceFactoryBean getFormattingConversionServiceFactoryBean() {
         return new FormattingConversionServiceFactoryBean();
+    }
+
+    @Bean
+    public PropertyPlaceholderConfigurer getPropertyPlaceholderConfigurer() {
+        PropertyPlaceholderConfigurer configurer = new PropertyPlaceholderConfigurer();
+        Resource location = new ClassPathResource("classpath:validationMessage.properties");
+        configurer.setLocation(location);
+        return configurer;
     }
 }

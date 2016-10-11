@@ -2,6 +2,8 @@ package lh.world.form;
 
 import lh.world.domain.Comment;
 import lh.world.form.support.BaseForm;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 
 import java.util.Date;
 
@@ -11,6 +13,9 @@ import java.util.Date;
 public class CommentForm extends BaseForm {
     private Long targetId;
     private String targetType;
+
+    @NotBlank(message = "{comment.content.notBlank}")
+    @Length(message = "{comment.content.length}", max = 500)
     private String content;
 
     public CommentForm() {
