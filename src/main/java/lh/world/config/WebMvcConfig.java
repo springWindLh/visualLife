@@ -2,6 +2,7 @@ package lh.world.config;
 
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import com.google.common.collect.Lists;
 import lh.world.interceptor.LoginInterceptor;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
@@ -57,8 +58,12 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     @Bean
     public PropertyPlaceholderConfigurer getPropertyPlaceholderConfigurer() {
         PropertyPlaceholderConfigurer configurer = new PropertyPlaceholderConfigurer();
-        Resource location = new ClassPathResource("classpath:validationMessage.properties");
-        configurer.setLocation(location);
+        List<Resource> resources = Lists.newArrayList(
+                new ClassPathResource("application.properties"),
+                new ClassPathResource("validationMessage.properties")
+        );
+
+        configurer.setLocations(resources.toArray(new Resource[resources.size()]));
         return configurer;
     }
 }
