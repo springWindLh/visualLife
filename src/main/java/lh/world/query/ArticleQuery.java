@@ -1,5 +1,6 @@
 package lh.world.query;
 
+
 import lh.world.query.support.Query;
 
 /**
