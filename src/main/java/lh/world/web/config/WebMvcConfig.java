@@ -1,9 +1,9 @@
-package lh.world.config;
+package lh.world.web.config;
 
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.google.common.collect.Lists;
-import lh.world.interceptor.LoginInterceptor;
+import lh.world.web.interceptor.LoginInterceptor;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,7 +1,7 @@
-package lh.world.controller;
+package lh.world.web.controller;
 
-import lh.world.controller.support.AjaxResponse;
-import lh.world.controller.support.BaseController;
+import lh.world.web.controller.support.AjaxResponse;
+import lh.world.web.controller.support.BaseController;
 import lh.world.domain.Article;
 import lh.world.form.ArticleForm;
 import lh.world.query.support.Query;

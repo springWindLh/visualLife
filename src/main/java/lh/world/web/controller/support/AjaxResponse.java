@@ -1,4 +1,4 @@
-package lh.world.controller.support;
+package lh.world.web.controller.support;
 
 import com.alibaba.fastjson.annotation.JSONField;
 

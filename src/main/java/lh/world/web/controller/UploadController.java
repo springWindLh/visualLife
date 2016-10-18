@@ -1,24 +1,18 @@
-package lh.world.controller;
+package lh.world.web.controller;
 
 import com.qiniu.common.QiniuException;
 import com.qiniu.http.Response;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
 import com.qiniu.util.Json;
-import lh.world.controller.support.AjaxResponse;
-import lh.world.controller.support.BaseController;
-import org.apache.commons.io.IOUtils;
+import lh.world.web.controller.support.AjaxResponse;
+import lh.world.web.controller.support.BaseController;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 

@@ -1,4 +1,4 @@
-package lh.world.query;
+package lh.world.web.query;
 
 
 import lh.world.query.support.Query;

@@ -1,8 +1,8 @@
-package lh.world.controller;
+package lh.world.web.controller;
 
 import com.google.common.base.Strings;
-import lh.world.controller.support.AjaxResponse;
-import lh.world.controller.support.BaseController;
+import lh.world.web.controller.support.AjaxResponse;
+import lh.world.web.controller.support.BaseController;
 import lh.world.domain.Comment;
 import lh.world.form.CommentForm;
 import lh.world.query.support.Query;

@@ -1,4 +1,4 @@
-package lh.world.interceptor;
+package lh.world.web.interceptor;
 
 import lh.world.domain.User;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
