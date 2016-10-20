@@ -66,7 +66,7 @@
                 </button>
                 <fieldset class="form-group">
                     <div style="padding-top: 20px;">
-                        <label class="pointer textWhite2"><input type="checkbox" ng-model="rememberMe" ng-model="rememberMe" ng-checked="rememberMe">&nbsp;记住我</label>
+                        <label class="pointer textWhite2"><input type="checkbox" ng-model="rememberMe">&nbsp;记住我</label>
                         <a ng-href="{{registerHref}}" class="pull-right jumpLink">去注册&nbsp;<i
                                 class="fa fa-arrow-circle-right"></i></a>
                     </div>
@@ -90,11 +90,11 @@
     app.controller('loginController', function ($scope, $http) {
         var vfUser = null;
         var vfUserStr = localStorage.getItem('vfUser');
-        var rememberMe = localStorage.getItem('rememberMe') || false;
+        var rememberMe = localStorage.getItem('rememberMe')=='true';
 
         function vfUserIsExist() {
             if(vfUserStr != undefined && vfUserStr != null) {
-                vfUser = JSON.parse(vfUserStr);console.log(vfUser);
+                vfUser = JSON.parse(vfUserStr);
                 return true;
             }else {
                 return false;
@@ -103,7 +103,7 @@
 
         $scope.nameOrMobile = vfUserIsExist() ? vfUser.nameOrMobile : '';
         $scope.password = vfUserIsExist() ? vfUser.password : '';
-        $scope.rememberMe = rememberMe;console.log(rememberMe);
+        $scope.rememberMe = rememberMe;
         $scope.needBack = [[${needBack}]] || false;
         $scope.backUrl = [[${backUrl}]] || '/home';
         $scope.registerHref = '/registerPage';
@@ -113,41 +113,42 @@
         $scope.login = function () {
             $scope.loginFailure = false;
             $scope.responseMsg = '';
-            if ($scope.nameOrMobile == '') {
-                $scope.loginFailure = true;
-                $scope.responseMsg = '请填写昵称或手机号';
-            } else if ($scope.password == '') {
-                $scope.loginFailure = true;
-                $scope.responseMsg = '请填写密码';
-            }console.log($scope.rememberMe);
-            if ($scope.rememberMe) {console.log(1);
+            if ($scope.rememberMe) {
                 var vfUser = {
                     nameOrMobile: $scope.nameOrMobile,
                     password: $scope.password
                 };
                 localStorage.setItem("vfUser", JSON.stringify(vfUser));
                 localStorage.setItem("rememberMe", $scope.rememberMe);
-            } else {console.log(2);
-                localStorage.removeItem("vfUser");console.log($scope.rememberMe);
+            } else {
+                localStorage.removeItem("vfUser");
                 localStorage.setItem("rememberMe", $scope.rememberMe);
             }
-            $http.get('/login', {
-                params: {
-                    nameOrMobile: $scope.nameOrMobile,
-                    password: $scope.password
-                }
-            }).success(function (data) {
-                if (data.code) {
-                    if ($scope.needBack) {
-                        location.href = $scope.backUrl;
-                    } else {
-                        location.href = data.jumpUrl;
+            if ($scope.nameOrMobile == '') {
+                $scope.loginFailure = true;
+                $scope.responseMsg = '请填写昵称或手机号';
+            } else if ($scope.password == '') {
+                $scope.loginFailure = true;
+                $scope.responseMsg = '请填写密码';
+            }else{
+                $http.get('/login', {
+                    params: {
+                        nameOrMobile: $scope.nameOrMobile,
+                        password: $scope.password
                     }
-                } else {
-                    $scope.loginFailure = true;
-                    $scope.responseMsg = data.msg;
-                }
-            });
+                }).success(function (data) {
+                    if (data.code) {
+                        if ($scope.needBack) {
+                            location.href = $scope.backUrl;
+                        } else {
+                            location.href = data.jumpUrl;
+                        }
+                    } else {
+                        $scope.loginFailure = true;
+                        $scope.responseMsg = data.msg;
+                    }
+                });
+            }
         };
 
         $scope.hiddenMsg = function () {
