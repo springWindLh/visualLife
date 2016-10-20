@@ -8,7 +8,7 @@
 </head>
 <body>
 <div th:include="fragment::navbar"></div>
-<div class="container" style="margin-top: 3.5em">
+<div class="container" style="margin-top: 4em">
     <div class="col-md-4">
         <div id="jquery-accordion-menu"
              style="position:fixed;min-width: 10em;max-width:23em;box-shadow: 0 5px 10px #333;"
@@ -194,10 +194,12 @@
             $scope.user = data.data;
         });
 
-        $scope.updateUser = function () {
-            $http.post('/user/update', $scope.user).success(function (data) {
-                Tooltip.handle(data);
-            });
+        $scope.updateUser = function (isValid) {
+            if(isValid) {
+                $http.post('/user/update', $scope.user).success(function (data) {
+                    Tooltip.handle(data);
+                });
+            }
         };
 
         var uploader = WebUploader.create({
@@ -232,15 +234,17 @@
         $scope.oldPassword = '';
         $scope.newPassword = '';
         $scope.confirmPassword = '';
-        $scope.updatePassword = function () {
-            $http.get('/user/update/password/' + [[${session.user.id}]], {
-                params: {
-                    oldPassword: $scope.oldPassword,
-                    newPassword: $scope.newPassword
-                }
-            }).success(function (data) {
-                Tooltip.handle(data);
-            });
+        $scope.updatePassword = function (isValid) {
+            if(isValid) {
+                $http.get('/user/update/password/' + [[${session.user.id}]], {
+                    params: {
+                        oldPassword: $scope.oldPassword,
+                        newPassword: $scope.newPassword
+                    }
+                }).success(function (data) {
+                    Tooltip.handle(data);
+                });
+            }
         };
     });
     myHome.config(function ($routeProvider, $locationProvider) {
