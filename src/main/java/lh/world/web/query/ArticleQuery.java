@@ -1,7 +1,7 @@
 package lh.world.web.query;
 
 
-import lh.world.query.support.Query;
+import lh.world.base.query.support.Query;
 
 /**
  * Created by lh on 2016/8/26.

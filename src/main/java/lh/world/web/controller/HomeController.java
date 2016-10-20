@@ -1,10 +1,10 @@
 package lh.world.web.controller;
 
+import lh.world.base.domain.Article;
+import lh.world.base.service.ArticleService;
 import lh.world.web.controller.support.AjaxResponse;
 import lh.world.web.controller.support.BaseController;
-import lh.world.domain.Article;
 import lh.world.web.query.ArticleQuery;
-import lh.world.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;

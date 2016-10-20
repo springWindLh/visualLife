@@ -1,6 +1,6 @@
 package lh.world.web.interceptor;
 
-import lh.world.domain.User;
+import lh.world.base.domain.User;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;

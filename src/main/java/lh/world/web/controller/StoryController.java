@@ -1,11 +1,11 @@
 package lh.world.web.controller;
 
+import lh.world.base.domain.Story;
+import lh.world.base.form.StoryForm;
+import lh.world.base.query.support.Query;
+import lh.world.base.service.StoryService;
 import lh.world.web.controller.support.AjaxResponse;
 import lh.world.web.controller.support.BaseController;
-import lh.world.domain.Story;
-import lh.world.form.StoryForm;
-import lh.world.query.support.Query;
-import lh.world.service.StoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;

@@ -2,7 +2,7 @@ package lh.world.web.controller;
 
 import lh.world.web.controller.support.BaseController;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * Created by lh on 2016/9/18.

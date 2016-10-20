@@ -138,25 +138,34 @@
         }
 
         $scope.register = function () {
-            $scope.registerSuccess = false;
-            $http.post('/register', $scope.user).success(function (data) {
-                if (data.code) {
-                    angular.element("#alertInfo").addClass("alert-success");
-                    setResponseMsg("注册成功！3秒后自动跳转……", true);
-                    setTimeout(function () {
-                        if ($scope.needBack) {
-                            location.href = $scope.backUrl;
-                        } else {
-                            location.href = data.jumpUrl;
-                        }
-                    }, 3000);
-                } else {
-                    angular.element("#alertInfo").addClass("alert-danger");
-                    setResponseMsg("注册失败！" + data.msg, true);
-                }
-            });
+            console.log(angular.element(".registerForm").valid);
+//            $scope.registerSuccess = false;
+//            $http.post('/register', $scope.user).success(function (data) {
+//                if (data.code) {
+//                    angular.element("#alertInfo").addClass("alert-success");
+//                    setResponseMsg("注册成功！3秒后自动跳转……", true);
+//                    setTimeout(function () {
+//                        if ($scope.needBack) {
+//                            location.href = $scope.backUrl;
+//                        } else {
+//                            location.href = data.jumpUrl;
+//                        }
+//                    }, 3000);
+//                } else {
+//                    angular.element("#alertInfo").addClass("alert-danger");
+//                    setResponseMsg("注册失败！" + data.msg, true);
+//                }
+//            });
         };
 
+        $(function () {
+            document.onkeydown = function (e) {
+                e = e || event;
+                if (e.keyCode == 13) {
+                    $scope.register();
+                }
+            };
+        });
     });
 </script>
 </body>

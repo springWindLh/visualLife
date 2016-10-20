@@ -1,8 +1,8 @@
 package lh.world.web.controller.support;
 
 import com.alibaba.fastjson.JSON;
-import lh.world.domain.User;
-import lh.world.domain.support.CanLogicDelDomain;
+import lh.world.base.domain.User;
+import lh.world.base.domain.support.CanLogicDelDomain;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.context.request.RequestContextHolder;

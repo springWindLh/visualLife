@@ -1,12 +1,11 @@
 package lh.world;
 
-import lh.world.domain.Article;
-import lh.world.domain.Story;
-import lh.world.domain.User;
-import lh.world.repository.UserRepository;
-import lh.world.service.ArticleService;
-import lh.world.service.StoryService;
-import lh.world.service.UserService;
+import lh.world.base.domain.Story;
+import lh.world.base.domain.User;
+import lh.world.base.repository.UserRepository;
+import lh.world.base.service.ArticleService;
+import lh.world.base.service.StoryService;
+import lh.world.base.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,12 +1,12 @@
 package lh.world.web.controller;
 
 import com.google.common.base.Strings;
+import lh.world.base.domain.Comment;
+import lh.world.base.form.CommentForm;
+import lh.world.base.query.support.Query;
+import lh.world.base.service.CommentService;
 import lh.world.web.controller.support.AjaxResponse;
 import lh.world.web.controller.support.BaseController;
-import lh.world.domain.Comment;
-import lh.world.form.CommentForm;
-import lh.world.query.support.Query;
-import lh.world.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;

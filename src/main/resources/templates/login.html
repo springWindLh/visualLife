@@ -7,14 +7,14 @@
         .loginOuter {
             position: fixed;
             left: 50%;
-            top: 60%;
+            top: 50%;
         }
 
         .loginInter {
             width: 55em;
             height: 20em;
             margin-left: -27.5em;
-            margin-top: -12em;
+            margin-top: -10em;
             padding: 1em;
         }
 
@@ -30,7 +30,7 @@
             border-left: dotted 1px lightgrey;
         }
 
-        .loginForm .logo{
+        .loginForm .logo {
             margin-left: -6.6em;
             margin-top: -6em;
             margin-bottom: 1em;
@@ -62,11 +62,13 @@
                         <input type="password" class="form-control" placeholder="密码" ng-model="password">
                     </div>
                 </fieldset>
-                <button type="button" class="btn btn-warning-outline btn-block" ng-click="login()">登&nbsp;&nbsp;录</button>
+                <button type="button" class="btn btn-warning-outline btn-block" ng-click="login()">登&nbsp;&nbsp;录
+                </button>
                 <fieldset class="form-group">
                     <div style="padding-top: 20px;">
-                        <label class="pointer textWhite2"><input type="checkbox" value="true" ng-model="rememberMe">&nbsp;记住我</label>
-                        <a ng-href="{{registerHref}}" class="pull-right jumpLink">去注册&nbsp;<i class="fa fa-arrow-circle-right"></i></a>
+                        <label class="pointer textWhite2"><input type="checkbox" ng-model="rememberMe" ng-model="rememberMe" ng-checked="rememberMe">&nbsp;记住我</label>
+                        <a ng-href="{{registerHref}}" class="pull-right jumpLink">去注册&nbsp;<i
+                                class="fa fa-arrow-circle-right"></i></a>
                     </div>
                 </fieldset>
             </form>
@@ -86,8 +88,22 @@
 <script type="text/javascript" th:inline="javascript">
     var app = angular.module('loginApp', []);
     app.controller('loginController', function ($scope, $http) {
-        $scope.nameOrMobile = '';
-        $scope.password = '';
+        var vfUser = null;
+        var vfUserStr = localStorage.getItem('vfUser');
+        var rememberMe = localStorage.getItem('rememberMe') || false;
+
+        function vfUserIsExist() {
+            if(vfUserStr != undefined && vfUserStr != null) {
+                vfUser = JSON.parse(vfUserStr);console.log(vfUser);
+                return true;
+            }else {
+                return false;
+            }
+        }
+
+        $scope.nameOrMobile = vfUserIsExist() ? vfUser.nameOrMobile : '';
+        $scope.password = vfUserIsExist() ? vfUser.password : '';
+        $scope.rememberMe = rememberMe;console.log(rememberMe);
         $scope.needBack = [[${needBack}]] || false;
         $scope.backUrl = [[${backUrl}]] || '/home';
         $scope.registerHref = '/registerPage';
@@ -103,6 +119,17 @@
             } else if ($scope.password == '') {
                 $scope.loginFailure = true;
                 $scope.responseMsg = '请填写密码';
+            }console.log($scope.rememberMe);
+            if ($scope.rememberMe) {console.log(1);
+                var vfUser = {
+                    nameOrMobile: $scope.nameOrMobile,
+                    password: $scope.password
+                };
+                localStorage.setItem("vfUser", JSON.stringify(vfUser));
+                localStorage.setItem("rememberMe", $scope.rememberMe);
+            } else {console.log(2);
+                localStorage.removeItem("vfUser");console.log($scope.rememberMe);
+                localStorage.setItem("rememberMe", $scope.rememberMe);
             }
             $http.get('/login', {
                 params: {
