@@ -131,12 +131,11 @@
                 localStorage.removeItem("vfUser");console.log($scope.rememberMe);
                 localStorage.setItem("rememberMe", $scope.rememberMe);
             }
-            $http.get('/login', {
-                params: {
+            $http.get('/login',
+                {
                     nameOrMobile: $scope.nameOrMobile,
                     password: $scope.password
-                }
-            }).success(function (data) {
+                }).success(function (data) {
                 if (data.code) {
                     if ($scope.needBack) {
                         location.href = $scope.backUrl;

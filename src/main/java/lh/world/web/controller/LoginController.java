@@ -7,6 +7,7 @@ import lh.world.base.service.UserService;
 import lh.world.base.util.EncrptUtil;
 import lh.world.web.controller.support.AjaxResponse;
 import lh.world.web.controller.support.BaseController;
+import lh.world.web.form.LoginForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,10 +35,12 @@ public class LoginController extends BaseController {
         return "/login";
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public AjaxResponse login(@RequestParam String nameOrMobile, @RequestParam String password) {
+    public AjaxResponse login(@RequestBody LoginForm form) {
         final String errorMsg = "用户名或密码错误";
+        String nameOrMobile = form.getNameOrMobile();
+        String password = form.getPassword();
         if (Strings.isNullOrEmpty(nameOrMobile) || Strings.isNullOrEmpty(password)) {
             return AjaxResponse.fail().msg(errorMsg);
         }
