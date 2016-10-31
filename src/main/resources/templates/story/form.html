@@ -40,7 +40,8 @@
         $scope.story = {
             id: [[${form.id}]],
             picture: [[${form.picture}]] || '',
-            description: [[${form.description}]] || ''
+            description: [[${form.description}]] || '',
+            vote: [[${form.vote}]] || 0,
         };
 
         function verifyForm() {

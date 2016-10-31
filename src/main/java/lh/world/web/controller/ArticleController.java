@@ -113,7 +113,8 @@ public class ArticleController extends BaseController {
             return getAjaxResourceNotFound();
         }
         Article article = articleOptional.get();
-        article.setVote(article.getVote() + 1);
+        int vote = article.getVote() != null ? article.getVote() : 0;
+        article.setVote(vote + 1);
         try {
             article = articleService.save(article);
             return AjaxResponse.ok().msg("点赞成功").data(article);

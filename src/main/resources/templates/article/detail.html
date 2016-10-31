@@ -32,6 +32,13 @@
         <p th:utext="${form.content}"></p>
     </div>
 </div>
+<div class="center" ng-controller="voteController" ng-app="voteApp">
+    <br>
+    <button ng-cloak class="btn btn-lg btn-warning-outline width80 size22" ng-click="doVote()"><i class="fa fa-thumbs-o-up"></i><span
+            ng-if="vote>0">&nbsp;&nbsp;{{vote}}
+        &nbsp;<span ng-if="voted">已赞</span></span></button>
+    <br>
+</div>
 <div class="container maxWidth600" style="padding: 2em 0em;" ng-app="commentApp">
     <!-- 评论 -->
     <div ng-controller="commentController" ng-cloak>
@@ -156,6 +163,26 @@
 <div th:include="fragment::tooltip"></div>
 </body>
 <script type="text/javascript" th:inline="javascript">
+    var voteApp = angular.module('voteApp', []);
+    voteApp.controller('voteController', function ($scope, $http, $location) {
+        var targetId = [[${form.id}]];
+        $scope.vote = [[${form.vote}]] || 0;
+        $scope.voted = localStorage.getItem('article_' + targetId) == 'true' ? true : false;
+        $scope.doVote = function () {
+            if (!$scope.voted) {
+                $http.post('/article/vote/'+targetId).success(function (data) {
+                    if(data.code) {
+                        $scope.vote = data.data.vote;
+                        localStorage.setItem('article_' + targetId, 'true');
+                        $scope.voted = true;
+                    }else {
+                        Tooltip.fail(data.msg);
+                    }
+                });
+            }
+        };
+    });
+
     var commentApp = angular.module('commentApp', []);
     commentApp.controller('commentController', function ($scope, $http, $location) {
         $scope.comments = [];
@@ -209,11 +236,11 @@
             content: ''
         };
         $scope.saveReply = function (commentId, accepterId, content, replies, e) {
-            if(content == ''){
+            if (content == '') {
                 Tooltip.fail('回复内容不能为空');
-            }else if(content.length >500) {
+            } else if (content.length > 500) {
                 Tooltip.fail('回复内容不能超过500字符');
-            }else{
+            } else {
                 $scope.newReply = {
                     commentId: commentId,
                     accepterId: accepterId,
