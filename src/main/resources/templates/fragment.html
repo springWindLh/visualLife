@@ -60,13 +60,17 @@
                     <a class="dropdown-item" href="/myHome#/article"><i class="fa fa-home"></i>&nbsp;&nbsp;我的主页</a>
                     <a class="dropdown-item" href="/comment/suggestion/list"><i class="fa fa-envelope"></i>&nbsp;&nbsp;建议or留言</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="/logout"><span style="color: indianred;"> <i class="fa fa-power-off"></i></span> &nbsp;&nbsp;退出</a>
+                    <a class="dropdown-item" href="" onclick="logout()"><span style="color: indianred;"> <i class="fa fa-power-off"></i></span> &nbsp;&nbsp;退出</a>
                 </div>
             </div>
             </div>
         </div>
     </nav>
     <script type="text/javascript">
+        function logout() {
+            localStorage.removeItem("vfUserId");
+            window.href = '/logout';
+        }
         $(function(){
             $('.navbar-light .navbar-nav .nav-link').removeClass('active');
             if(location.href.indexOf('story') != -1) {

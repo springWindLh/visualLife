@@ -39,7 +39,7 @@
                             <i class="fa fa-thumbs-o-up pointer" ng-if="!verifyCommentVote(comment.id)"
                                ng-click="voteComment(comment)"></i>
                             <i class="fa fa-thumbs-up" ng-if="verifyCommentVote(comment.id)"></i>
-                            <span ng-if="comment.vote > 0">({{comment.vote}})</span>
+                            <span ng-if="comment.vote > 0">{{comment.vote}}</span>
                         </div>
                     </div>
                     <div class="minHeight20">
@@ -49,10 +49,10 @@
                         <div style="width: 8em;color: #866667;float: left;">
                             <small>{{comment.createdTime | date:'yyyy/MM/dd HH:mm'}}</small>
                         </div>
-                        <div style="width: 4em;color: #866667;float: left;cursor: pointer;" ng-if="currentUserRole == 'ADMIN'">
+                        <div style="color: #866667;float: left;cursor: pointer;" ng-if="currentUserRole == 'ADMIN'">
                             <i class="fa fa-comment-o" ng-click="showReplyForm($event)"></i>
                         </div>
-                        <div style="color: #866667;float: left;cursor: pointer;">
+                        <div style="margin-left:1.3em;color: #866667;float: left;cursor: pointer;">
                             <i class="fa fa-trash-o" ng-if="currentUserId == comment.user.id"
                                ng-click="removeComment(comment.id,$index)"></i>
                         </div>
@@ -81,11 +81,11 @@
                                                 <div style="width: 8em;color: #866667;float: left;">
                                                     <small>{{comment.createdTime | date:'yyyy/MM/dd HH:mm'}}</small>
                                                 </div>
-                                                <div style="width: 3em;color: #866667;float: left;cursor: pointer;" ng-if="currentUserId == comment.user.id || currentUserRole == 'ADMIN'">
+                                                <div style="color: #866667;float: left;cursor: pointer;" ng-if="currentUserId == comment.user.id || currentUserRole == 'ADMIN'">
                                                     <i class="fa fa-comment-o"
                                                        ng-click="showReplyChildForm($event)"></i>
                                                 </div>
-                                                <div style="color: #866667;float: left;cursor: pointer;" ng-if="currentUserId == reply.user.id">
+                                                <div style="margin-left:1.3em;color: #866667;float: left;cursor: pointer;" ng-if="currentUserId == reply.user.id">
                                                     <i class="fa fa-trash-o"
                                                        ng-click="removeReply(reply.id,comment.replies,$index)"></i>
                                                 </div>

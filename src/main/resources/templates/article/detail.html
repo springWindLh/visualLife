@@ -32,18 +32,19 @@
         <p th:utext="${form.content}"></p>
     </div>
 </div>
-<div class="center" ng-controller="voteController" ng-app="voteApp">
+<div ng-app="commentApp">
+<div class="center" ng-controller="voteController">
     <br>
     <button ng-cloak class="btn btn-lg btn-warning-outline width80 size22" ng-click="doVote()"><i class="fa fa-thumbs-o-up"></i><span
             ng-if="vote>0">&nbsp;&nbsp;{{vote}}
         &nbsp;<span ng-if="voted">已赞</span></span></button>
     <br>
 </div>
-<div class="container maxWidth600" style="padding: 2em 0em;" ng-app="commentApp">
+<div class="container maxWidth600" style="padding: 2em 0em;">
     <!-- 评论 -->
     <div ng-controller="commentController" ng-cloak>
         <p style="color: #fad6a6;">评论（{{comments.length}}）</p>
-        <hr class="bg-faded">
+        <hr style="background-color: #b8bdb1;">
         <div class="bg-white margin-bottom10">
             <form name="commentForm" ng-if="currentUserId != -1">
                 <div>
@@ -72,7 +73,7 @@
                             <i class="fa fa-thumbs-o-up pointer" ng-if="!verifyCommentVote(comment.id)"
                                ng-click="voteComment(comment)"></i>
                             <i class="fa fa-thumbs-up" ng-if="verifyCommentVote(comment.id)"></i>
-                            <span ng-if="comment.vote > 0">({{comment.vote}})</span>
+                            <span ng-if="comment.vote > 0">{{comment.vote}}</span>
                         </div>
                     </div>
                     <div class="minHeight20">
@@ -82,11 +83,11 @@
                         <div style="width: 8em;color: #866667;float: left;">
                             <small>{{comment.createdTime | date:'yyyy/MM/dd HH:mm'}}</small>
                         </div>
-                        <div style="width: 4em;color: #866667;float: left;cursor: pointer;">
-                            <i class="fa fa-comment-o" ng-click="showReplyForm($event)"></i><span
-                                ng-if="comment.replies.length > 0">&nbsp;({{comment.replies.length}})</span>
-                        </div>
                         <div style="color: #866667;float: left;cursor: pointer;">
+                            <i class="fa fa-comment-o" ng-click="showReplyForm($event)"></i><span
+                                ng-if="comment.replies.length > 0">&nbsp;{{comment.replies.length}}</span>
+                        </div>
+                        <div style="margin-left:1.3em;color: #866667;float: left;cursor: pointer;">
                             <i class="fa fa-trash-o" ng-if="currentUserId == comment.user.id"
                                ng-click="removeComment(comment.id,$index)"></i>
                         </div>
@@ -111,7 +112,7 @@
                                                        ng-if="!verifyReplyVote(reply.id)"
                                                        ng-click="voteReply(reply)"></i>
                                                     <i class="fa fa-thumbs-up" ng-if="verifyReplyVote(reply.id)"></i>
-                                                    <span ng-if="reply.vote > 0">({{reply.vote}})</span>
+                                                    <span ng-if="reply.vote > 0">{{reply.vote}}</span>
                                                 </div>
                                             </div>
                                             <div class="minHeight20">
@@ -122,11 +123,11 @@
                                                 <div style="width: 8em;color: #866667;float: left;">
                                                     <small>{{comment.createdTime | date:'yyyy/MM/dd HH:mm'}}</small>
                                                 </div>
-                                                <div style="width: 3em;color: #866667;float: left;cursor: pointer;">
+                                                <div style="color: #866667;float: left;cursor: pointer;">
                                                     <i class="fa fa-comment-o"
                                                        ng-click="showReplyChildForm($event)"></i>
                                                 </div>
-                                                <div style="color: #866667;float: left;cursor: pointer;">
+                                                <div style="margin-left:1.3em;color: #866667;float: left;cursor: pointer;">
                                                     <i class="fa fa-trash-o" ng-if="currentUserId == comment.user.id"
                                                        ng-click="removeReply(reply.id,comment.replies,$index)"></i>
                                                 </div>
@@ -160,15 +161,15 @@
         </div>
     </div>
 </div>
+</div>
 <div th:include="fragment::tooltip"></div>
 </body>
 <script type="text/javascript" th:inline="javascript">
-    var voteApp = angular.module('voteApp', []);
-    voteApp.controller('voteController', function ($scope, $http, $location) {
+    var commentApp = angular.module('commentApp', []);
+    commentApp.controller('voteController', function ($scope, $http, $location) {
         var vfUserId = localStorage.getItem('vfUserId') || -1;
         var targetId = [[${form.id}]];
         $scope.vote = [[${form.vote}]] || 0;
-        $scope.
         $scope.voted = localStorage.getItem('article_' + vfUserId + '_' + targetId) == 'true' ? true : false;
         $scope.doVote = function () {
             if (!$scope.voted) {
@@ -184,8 +185,6 @@
             }
         };
     });
-
-    var commentApp = angular.module('commentApp', []);
     commentApp.controller('commentController', function ($scope, $http, $location) {
         var vfUserId = localStorage.getItem('vfUserId') || -1;
         $scope.comments = [];
@@ -262,11 +261,11 @@
         };
 
         $scope.verifyCommentVote = function (commentId) {
-            return window.localStorage.getItem('comment_' + vfUserId + '_' + commentId);
+            return window.localStorage.getItem('comment_' + vfUserId + '_' + commentId) == 'true';
         };
 
         $scope.verifyReplyVote = function (replyId) {
-            return window.localStorage.getItem('reply_' + vfUserId + '_' + replyId);
+            return window.localStorage.getItem('reply_' + vfUserId + '_' + replyId) == 'true';
         };
 
         $scope.voteComment = function (comment) {
