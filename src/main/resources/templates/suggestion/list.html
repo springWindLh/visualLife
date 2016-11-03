@@ -121,6 +121,7 @@
 <script type="text/javascript" th:inline="javascript">
     var commentApp = angular.module('commentApp', []);
     commentApp.controller('commentController', function ($scope, $http) {
+        var vfUserId = localStorage.getItem('vfUserId') || -1;
         $scope.comments = [];
         var targetId = null;
         var targetType = 'SUGGESTION';
@@ -190,18 +191,18 @@
         };
 
         $scope.verifyCommentVote = function (commentId) {
-            return window.localStorage.getItem('comment_' + commentId);
+            return window.localStorage.getItem('comment_' + vfUserId + '_'  + commentId);
         };
 
         $scope.verifyReplyVote = function (replyId) {
-            return window.localStorage.getItem('reply_' + replyId);
+            return window.localStorage.getItem('reply_' + vfUserId + '_' + replyId);
         };
 
         $scope.voteComment = function (comment) {
             $http.post('/comment/vote/' + comment.id).success(function (data) {
                 if (data.code) {
                     comment.vote = data.data.vote;
-                    window.localStorage.setItem('comment_' + comment.id, true);
+                    window.localStorage.setItem('comment_' + vfUserId + '_' + comment.id, true);
                 } else {
                     Tooltip.fail(data.msg);
                 }
@@ -212,7 +213,7 @@
             $http.post('/reply/vote/' + reply.id).success(function (data) {
                 if (data.code) {
                     reply.vote = data.data.vote;
-                    window.localStorage.setItem('reply_' + reply.id, true);
+                    window.localStorage.setItem('reply_' + vfUserId + '_' + reply.id, true);
                 } else {
                     Tooltip.fail(data.msg);
                 }

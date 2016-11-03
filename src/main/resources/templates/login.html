@@ -136,6 +136,7 @@
                         password: $scope.password
                     }).success(function (data) {
                     if (data.code) {
+                        localStorage.setItem("vfUserId", data.data);
                         if ($scope.needBack) {
                             location.href = $scope.backUrl;
                         } else {
