@@ -1,5 +1,6 @@
 package lh.world;
 
+import lh.world.base.domain.Article;
 import lh.world.base.domain.Story;
 import lh.world.base.domain.User;
 import lh.world.base.repository.UserRepository;
@@ -32,16 +33,28 @@ public class VisuallifeApplicationTests {
 
     @Test
     public void Test() {
-        Optional<Story> storyOptional = storyService.findById(1L);
-        Optional<User> userOptional = userService.findById(1L);
-        if (storyOptional.isPresent()) {
-            for (int i = 4; i < 100; i++) {
-                Story story = storyOptional.get();
-                story.setId(null);
-                story.setDescription("story" + i);
-                userOptional.ifPresent(story::setUser);
-                storyService.save(story);
-            }
-        }
+//        Optional<Story> storyOptional = storyService.findById(1L);
+//        Optional<User> userOptional = userService.findById(1L);
+//        if (storyOptional.isPresent()) {
+//            for (int i = 4; i < 100; i++) {
+//                Story story = storyOptional.get();
+//                story.setId(null);
+//                story.setDescription("story" + i);
+//                userOptional.ifPresent(story::setUser);
+//                storyService.save(story);
+//            }
+//        }
+
+//        Optional<Article> articleOptional = articleService.findById(1L);
+//        Optional<User> userOptional = userService.findById(1L);
+//        if (articleOptional.isPresent()) {
+//            for (int i = 4; i < 100; i++) {
+//                Article article = articleOptional.get();
+//                article.setId(null);
+//                article.setContent("文章内容" + i);
+//                userOptional.ifPresent(article::setUser);
+//                articleService.save(article);
+//            }
+//        }
     }
 }
