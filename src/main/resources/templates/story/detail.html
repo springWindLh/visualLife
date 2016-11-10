@@ -17,7 +17,7 @@
     <div class="maxWidth600">
         <div><p th:text="${form.description}"></p></div>
         <div class="margin10">
-            <small class="text-muted pull-right">by&nbsp;&nbsp;&nbsp;<span th:text="${form.user.name}"></span>
+            <small class="text-muted pull-right">by&nbsp;&nbsp;·<span th:text="${form.user.name}"></span>
                 &nbsp;&nbsp;&nbsp;
                 <span th:text="${#dates.format(form.createdTime,'yyyy/MM/dd')}"></span>
             </small>
