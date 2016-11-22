@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-error coming
+<div th:include="fragment::navbar"></div>
+<div class="padding10 center margin-top50">
+    <div style="position: absolute;height: 100px;width:200px;top:50%;left:50%;margin-left:-200px;margin-top: -100px;">
+        <h2 style="color: #d7a91e">404</h2>
+        <p style="color: #d7a91e">page not found</p>
+    </div>
+</div>
 </body>
 </html>

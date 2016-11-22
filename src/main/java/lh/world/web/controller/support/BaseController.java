@@ -54,7 +54,7 @@ public class BaseController {
     }
 
     protected String getResourceNotFound() {
-        return "/404";
+        return "/error";
     }
 
     protected AjaxResponse getAjaxResourceNotFound() {

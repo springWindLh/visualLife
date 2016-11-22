@@ -17,17 +17,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * Created by lh on 2016/8/26.
  */
 @Controller
-@RequestMapping("/home")
 public class HomeController extends BaseController {
     @Autowired
     ArticleService articleService;
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping(value = {"", "/", "/home"}, method = RequestMethod.GET)
     public String home(ArticleQuery query, Model model) {
         return "/home";
     }
 
-    @RequestMapping(value = "/article/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/home/article/list", method = RequestMethod.GET)
     @ResponseBody
     public AjaxResponse articleList(ArticleQuery query) {
         Page<Article> page = articleService.listByTitle(query.getTitle(), query);
