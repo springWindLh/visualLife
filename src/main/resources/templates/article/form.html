@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" ng-app="articleApp">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>{{article.title}}</title>
     <link rel="stylesheet" type="text/css" href="/static/css/base.css">
     <link rel="stylesheet" type="text/css" href="/static/css/summernote.css">
     <link rel="stylesheet" type="text/css" href="/static/css/webuploader.css">
@@ -40,6 +40,7 @@
         .card-text:last-child {
             margin-bottom: 0;
         }
+
         .card-img-top {
             border-radius: .25rem .25rem 0 0;
         }
@@ -51,11 +52,12 @@
             border-left: 5px solid #94785e;
         }
 
-        .backBtn:link,.backBtn:visited,.backBtn:active  {
+        .backBtn:link, .backBtn:visited, .backBtn:active {
             text-decoration: none;
             color: #d0d2ca;
         }
-        .backBtn:hover{
+
+        .backBtn:hover {
             text-decoration: none;
             color: #86b4ac;
         }
@@ -64,36 +66,42 @@
 <body>
 <div class="container">
     <form ng-controller="articleController">
-    <div class="col-md-8">
-        <fieldset class="form-group" style="padding-top: 1em">
-            <input class="form-control" style="font-size: 22px; border: none;font-family: '微软雅黑';"
-                   ng-model="article.title" placeholder="文章标题">
-        </fieldset>
-        <div style="border-right: dashed 0.1em rgba(128, 128, 128, 0.29);padding-right: 1em;">
-            <summernote height="500" on-image-upload="imageUpload(files)" editable="editable" editor="editor"
-                        placeholder="正文" ng-model="article.content"></summernote>
-        </div>
-    </div>
-    <div class="col-md-4" style="padding-top: 2em;">
-        <small style="color:#d0d2ca;">封面预览</small>
-        <div class="card maxWidth200 margin-top5">
-            <img ng-if="article.coverImg != null" ng-src="{{article.coverImg}}" class="widthFull">
-            <div ng-if="article.summarize != ''" class="card-block bg-white">
-                <div class="card-text">
-                    {{article.summarize | lengthFilter:110}}
-                </div>
+        <div class="col-md-8">
+            <fieldset class="form-group" style="padding-top: 1em">
+                <input class="form-control" style="font-size: 22px; border: none;font-family: '微软雅黑';"
+                       ng-model="article.title" placeholder="文章标题">
+            </fieldset>
+            <div style="border-right: dashed 0.1em rgba(128, 128, 128, 0.29);padding-right: 1em;">
+                <summernote height="500" on-image-upload="imageUpload(files)" editable="editable" editor="editor"
+                            placeholder="正文" ng-model="article.content"></summernote>
             </div>
         </div>
-        <button id="coverImgBtn" class="btn btn-sm">选择封面图片</button>
-        <div class="form-group" style="padding-top: 1em;">
-            <textarea rows="5" class="form-control maxWidth200" placeholder="封面文字" ng-model="article.summarize"></textarea>
+        <div class="col-md-4" style="padding-top: 2em;">
+            <small style="color:#d0d2ca;">封面预览</small>
+            <div class="card maxWidth200 margin-top5">
+                <img ng-if="article.coverImg != null" ng-src="{{article.coverImg}}" class="widthFull">
+                <div ng-if="article.summarize != ''" class="card-block bg-white">
+                    <div class="card-text">
+                        {{article.summarize | lengthFilter:110}}
+                    </div>
+                </div>
+            </div>
+            <button id="coverImgBtn" class="btn btn-sm">选择封面图片</button>
+            <div class="form-group" style="padding-top: 1em;">
+                <textarea rows="5" class="form-control maxWidth200" placeholder="封面文字"
+                          ng-model="article.summarize"></textarea>
+            </div>
+            <div class="maxWidth200" ng-cloak>
+                <button type="button" ng-if="article.id == null" class="btn btn-info-outline width80"
+                        ng-click="saveArticle()"><i class="fa fa-pencil"></i>&nbsp;发表
+                </button>
+                <button type="button" ng-if="article.id != null" class="btn btn-info-outline width80"
+                        ng-click="updateArticle()"><i class="fa fa-pencil"></i>&nbsp;更新
+                </button>
+                <a href="javascript;" class="backBtn pull-right margin-top10"
+                   onclick="javascript:window.history.go(-1);">返回<i class="fa fa-angle-right"></i> </a>
+            </div>
         </div>
-        <div class="maxWidth200" ng-cloak>
-        <button type="button" ng-if="article.id == null" class="btn btn-info-outline width80" ng-click="saveArticle()"><i class="fa fa-pencil"></i>&nbsp;发表</button>
-        <button type="button" ng-if="article.id != null" class="btn btn-info-outline width80" ng-click="updateArticle()"><i class="fa fa-pencil"></i>&nbsp;更新</button>
-        <a href="javascript;" class="backBtn pull-right margin-top10" onclick="javascript:window.history.go(-1);">返回<i class="fa fa-angle-right"></i> </a>
-        </div>
-    </div>
     </form>
 </div>
 <div th:include="fragment::tooltip"></div>
@@ -103,11 +111,11 @@
 <script type="text/javascript" src="/static/js/common-filters.js"></script>
 <script type="text/javascript" src="/static/js/summernote-de-DE.js"></script>
 <script type="text/javascript" th:inline="javascript">
-    var app = angular.module('articleApp', ['summernote','filter']);
+    var app = angular.module('articleApp', ['summernote', 'filter']);
     app.controller('articleController', function ($scope, $http) {
 
         $scope.article = {
-            id:[[${form.id}]],
+            id: [[${form.id}]],
             title: [[${form.title}]] || '',
             content: [[${form.content}]] || '',
             coverImg: [[${form.coverImg}]] || '',
@@ -117,28 +125,28 @@
         };
 
         function verifyForm() {
-            if($scope.article.title == '') {
+            if ($scope.article.title == '') {
                 Tooltip.fail('请填写文章标题');
                 return false;
-            }else if($scope.article.title.length > 20) {
+            } else if ($scope.article.title.length > 20) {
                 Tooltip.fail('文章标题不能超过20字符');
                 return false;
-            }else if($scope.article.summarize.length > 200){
+            } else if ($scope.article.summarize.length > 200) {
                 Tooltip.fail('封面文字不能超过200字符');
                 return false;
-            }else if($scope.article.content == ''){
+            } else if ($scope.article.content == '') {
                 Tooltip.fail('请填写文章内容');
                 return false;
-            }else if($scope.article.coverImg == ''){
+            } else if ($scope.article.coverImg == '') {
                 Tooltip.fail('请上传封面图片');
                 return false;
-            }else {
+            } else {
                 return true;
             }
         }
-        
+
         $scope.saveArticle = function () {
-            if(verifyForm()) {
+            if (verifyForm()) {
                 $http.post('/article/add', $scope.article).success(function (data) {
                     Tooltip.handle(data);
                 });
@@ -160,21 +168,24 @@
                 extensions: 'gif,jpg,jpeg,bmp,png',
                 mimeTypes: 'image/gif,image/jpg,image/jpeg,image/bmp,image/png'
             },
-            fileSingleSizeLimit: 2 * 1024 * 1024
+            compress: {
+                width: 360,
+                noCompressIfLarger: false,
+                compressSize: 200
+            },
+            fileSingleSizeLimit: 10 * 1024 * 1024
         });
-        uploader.on('uploadStart',function(){
-        });
-        uploader.on( 'uploadSuccess', function( file , response) {
-            if(response.code == 1){
+        uploader.on('uploadSuccess', function (file, response) {
+            if (response.code == 1) {
                 $scope.article.coverImg = response.data;
                 $scope.$apply();
-            }else{
+            } else {
                 Tooltip.fail(response.msg);
             }
         });
-        uploader.on('error',function(type) {
-            if("F_EXCEED_SIZE" == type) {
-                Tooltip.fail('图片大小不能超过2M');
+        uploader.on('error', function (type) {
+            if ("F_EXCEED_SIZE" == type) {
+                Tooltip.fail('图片大小不能超过10M');
             } else {
                 Tooltip.fail('图片格式不正确');
             }
@@ -185,17 +196,50 @@
         }
 
         function sendFile(file) {
-            var data = new FormData();
-            data.append("file", file);
-            $.ajax({
-                data: data,
-                type: "POST",
-                url: "/qiniu/upload/article",
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function (data) {
-                    $scope.editor.summernote('insertImage', data.data);
+//            var data = new FormData();
+//            data.append("file", file);
+
+//            $.ajax({
+//                data: data,
+//                type: "POST",
+//                url: "/qiniu/upload/article",
+//                cache: false,
+//                contentType: false,
+//                processData: false,
+//                success: function (data) {
+//                    $scope.editor.summernote('insertImage', data.data);
+//                }
+//            });
+
+            var uploader = WebUploader.create({
+                auto: true,
+                server: '/qiniu/upload/article',
+                accept: {
+                    title: 'Images',
+                    extensions: 'gif,jpg,jpeg,bmp,png',
+                    mimeTypes: 'image/gif,image/jpg,image/jpeg,image/bmp,image/png'
+                },
+                compress: {
+                    width: 950,
+                    noCompressIfLarger: false,
+                    compressSize: 200
+                },
+                fileSingleSizeLimit: 10 * 1024 * 1024
+            });
+            uploader.addFile(file);
+            uploader.upload();
+            uploader.on('uploadSuccess', function (file, response) {
+                if (response.code == 1) {
+                    $scope.editor.summernote('insertImage', response.data);
+                } else {
+                    Tooltip.fail(response.msg);
+                }
+            });
+            uploader.on('error', function (type) {
+                if ("F_EXCEED_SIZE" == type) {
+                    Tooltip.fail('图片大小不能超过10M');
+                } else {
+                    Tooltip.fail('图片格式不正确');
                 }
             });
         }

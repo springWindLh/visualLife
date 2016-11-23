@@ -9,6 +9,7 @@ import lh.world.web.controller.support.AjaxResponse;
 import lh.world.web.controller.support.BaseController;
 import lh.world.web.form.LoginForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,6 +24,9 @@ import java.util.Optional;
 public class LoginController extends BaseController {
     @Autowired
     UserService userService;
+
+    @Value("${qiniu_domain}")
+    private String domain;
 
     @RequestMapping(value = "/loginPage", method = RequestMethod.GET)
     public String loginPage(@RequestParam(required = false) Boolean needBack, @RequestParam(required = false) String backUrl, Model model) {
@@ -73,6 +77,7 @@ public class LoginController extends BaseController {
         User user = form.asUser();
         user.setPassword(EncrptUtil.encodePassword(user.getPassword()));
         user.setRole(User.Role.USER);
+        user.setAvatar(domain + "/avatar.jpg");
         try {
             User currentUser = userService.save(user);
             getRequest().getSession().setAttribute("user", currentUser);
