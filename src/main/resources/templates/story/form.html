@@ -3,10 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>story</title>
-    <link rel="stylesheet" type="text/css" href="/static/css/base.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/webuploader.css">
+    <style type="text/css">
+        .backBtn:link, .backBtn:visited, .backBtn:active {
+            text-decoration: none;
+            color: #d0d2ca;
+        }
+
+        .backBtn:hover {
+            text-decoration: none;
+            color: #86b4ac;
+        }
+    </style>
 </head>
 <body>
 <div th:include="fragment::navbar"></div>
@@ -28,6 +35,8 @@
             <button ng-cloak class="btn btn-warning-outline" style="width: 8.7em" ng-if="story.id != null" ng-click="updateStory()"><i
                     class="fa fa-pencil"></i>&nbsp;更新
             </button>
+            <a href="javascript;" class="backBtn pull-right margin-top10"
+               onclick="javascript:window.history.go(-1);">返回<i class="fa fa-angle-right"></i> </a>
         </div>
     </form>
 </div>
@@ -82,7 +91,12 @@
                 extensions: 'gif,jpg,jpeg,bmp,png',
                 mimeTypes: 'image/gif,image/jpg,image/jpeg,image/bmp,image/png'
             },
-            fileSingleSizeLimit: 2 * 1024 * 1024
+            compress: {
+                width: 980,
+                noCompressIfLarger: false,
+                compressSize: 200
+            },
+            fileSingleSizeLimit: 10 * 1024 * 1024
         });
         uploader.on('uploadStart', function () {
         });
@@ -96,7 +110,7 @@
         });
         uploader.on('error', function (type) {
             if ("F_EXCEED_SIZE" == type) {
-                Tooltip.fail('图片大小不能超过2M');
+                Tooltip.fail('图片大小不能超过10M');
             } else {
                 Tooltip.fail('图片格式不正确');
             }
