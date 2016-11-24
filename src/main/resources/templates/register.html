@@ -34,17 +34,17 @@
             <img src="/static/image/logo_lg.png">
         </div>
         <form name="registerForm">
-            <fieldset class="form-group bg-red borderRadius5">
-                <i class="fa fa-male margin10"></i>
-                <label class="radio-inline">
-                    <input type="radio" name="sex" value="MAN" minlength="2" maxlength="20" ng-model="user.sex">
-                    <i class="fa fa-mars"></i>
-                </label>
-                <label class="radio-inline">
-                    <input type="radio" name="sex" value="WOMAN" ng-model="user.sex">
-                    <i class="fa fa-venus"></i>
-                </label>
-            </fieldset>
+            <!--<fieldset class="form-group bg-red borderRadius5">-->
+            <!--<i class="fa fa-male margin10"></i>-->
+            <!--<label class="radio-inline">-->
+            <!--<input type="radio" name="sex" value="MAN" minlength="2" maxlength="20" ng-model="user.sex">-->
+            <!--<i class="fa fa-mars"></i>-->
+            <!--</label>-->
+            <!--<label class="radio-inline">-->
+            <!--<input type="radio" name="sex" value="WOMAN" ng-model="user.sex">-->
+            <!--<i class="fa fa-venus"></i>-->
+            <!--</label>-->
+            <!--</fieldset>-->
 
             <fieldset class="form-group"
                       ng-class="{'has-error':registerForm.name.$dirty && registerForm.name.$invalid,'has-success':registerForm.name.$dirty && registerForm.name.$valid}">
@@ -85,7 +85,8 @@
                        ng-show="registerForm.mobile.$dirty && registerForm.mobile.$invalid">请填写正确的手机号</label>
                 <div class="input-group">
                     <label class="input-group-addon bg-red borderNone"><i class="fa fa-mobile width10"></i> </label>
-                    <input class="form-control" placeholder="手机号" type="text" name="mobile" required ng-pattern="/^1(3|4|5|7|8)\d{9}$/"
+                    <input class="form-control" placeholder="手机号" type="text" name="mobile" required
+                           ng-pattern="/^1(3|4|5|7|8)\d{9}$/"
                            ng-model-options="{ updateOn: 'blur' }" ng-model="user.mobile">
                 </div>
             </fieldset>
@@ -127,7 +128,8 @@
             name: '',
             password: '',
             repeatPwd: '',
-            sex: 'MAN',
+//            sex: 'MAN',
+            mobile: '',
             email: ''
         };
 
@@ -139,25 +141,25 @@
 
         $scope.register = function (isValid) {
             angular.element('input').blur();
-           if(isValid) {
-               $scope.registerSuccess = false;
-               $http.post('/register', $scope.user).success(function (data) {
-                   if (data.code) {
-                       angular.element("#alertInfo").addClass("alert-success");
-                       setResponseMsg("注册成功！3秒后自动跳转……", true);
-                       setTimeout(function () {
-                           if ($scope.needBack) {
-                               location.href = $scope.backUrl;
-                           } else {
-                               location.href = data.jumpUrl;
-                           }
-                       }, 3000);
-                   } else {
-                       angular.element("#alertInfo").addClass("alert-danger");
-                       setResponseMsg("注册失败！" + data.msg, true);
-                   }
-               });
-           }
+            if (isValid) {
+                $scope.registerSuccess = false;
+                $http.post('/register', $scope.user).success(function (data) {
+                    if (data.code) {
+                        angular.element("#alertInfo").addClass("alert-success");
+                        setResponseMsg("注册成功！3秒后自动跳转……", true);
+                        setTimeout(function () {
+                            if ($scope.needBack) {
+                                location.href = $scope.backUrl;
+                            } else {
+                                location.href = data.jumpUrl;
+                            }
+                        }, 3000);
+                    } else {
+                        angular.element("#alertInfo").addClass("alert-danger");
+                        setResponseMsg("注册失败！" + data.msg, true);
+                    }
+                });
+            }
         };
 
     });
