@@ -211,7 +211,13 @@
                 extensions: 'gif,jpg,jpeg,bmp,png',
                 mimeTypes: 'image/gif,image/jpg,image/jpeg,image/bmp,image/png'
             },
-            fileSingleSizeLimit: 2 * 1024 * 1024
+            compress: {
+                width: 80,
+                height:80,
+                noCompressIfLarger: false,
+                compressSize: 200
+            },
+            fileSingleSizeLimit: 10 * 1024 * 1024
         });
         uploader.on('uploadStart', function () {
         });
@@ -225,7 +231,7 @@
         });
         uploader.on('error', function (type) {
             if ("F_EXCEED_SIZE" == type) {
-                Tooltip.fail('图片大小不能超过2M');
+                Tooltip.fail('图片大小不能超过10M');
             } else {
                 Tooltip.fail('图片格式不正确');
             }
